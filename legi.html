@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Permission & Regulation Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f7fd;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2c3e50, #2c3e50);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+      
+        
+       .search-bar {
+            display: flex;
+            margin: 0 1rem;
+        }
+        
+        .search-bar input {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            width: 250px;
+        }
+        
+        .search-bar button {
+            background: #FFB700;
+            color: #333;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        nav {
+            background-color: #2c3e50;
+            padding: 0.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav a i {
+            margin-right: 0.5rem;
+        }
+        
+        nav a:hover {
+            background-color: #1e62b0;
+            transform: translateY(-2px);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .page-header {
+            background: linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url("https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80") no-repeat center/cover;
+            height: 300px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+			text-align: center;
+        }
+  
+        .page-header-content {
+            text-align: center;
+            z-index: 1;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .page-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #0b3c89;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background: #1e62b0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .back-btn {
+            background: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+        
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .service-card:hover .service-img img {
+            transform: scale(1.1);
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .service-content h3 {
+            color: #0b3c89;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .service-content ul {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .service-content li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-content li i {
+            color: #0b3c89;
+            margin-right: 0.5rem;
+        }
+        
+        .service-content p {
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature i {
+            font-size: 3rem;
+            color: #0b3c89;
+            margin-bottom: 1rem;
+        }
+        
+        .feature h3 {
+            margin-bottom: 1rem;
+            color: #0b3c89;
+        }
+        
+        .quick-links {
+            background: linear-gradient(to right, #FFFFFF, #FFFFFF);
+            padding: 3rem;
+            border-radius: 10px;
+            text-align: center;
+            color: Dark Blue;
+            margin: 3rem 0;
+        }
+        
+        .quick-links h2 {
+            margin-bottom: 2rem;
+        }
+        
+        .links-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .link-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .link-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .link-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .link-card h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* About Us Page Styles */
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .about-content h2 {
+            color: #0b3c89;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .about-content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+        
+        .team-section {
+            margin: 3rem 0;
+        }
+        
+        .team-section h2 {
+            text-align: center;
+            color: #0b3c89;
+            margin-bottom: 2rem;
+        }
+        
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-member-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .team-member-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .team-member-info {
+            padding: 1.5rem;
+        }
+        
+        .team-member-info h3 {
+            color: #0b3c89;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-member-info p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        /* Contact Page Styles */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-info h2 {
+            color: #0b3c89;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-details {
+            list-style: none;
+        }
+        
+        .contact-details li {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-details li i {
+            color: #0b3c89;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-form h2 {
+            color: #0b3c89;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .map-container {
+            margin-top: 3rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #a5c9ff;
+            text-decoration: underline;
+        }
+        
+        .social-icons {
+            margin: 1rem 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .social-icons a:hover {
+            color: #a5c9ff;
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #3949ab;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #283593;
+            transform: translateY(-3px);
+        }
+        
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .search-bar {
+                margin: 1rem 0;
+				width: 100%;
+            }
+            
+            .logo-container {
+                margin-bottom: 0;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            .page-header {
+                height: 250px;
+            }
+            
+            .page-header h2 {
+                font-size: 2rem;
+            }
+            
+            .links-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <div>
+                    <h1>Government Permission & Regulation</h1>
+                </div>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search services...">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav id="main-nav">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-building"></i> GS Office</a></li>
+                <li><a href="#"><i class="fas fa-university"></i> Pradeshiya Sabha</a></li>
+                <li><a href="#"><i class="fas fa-bolt"></i> Electricity</a></li>
+                <li><a href="#"><i class="fas fa-faucet"></i> Water Service</a></li>
+                <li><a href="#"><i class="fas fa-ellipsis-h"></i> Other Services</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="page-content">
+        <!-- Home Page Content -->
+        <div id="home-page">
+            <div class="page-header">
+                <div class="page-header-content">
+                    <h2>Government Permission & Regulation</h2>
+                    <p>Access all government services and permissions in one place</p>
+                    <a href="#services" class="btn">Explore Services</a>
+                </div>
+            </div>
+            
+            <div class="services">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="GS Office">
+                    </div>
+                    <div class="service-content">
+                        <h3>GS Office</h3>
+                        <p>Access Grama Niladhari Office services and documents</p>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-file-alt"></i> Land Permits</a></li>
+                            <li><a href="NIC.html"><i class="fas fa-id-card"></i> NIC Applications</a></li>
+                            <li><a href="Election.html"><i class="fas fa-vote-yea"></i> Election Registration</a></li>
+                        </ul>
+                        <a href="#" class="btn">Access Services</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                         <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Pradeshiya Sabha">
+                    </div>
+                    <div class="service-content">
+                        <h3>Pradeshiya Sabha</h3>
+                        <p>Local government services and regulations</p>
+                        <ul>
+                            <li><a href="buildings.html"><i class="fas fa-hard-hat"></i> Building</a></li>
+                            <li><a href="#"><i class="fas fa-map-marked-alt"></i> Land Registration</a></li>
+                            <li><a href="Animal.html"><i class="fas fa-paw"></i> Animal Licenses</a></li>
+                            <li><a href="#"><i class="fas fa-cart-arrow-down"></i>Cycle and Bullock cart</a></li>
+                            <li><a href="#"><i class="fas fa-cogs"></i>Common Function</a></li>
+                            <li><a href="#"><i class="fas fa-chart-line"></i>Business and Tax</a></li>
+                            <li><a href="#"><i class="fas fa-toilet"></i>Defecation</a></li>
+                            <li><a href="#"><i class="fas fa-tools"></i>Reconstruction</a></li>
+                        </ul>
+                        <a href="#" class="btn">Access Services</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Electricity">
+                    </div>
+                    <div class="service-content">
+                        <h3>Electricity</h3>
+                        <p>Electricity services and applications</p>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-plug"></i> New Connections</a></li>
+                            <li><a href="#"><i class="fas fa-bolt"></i> Power Issues</a></li>
+                            <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Bill Payments</a></li>
+                        </ul>
+                        <a href="#" class="btn">Access Services</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1571757767119-68b8dbab8af2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Water Service">
+                    </div>
+                    <div class="service-content">
+                        <h3>Water Supply Services</h3>
+                        <p>Water connection and management services</p>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-tint"></i> New Connections</a></li>
+                            <li><a href="#"><i class="fas fa-toolbox"></i> Usage Reports</a></li>
+                            <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Bill Payments</a></li>
+                            <li><a href="#"><i class="fas fa-tint-slash"></i> Water Issues</a></li>
+                        </ul>
+                        <a href="#" class="btn">Access Services</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1474511320723-9a56873867b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Other Services">
+                    </div>
+                    <div class="service-content">
+                        <h3>Other Services</h3>
+                        <p>Additional government services and permissions</p>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-paw"></i> Animal Permits</a></li>
+                            <li><a href="#"><i class="fas fa-tree"></i> Forest Permits</a></li>
+                            <li><a href="#"><i class="fas fa-leaf"></i> Environmental Clearances</a></li>
+                        </ul>
+                        <a href="#" class="btn">Access Services</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-links">
+                <h2>Quick Links</h2>
+                <div class="links-container">
+                    <div class="link-card">
+                        <i class="fas fa-download"></i>
+                        <h3>Forms Download</h3>
+                        <p>Access all government forms</p>
+                    </div>
+                    <div class="link-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Application Status</h3>
+                        <p>Check your application status</p>
+                    </div>
+                    <div class="link-card">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Guidelines</h3>
+                        <p>Application guidelines</p>
+                    </div>
+                    <div class="link-card">
+                        <i class="fas fa-phone-alt"></i>
+                        <h3>Contact Us</h3>
+                        <p>Get in touch with us</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-clock"></i>
+                    <h3>24/7 Access</h3>
+                    <p>Access government services anytime, anywhere</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>Digital Forms</h3>
+                    <p>Download and submit forms online</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access from any device</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Portal</h3>
+                    <p>Your data is protected and secure</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Government Permission & Regulation Portal</h3>
+            <p>Sri Lanka Government Services</p>
+            
+            <div class="footer-links">
+				<a href="about.html"> About Us</a>
+                <a href="contact.html"> Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">FAQs</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2025 Government of Sri Lanka. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.getElementById('main-nav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Back to top button
+            const backToTopBtn = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Search functionality
+            const searchForm = document.querySelector('.search-bar');
+            
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const searchTerm = this.querySelector('input').value;
+                alert('Searching for: ' + searchTerm);
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>

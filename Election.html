@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🗳️ Election Registration - Voter Registration</title>
+  <style>
+    body, html {
+      margin:0; 
+      padding:0; 
+      font-family: Arial, sans-serif;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #2c3e50;
+      padding: 12px 20px;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    /* Right section */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-right input {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .nav-right button {
+      background: #ff6600;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .nav-right button:hover {
+      background: #e65c00;
+    }
+
+    /* Page content overlay */
+    body {
+      background:url('https://images.unsplash.com/photo-1540910419892-4a36d2c326da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+      overflow-y:auto;
+	  color: lighter;
+    }
+
+    .overlay {
+      background:rgba(255,255,255,0.95);
+      padding:40px;
+      margin:80px auto 20px;
+      max-width:1000px;
+      border-radius:12px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    }
+    
+    h1 {text-align:right; margin-top:0; font-size:32px;}
+    h2 {margin-top:24px; font-size:20px; color:#00695c;}
+    p {line-height:1.6;}
+
+    /* Form */
+    form {display:grid; gap:12px; margin-top:12px;}
+    form input, form textarea, form select {padding:10px; border:1px solid #ccc; border-radius:8px;}
+    form button {padding:12px; background:#00695c; color:white; border:none; border-radius:8px; cursor:pointer;}
+    form button:hover {background:#004d40;}
+
+    /* Contact Section */
+    .contact-section {
+      margin: 40px 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .contact-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    .contact-card h3 {
+      color: #004d99;
+      margin-top: 0;
+    }
+    
+    .contact-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #ff6600;
+    }
+
+    /* Registration Form Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 10px;
+      position: relative;
+    }
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .close:hover {
+      color: black;
+    }
+    
+    .registration-form-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .registration-form-container h2 {
+      text-align: center;
+      color: #333;
+    }
+    
+    .registration-form-container label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+    
+    .registration-form-container input, 
+    .registration-form-container select, 
+    .registration-form-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    
+    .registration-form-container textarea {
+      resize: vertical;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      background: #007bff;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+    
+    .error {
+      color: red;
+      font-size: 13px;
+    }
+    
+    /* Registration Button */
+    .registration-btn {
+      display: block;
+      width: 200px;
+      margin: 30px auto;
+      padding: 12px 20px;
+      background: #ff6600;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .registration-btn:hover {
+      background: #e65c00;
+      transform: scale(1.05);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      background: #004d99;
+      color: white;
+      border-radius: 0 0 10px 10px;
+    }
+    
+    .footer-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .footer-nav a {
+      color: white;
+      text-decoration: none;
+    }
+    
+    .footer-nav a:hover {
+      text-decoration: underline;
+    }
+    
+    /* GS Selection */
+    .gs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .gs-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .gs-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .gs-card.selected {
+      border-color: #007bff;
+      background-color: #f0f8ff;
+    }
+    
+    .gs-card h3 {
+      margin-top: 0;
+      color: #004d99;
+    }
+    
+    .availability-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    
+    .availability-table th, 
+    .availability-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    
+    .availability-table th {
+      background-color: #f2f2f2;
+    }
+    
+    .available {
+      background-color: #d4edda;
+    }
+    
+    .not-available {
+      background-color: #f8d7da;
+    }
+    
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      margin: 0 5px;
+    }
+    
+    .step.active {
+      background-color: #007bff;
+      color: white;
+    }
+    
+    .form-step {
+      display: none;
+    }
+    
+    .form-step.active {
+      display: block;
+    }
+    
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    
+    .nav-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .prev-btn {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .next-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .success-message {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loading-spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #007bff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Office Contact Information */
+    .office-contact {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #e8f4fd;
+      border-radius: 8px;
+      border-left: 4px solid #007bff;
+    }
+    
+    .office-contact h3 {
+      margin-top: 0;
+      color: #004d99;
+    }
+    
+    .office-contact p {
+      margin: 8px 0;
+    }
+    
+    .contact-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .contact-info-icon {
+      font-size: 20px;
+      color: #007bff;
+    }
+    
+    /* Document Requirements */
+    .document-list {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      border-left: 4px solid #00695c;
+    }
+    
+    .document-list ul {
+      padding-left: 20px;
+    }
+    
+    .document-list li {
+      margin-bottom: 10px;
+    }
+    
+    /* GS Information Display */
+    .gs-info {
+      background: #e8f4fd;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-left: 4px solid #007bff;
+    }
+    
+    .gs-info h4 {
+      margin-top: 0;
+      color: #004d99;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <h1>🗳️ Election Registration</h1>
+    <div class="nav-right">
+      <button onclick="goBack()">Back</button>
+      <input type="text" id="searchBox" placeholder="Search...">
+    </div> 
+  </nav>
+
+  <div class="overlay">
+    <section id="regulations">
+      <h2>Voter Registration Process</h2>
+      <p>To register as a voter in Sri Lanka, you must be:</p>
+      <ul>
+        <li>A citizen of Sri Lanka</li>
+        <li>At least 18 years of age on the qualifying date</li>
+        <li>Ordinarily resident in the electoral district where you're applying</li>
+        <li>Not disqualified by law from being an elector</li>
+      </ul>
+      
+      <h2>Registration Process</h2>
+      <p>There are two ways to register as a voter:</p>
+      <ol>
+        <li><strong>In-person registration:</strong> Visit your Grama Niladhari (Village Officer) with the required documents</li>
+        <li><strong>Online registration:</strong> Complete the online form which will be sent to your Grama Niladhari for verification</li>
+      </ol>
+      
+      <div class="document-list">
+        <h3>Required Documents for Voter Registration</h3>
+        <ul>
+          <li>Original National Identity Card (NIC) or valid passport</li>
+          <li>Birth Certificate (if applying for the first time)</li>
+          <li>Proof of residence (utility bill, rental agreement, etc.)</li>
+          <li>Recent passport-sized photograph (for in-person registration)</li>
+          <li>Completed application form (provided by the Grama Niladhari)</li>
+        </ul>
+      </div>
+      
+      <h2>Important Notes</h2>
+      <ul>
+        <li>Registration is free of charge</li>
+        <li>You can only register in one electoral district</li>
+        <li>Your name will appear in the electoral list of the district where you're ordinarily resident</li>
+        <li>Updates to your registration (change of address, etc.) must be done annually during the revision period</li>
+        <li>Once registered, you'll receive a voter registration card</li>
+      </ul>
+    </section>
+    
+    <!-- Office Contact Information Section -->
+    <section class="contact-section">
+      <h2>Find Local Election Office Contact Information</h2>
+      <p>Select your district and pradeshiya sabha to view the local election office contact details.</p>
+      
+      <div class="office-contact-selector">
+        <label for="districtContact">Select District:</label>
+        <select id="districtContact" name="districtContact" onchange="loadPradeshiyaSabhasContact()">
+          <option value="">-- Select District --</option>
+          <!-- Options will be loaded from database -->
+        </select>
+        
+        <label for="pradeshiyaSabhaContact">Select Pradeshiya Sabha:</label>
+        <select id="pradeshiyaSabhaContact" name="pradeshiyaSabhaContact" onchange="showOfficeContact()">
+          <option value="">-- Select Pradeshiya Sabha --</option>
+          <!-- Options will be loaded dynamically -->
+        </select>
+      </div>
+      
+      <div id="officeContactInfo" class="office-contact" style="display: none;">
+        <h3>Election Office Contact Information</h3>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <span class="contact-info-icon">📞</span>
+            <div>
+              <strong>Phone:</strong>
+              <p id="officePhone"></p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <span class="contact-info-icon">📧</span>
+            <div>
+              <strong>Email:</strong>
+              <p id="officeEmail"></p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <span class="contact-info-icon">🕒</span>
+            <div>
+              <strong>Working Hours:</strong>
+              <p id="officeHours"></p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <span class="contact-info-icon">📍</span>
+            <div>
+              <strong>Address:</strong>
+              <p id="officeAddress"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <!-- Voter Registration Button -->
+    <div class="registration-btn" id="openRegistrationForm">
+      Online Voter Registration
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+      <h3>✅ Registration Submitted Successfully!</h3>
+      <p>Your voter registration application has been sent to the Grama Niladhari for verification. You will receive a confirmation email shortly.</p>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading" id="loadingIndicator">
+      <div class="loading-spinner"></div>
+      <p>Processing your request...</p>
+    </div>
+
+    <!-- Voter Registration Form Modal -->
+    <div id="registrationModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="registration-form-container">
+          <h2>Online Voter Registration Form</h2>
+          
+          <div class="step-indicator">
+            <div class="step active" id="step1-indicator">1. Personal Details</div>
+            <div class="step" id="step2-indicator">2. Location</div>
+            <div class="step" id="step3-indicator">3. GS Selection</div>
+            <div class="step" id="step4-indicator">4. Confirmation</div>
+          </div>
+          
+          <form id="registrationForm">
+            <!-- Step 1: Personal Details -->
+            <div class="form-step active" id="step1">
+              <label>Full Name (as in NIC) *</label>
+              <input type="text" id="name" name="name" required>
+              <div id="nameError" class="error"></div>
+
+              <label>Date of Birth *</label>
+              <input type="date" id="dob" name="dob" required>
+              <div id="dobError" class="error"></div>
+
+              <label>NIC Number *</label>
+              <input type="text" id="nic" name="nic" required>
+              <div id="nicError" class="error"></div>
+
+              <label>Contact Number *</label>
+              <input type="tel" id="phone" name="phone" required>
+              <div id="phoneError" class="error"></div>
+
+              <label>Email Address *</label>
+              <input type="email" id="email" name="email" required>
+              <div id="emailError" class="error"></div>
+              
+              <div class="navigation-buttons">
+                <div></div> <!-- Empty div for spacing -->
+                <button type="button" class="nav-btn next-btn" onclick="nextStep(1)">Next</button>
+              </div>
+            </div>
+            
+            <!-- Step 2: Location Selection -->
+            <div class="form-step" id="step2">
+              <label>Permanent Address *</label>
+              <textarea id="address" name="address" rows="3" required></textarea>
+              
+              <label>Select District *</label>
+              <select id="district" name="district" required onchange="loadPradeshiyaSabhas()">
+                <option value="">-- Select District --</option>
+                <!-- Options will be loaded from database -->
+              </select>
+              
+              <label>Select Pradeshiya Sabha *</label>
+              <select id="pradeshiyaSabha" name="pradeshiyaSabha" required onchange="loadVillages()">
+                <option value="">-- Select Pradeshiya Sabha --</option>
+                <!-- Options will be loaded dynamically -->
+              </select>
+              
+              <label>Select Village/Grama Niladhari Division *</label>
+              <select id="village" name="village" required onchange="loadGramaNiladharis()">
+                <option value="">-- Select Village --</option>
+                <!-- Options will be loaded dynamically -->
+              </select>
+              
+              <div class="navigation-buttons">
+                <button type="button" class="nav-btn prev-btn" onclick="prevStep(2)">Previous</button>
+                <button type="button" class="nav-btn next-btn" onclick="nextStep(2)">Next</button>
+              </div>
+            </div>
+            
+            <!-- Step 3: GS Selection -->
+            <div class="form-step" id="step3">
+              <div id="gsSelection">
+                <p>Please select your village to view the assigned Grama Niladhari.</p>
+              </div>
+              
+              <div id="gsInfo" class="gs-info" style="display: none;">
+                <h4>Your Grama Niladhari Information</h4>
+                <p><strong>Name:</strong> <span id="gsName"></span></p>
+                <p><strong>Email:</strong> <span id="gsEmail"></span></p>
+                <p><strong>Contact Number:</strong> <span id="gsPhone"></span></p>
+                <p><strong>Office Address:</strong> <span id="gsAddress"></span></p>
+              </div>
+              
+              <div class="navigation-buttons">
+                <button type="button" class="nav-btn prev-btn" onclick="prevStep(3)">Previous</button>
+                <button type="button" class="nav-btn next-btn" onclick="nextStep(3)">Next</button>
+              </div>
+            </div>
+            
+            <!-- Step 4: Confirmation -->
+            <div class="form-step" id="step4">
+              <h3>Please review your information:</h3>
+              <div id="reviewDetails"></div>
+              
+              <label>
+                <input type="checkbox" id="confirmAge" required>
+                I confirm that I am 18 years of age or older.
+              </label>
+              
+              <label>
+                <input type="checkbox" id="confirmResidence" required>
+                I confirm that the address provided is my ordinary residence.
+              </label>
+              
+              <label>
+                <input type="checkbox" id="confirmDetails" required>
+                I confirm that all the information provided is true and accurate.
+              </label>
+              
+              <div class="navigation-buttons">
+                <button type="button" class="nav-btn prev-btn" onclick="prevStep(4)">Previous</button>
+                <button type="submit" class="submit-btn">Submit Registration</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+      <h2>Election Commission Contact Information</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <h3>Phone</h3>
+          <p>+94 011 286 8441</p>
+          <p>+94 011 286 8442</p>
+        </div>
+        
+        <div class="contact-card">
+          <div class="contact-icon">📧</div>
+          <h3>Email</h3>
+          <p>info@elections.gov.lk</p>
+          <p>registration@elections.gov.lk</p>
+        </div>
+        
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <h3>Location</h3>
+          <p>Election Commission of Sri Lanka</p>
+          <p>Sarana Road, Rajagiriya, Sri Lanka</p>
+        </div>
+        
+        <div class="contact-card">
+          <div class="contact-icon">🕒</div>
+          <h3>Working Hours</h3>
+          <p>Monday-Friday: 8:30 AM - 4:30 PM</p>
+          <p>Saturday: 9:00 AM - 1:00 PM</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-nav">
+          <a href="index1.html">Home</a>
+          <a href="#">About Us</a>
+          <a href="#">Services</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <p>&copy; 2025 Election Commission of Sri Lanka | Voter Registration Portal</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Database simulation (in a real application, this would be server-side)
+    const districtsData = [
+      "Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", 
+      "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara",
+      "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar",
+      "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya",
+      "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"
+    ];
+
+    const pradeshiyaSabhasData = {
+      "Kilinochchi": ["Poonakary", "Karachchi","Pachchilaippalli"],
+      "Jaffna": ["Jaffna","Kayts","Delft","Karainagar","Chavakachcheri","Point Pedro","Nallur", "Valikamam East","Valikamam North","Valikamam West","Valikamam South","Valikamam South West","Thenmaradchi", "Vadamaradchi South West","Velanai"],
+      "Colombo": ["Homagama","Kotikawatta Mulleriyawa","Seethawaka"],
+      "Gampaha": ["Attanagalla","Biyagama","Divulapitiya","Dompe","Gampaha","Ja-ela","Katana","Kelaniya","Mahara","Meerigama","Minuwangoda","Wattala"],
+      "Kandy": ["Akurana","Ganga lhala","Harispattuwa","Kandy Gravets & Gangawata Korale","Kundasale","Meda Dumbara","Minipe","Panwila","Pasbage Korale","Patadumbara","Patahewahta","Pujapitiya","Thumpane","Uda Palatha","Ududumbara","Udunuwara","Yatinuwara","Delthota","Doluwa","Hatharaliyadda"],
+	  "Ampara": ["Dehiyattakandiya", "Damana", "Uhana","Mahaoya","Namaloya","Padiyatalawa","Sammanthurai","Akkaraipattu","Ampara","Potuvil","Addalachchnai","Alayadivembu","Lahugala","Nindavur","Thirukkovil","Karaithivu","Navithanveli","Irrakkaram"],
+	  "Anuradhapura": ["Galenbindunuwewa","Galnewa","Horowpathana","Ipalogama","Kahatagasdigiliya","Kebathigollawa","Kekirawa","Medawachchiya","Mihintale","Nochchiyagama","Nuwaragam Palatha (East)","Nuwaragam Palatha (Central)","Padaviya","Palagala","Rajanganaya","Rambewa","Thalawa","Thirappane"],
+	  "Badulla": ["Badulla","Bandarawela","Ella","Haldummulla","Hali-Ela","Haputale","Kandeketiya","Lunugala","Mahiyanganaya","Meegahakiula","Passara","Rideemaliyadda","Soranatota","Uva Paranagama","Welimada"],
+	  "Batticaloa": ["Eravurpattu","Koralaipattu","Koralaipattu West","Koralaipattu North","Manmunai South Eravurpattu","Manmunai","Manmunai West","Manmunai South West","Porativupattu"],
+	  "Galle": ["Akmeemana","Ambalangoda","Baddegama","Balapitiya","Bentota","Bope-Poddala","Elpitiya","Habaraduwa","Imaduwa","Karandeniya","Nagoda","Neluwa","Niyagama","Raggama","Thawalama","Welivitiya-Divithura","Yakkalamulla"],
+	  "Monaragala": ["Badalkumbara","Bibila","Buttala","Kataragama","Madulla","Medagama","Moneragala","Siyambalanduwa","Thanamalwila","Wellawaya"],
+	  "Hambantota": ["Ambalantota","Angunakolapelassa","Beliatta","Hambantota","Katuwana","Lunugamvehera","Sooriyawewa","Tangalle","Tissamaharama","Weeraketiya"],
+	  "Kalutara": ["Agalawatta","Bandaragama","Beruwela","Bulathsinhala","Dodangoda","Horana","Kalutara","Madurawela","Matugama","Palindanuwara","Panadura","Walallawita"],
+	  "Kegalle": ["Aranayake","Bulathkohupitiya","Dehiowita","Deraniyagala","Galigamuwa","Kegalle","Mawanella","Rambukkana","Ruwanwella","Warakapola","Yatiyantota"],
+	  "Kurunegala": ["Alawwa","Bingiriya","Galgamuwa","Giribawa","lbbagamuwa","Kpbeiagane","Kuliyapitiya","Kurunegala","Mahawa","Mawathagama","Narammala","Nikaweratiya","Panduwasnuwara","Pannala","Polgahawela","Polpithigama","Ridigama","Udubaddawa","Wariyapola"],
+	  "Mannar": ["Mannar","Manthai West","Musali","Nanaddan"],
+	  "Matale": ["Ambanganga Korale","Dambulla","Galewala","Laggala-Pallegama","Matale","Naula","Pallepola","Rattota","Ukuwela","Wilgamuwa","Yatawatta","Yatawatta"],
+	  "Matara": ["Akuressa","Athuraliya","Devinuwara","Dickwella","Hakmana","Kamburupitiya","Kirinda-Puhulwella","Kotapola","Malimbada","Matara","Mulatiyana","Pasgoda","Pitabeddara","Thihagoda","Weligama"],
+	  "Mullaitivu": ["Manthai East","Maritimepattu","Puthukudiyiruppu","Thunukkai"],
+	  "Nuwara Eliya": ["Ambagamuwa","Hanguranketha","Kothmale","Nuwara Eliya","Walapane"],
+	  "Polonnaruwa": ["Dimbulagala","Elahera","Hingurakgoda","Lankapura","Medirigiriya","Polonnaruwa","Welikanda"],
+	  "Puttalam": ["Anamaduwa","Arachchikattuwa","Chilaw","Kalpitiya","Karuwalagaswewa","Nattandiya","Nawagattegama","Puttalam","Wanathawilluwa","Wennappuwa"],
+	  "Ratnapura": ["Ayagama","Balangoda","Ehaliyagoda","Embilipitiya","Godakaweta","Imbulpe","Kahawatta","Kalawana","Kolonna","Kuruwita","Nivithigala","Pelmadulla","Rathnapura","Weligepola"],
+	  "Trincomalee": ["Trincomalee Town & Gravets", "Kuchchaveli", "Thampalakamam","Muttur","Kinniya","Verugal","Seruvila","Kantalai","Morawewa","Gomarankadawala","Padavisripura"],
+	  "Vavuniya": ["Vavuniya North","Vavuniya South Tamil","Vavuniya South Sinhala","Vengalacheddikulam"],
+    };
+
+    // Village data with Grama Niladhari information
+    const villagesData = {
+      "Poonakary": [
+        {
+          name: "Village 1 - Poonakary",
+          gsName: "Mr. K. Sivarajah",
+          gsEmail: "sivarajah.gs@elections.gov.lk",
+          gsPhone: "+94 021 123 4567",
+          gsAddress: "123 Main Street, Poonakary, Kilinochchi"
+        },
+        {
+          name: "Village 2 - Poonakary",
+          gsName: "Ms. S. Tharmalingam",
+          gsEmail: "tharmalingam.gs@elections.gov.lk",
+          gsPhone: "+94 021 123 4568",
+          gsAddress: "456 Central Road, Poonakary, Kilinochchi"
+        }
+      ],
+      "Karachchi": [
+        {
+          name: "Village 1 - Karachchi",
+          gsName: "Mr. R. Ananthan",
+          gsEmail: "ananthan.gs@elections.gov.lk",
+          gsPhone: "+94 021 123 4569",
+          gsAddress: "789 Temple Road, Karachchi, Kilinochchi"
+        }
+      ],
+      "Jaffna": [
+        {
+          name: "Village 1 - Jaffna",
+          gsName: "Mr. S. Kumar",
+          gsEmail: "kumar.gs@elections.gov.lk",
+          gsPhone: "+94 021 123 4570",
+          gsAddress: "123 Temple Street, Jaffna"
+        }
+      ],
+      // Add more villages for other pradeshiya sabhas
+    };
+
+    // Office contact information data
+    const officeContactData = {
+      "Poonakary": {
+        phone: "+94 021 123 4567",
+        email: "poonakary.election@elections.gov.lk",
+        hours: "Monday-Friday: 8:30 AM - 4:30 PM",
+        address: "123 Main Street, Poonakary, Kilinochchi"
+      },
+      "Karachchi": {
+        phone: "+94 021 123 4568",
+        email: "karachchi.election@elections.gov.lk",
+        hours: "Monday-Friday: 8:30 AM - 4:30 PM, Saturday: 9:00 AM - 1:00 PM",
+        address: "456 Central Road, Karachchi, Kilinochchi"
+      },
+      "Jaffna": {
+        phone: "+94 021 123 4569",
+        email: "jaffna.election@elections.gov.lk",
+        hours: "Monday-Friday: 8:30 AM - 4:30 PM",
+        address: "789 Temple Road, Jaffna"
+      },
+      "Colombo": {
+        phone: "+94 011 123 4567",
+        email: "colombo.election@elections.gov.lk",
+        hours: "Monday-Friday: 8:30 AM - 4:30 PM, Saturday: 9:00 AM - 1:00 PM",
+        address: "123 Galle Road, Colombo 03"
+      },
+      "Gampaha": {
+        phone: "+94 033 123 4567",
+        email: "gampaha.election@elections.gov.lk",
+        hours: "Monday-Friday: 8:30 AM - 4:30 PM",
+        address: "45 Negombo Road, Gampaha"
+      },
+      "Kandy": {
+        phone: "+94 081 123 4567",
+        email: "kandy.election@elections.gov.lk",
+        hours: "Monday-Friday: 8:30 AM - 4:30 PM, Saturday: 9:00 AM - 1:00 PM",
+        address: "78 Temple Street, Kandy"
+      },
+      // Add more office contact information for other pradeshiya sabhas
+    };
+
+    let selectedGS = null;
+    let currentStep = 1;
+
+    function goBack() {
+      window.history.back();
+    }
+
+    // Search action
+    document.getElementById("searchBox").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        alert("You searched for: " + this.value);
+      }
+    });
+    
+    // Modal functionality
+    const modal = document.getElementById("registrationModal");
+    const btn = document.getElementById("openRegistrationForm");
+    const span = document.getElementsByClassName("close")[0];
+    
+    btn.onclick = function() {
+      modal.style.display = "block";
+      resetForm();
+      loadDistricts(); // Load districts when modal opens
+    }
+    
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    
+    function resetForm() {
+      currentStep = 1;
+      selectedGS = null;
+      updateStepIndicator();
+      document.getElementById("registrationForm").reset();
+      document.getElementById("pradeshiyaSabha").innerHTML = '<option value="">-- Select Pradeshiya Sabha --</option>';
+      document.getElementById("village").innerHTML = '<option value="">-- Select Village --</option>';
+      document.getElementById("gsSelection").innerHTML = '<p>Please select your village to view the assigned Grama Niladhari.</p>';
+      document.getElementById("gsInfo").style.display = "none";
+    }
+    
+    function updateStepIndicator() {
+      // Update step indicators
+      for (let i = 1; i <= 4; i++) {
+        const indicator = document.getElementById(`step${i}-indicator`);
+        const step = document.getElementById(`step${i}`);
+        
+        if (i === currentStep) {
+          indicator.classList.add("active");
+          step.classList.add("active");
+        } else {
+          indicator.classList.remove("active");
+          step.classList.remove("active");
+        }
+      }
+    }
+    
+    function nextStep(step) {
+      // Validate current step before proceeding
+      if (step === 1 && !validateStep1()) return;
+      if (step === 2 && !validateStep2()) return;
+      if (step === 3 && !validateStep3()) return;
+      
+      currentStep = step + 1;
+      
+      // If moving to step 3, load GS information
+      if (currentStep === 3) {
+        loadGramaNiladharis();
+      }
+      
+      // If moving to step 4, show review
+      if (currentStep === 4) {
+        showReview();
+      }
+      
+      updateStepIndicator();
+    }
+    
+    function prevStep(step) {
+      currentStep = step - 1;
+      updateStepIndicator();
+    }
+    
+    function validateStep1() {
+      let valid = true;
+
+      // Name validation
+      const name = document.getElementById("name").value.trim();
+      if(name.length < 3){
+        document.getElementById("nameError").innerText = "Name must be at least 3 characters.";
+        valid = false;
+      } else {
+        document.getElementById("nameError").innerText = "";
+      }
+
+      // Date of Birth validation
+      const dob = document.getElementById("dob").value;
+      const today = new Date();
+      const birthDate = new Date(dob);
+      const age = today.getFullYear() - birthDate.getFullYear();
+      
+      if(!dob){
+        document.getElementById("dobError").innerText = "Date of birth is required.";
+        valid = false;
+      } else if(age < 18){
+        document.getElementById("dobError").innerText = "You must be 18 years or older to register.";
+        valid = false;
+      } else {
+        document.getElementById("dobError").innerText = "";
+      }
+
+      // NIC validation
+      const nic = document.getElementById("nic").value.trim();
+      const nicPattern = /^[0-9]{9}[vVxX]?$|^[0-9]{12}$/;
+      if(!nicPattern.test(nic)){
+        document.getElementById("nicError").innerText = "Enter a valid NIC number.";
+        valid = false;
+      } else {
+        document.getElementById("nicError").innerText = "";
+      }
+
+      // Phone validation
+      const phone = document.getElementById("phone").value.trim();
+      const phonePattern = /^[0-9]{10}$/;
+      if(!phonePattern.test(phone)){
+        document.getElementById("phoneError").innerText = "Enter a valid 10-digit number.";
+        valid = false;
+      } else {
+        document.getElementById("phoneError").innerText = "";
+      }
+
+      // Email validation
+      const email = document.getElementById("email").value.trim();
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if(!emailPattern.test(email)){
+        document.getElementById("emailError").innerText = "Enter a valid email address.";
+        valid = false;
+      } else {
+        document.getElementById("emailError").innerText = "";
+      }
+
+      return valid;
+    }
+    
+    function validateStep2() {
+      const address = document.getElementById("address").value.trim();
+      const district = document.getElementById("district").value;
+      const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
+      const village = document.getElementById("village").value;
+      
+      if (!address) {
+        alert("Please enter your permanent address.");
+        return false;
+      }
+      
+      if (!district) {
+        alert("Please select a district.");
+        return false;
+      }
+      
+      if (!pradeshiyaSabha) {
+        alert("Please select a pradeshiya sabha.");
+        return false;
+      }
+      
+      if (!village) {
+        alert("Please select a village.");
+        return false;
+      }
+      
+      return true;
+    }
+    
+    function validateStep3() {
+      if (!selectedGS) {
+        alert("Please select a village to view your Grama Niladhari.");
+        return false;
+      }
+      
+      return true;
+    }
+    
+    function loadDistricts() {
+      const districtSelect = document.getElementById("district");
+      
+      // Clear previous options
+      districtSelect.innerHTML = '<option value="">-- Select District --</option>';
+      
+      // Add all 25 districts
+      districtsData.forEach(district => {
+        const option = document.createElement("option");
+        option.value = district;
+        option.textContent = district;
+        districtSelect.appendChild(option);
+      });
+    }
+    
+    function loadPradeshiyaSabhas() {
+      const district = document.getElementById("district").value;
+      const pradeshiyaSabhaSelect = document.getElementById("pradeshiyaSabha");
+      
+      // Clear previous options
+      pradeshiyaSabhaSelect.innerHTML = '<option value="">-- Select Pradeshiya Sabha --</option>';
+      
+      if (district && pradeshiyaSabhasData[district]) {
+        pradeshiyaSabhasData[district].forEach(sabha => {
+          const option = document.createElement("option");
+          option.value = sabha;
+          option.textContent = sabha;
+          pradeshiyaSabhaSelect.appendChild(option);
+        });
+      } else {
+        // If district not in our data, show a generic option
+        const option = document.createElement("option");
+        option.value = "other";
+        option.textContent = "Other (Please specify)";
+        pradeshiyaSabhaSelect.appendChild(option);
+      }
+      
+      // Reset village selection
+      document.getElementById("village").innerHTML = '<option value="">-- Select Village --</option>';
+      document.getElementById("gsSelection").innerHTML = '<p>Please select your village to view the assigned Grama Niladhari.</p>';
+      document.getElementById("gsInfo").style.display = "none";
+      selectedGS = null;
+    }
+    
+    function loadVillages() {
+      const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
+      const villageSelect = document.getElementById("village");
+      
+      // Clear previous options
+      villageSelect.innerHTML = '<option value="">-- Select Village --</option>';
+      
+      if (!pradeshiyaSabha) {
+        return;
+      }
+      
+      const villages = villagesData[pradeshiyaSabha] || [];
+      
+      if (villages.length === 0) {
+        // If no specific villages for this pradeshiya sabha, show generic options
+        const option = document.createElement("option");
+        option.value = "other";
+        option.textContent = "Other (Please specify)";
+        villageSelect.appendChild(option);
+        return;
+      }
+      
+      villages.forEach(village => {
+        const option = document.createElement("option");
+        option.value = village.name;
+        option.textContent = village.name;
+        villageSelect.appendChild(option);
+      });
+    }
+    
+    function loadGramaNiladharis() {
+      const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
+      const village = document.getElementById("village").value;
+      const gsSelection = document.getElementById("gsSelection");
+      const gsInfo = document.getElementById("gsInfo");
+      
+      if (!pradeshiyaSabha || !village) {
+        gsSelection.innerHTML = '<p>Please select your village to view the assigned Grama Niladhari.</p>';
+        gsInfo.style.display = "none";
+        return;
+      }
+      
+      const villages = villagesData[pradeshiyaSabha] || [];
+      const selectedVillage = villages.find(v => v.name === village);
+      
+      if (!selectedVillage) {
+        gsSelection.innerHTML = `<p>No Grama Niladhari information available for ${village}. Please try another village.</p>`;
+        gsInfo.style.display = "none";
+        return;
+      }
+      
+      selectedGS = selectedVillage;
+      
+      // Display GS information
+      document.getElementById("gsName").textContent = selectedVillage.gsName;
+      document.getElementById("gsEmail").textContent = selectedVillage.gsEmail;
+      document.getElementById("gsPhone").textContent = selectedVillage.gsPhone;
+      document.getElementById("gsAddress").textContent = selectedVillage.gsAddress;
+      
+      gsInfo.style.display = "block";
+      gsSelection.innerHTML = `<h3>Your Grama Niladhari for ${village}</h3>`;
+    }
+    
+    function showReview() {
+      const name = document.getElementById("name").value;
+      const dob = document.getElementById("dob").value;
+      const nic = document.getElementById("nic").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const address = document.getElementById("address").value;
+      const district = document.getElementById("district").value;
+      const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
+      const village = document.getElementById("village").value;
+      
+      let html = `
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Date of Birth:</strong> ${dob}</p>
+        <p><strong>NIC:</strong> ${nic}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Address:</strong> ${address}</p>
+        <p><strong>District:</strong> ${district}</p>
+        <p><strong>Pradeshiya Sabha:</strong> ${pradeshiyaSabha}</p>
+        <p><strong>Village:</strong> ${village}</p>
+      `;
+      
+      if (selectedGS) {
+        html += `
+          <p><strong>Grama Niladhari:</strong> ${selectedGS.gsName}</p>
+          <p><strong>GS Email:</strong> ${selectedGS.gsEmail}</p>
+        `;
+      }
+      
+      document.getElementById("reviewDetails").innerHTML = html;
+    }
+    
+    // Form submission
+    document.getElementById("registrationForm").addEventListener("submit", async function(event){
+      event.preventDefault();
+      
+      if (!validateStep1() || !validateStep2() || !validateStep3()) {
+        alert("Please fix the errors in the form.");
+        return;
+      }
+      
+      // Show loading indicator
+      document.getElementById("loadingIndicator").style.display = "block";
+      modal.style.display = "none";
+      
+      // Collect form data
+      const formData = {
+        name: document.getElementById("name").value,
+        dob: document.getElementById("dob").value,
+        nic: document.getElementById("nic").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+        address: document.getElementById("address").value,
+        district: document.getElementById("district").value,
+        pradeshiyaSabha: document.getElementById("pradeshiyaSabha").value,
+        village: document.getElementById("village").value,
+        gramaNiladhari: selectedGS
+      };
+      
+      try {
+        // In a real application, you would send this data to your server
+        // Simulate API call with timeout
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Save to database (simulated)
+        console.log("Saving to database:", formData);
+        
+        // Simulate sending email to Grama Niladhari
+        console.log(`Sending registration to Grama Niladhari: ${selectedGS.gsEmail}`);
+        console.log(`Registration request from: ${formData.name} (${formData.email})`);
+        console.log(`Address: ${formData.address}`);
+        
+        // Simulate sending data to Election Commission
+        console.log(`Sending registration details to Election Commission`);
+        
+        // Hide loading indicator
+        document.getElementById("loadingIndicator").style.display = "none";
+        
+        // Show success message
+        document.getElementById("successMessage").style.display = "block";
+        
+        // Reset form
+        resetForm();
+        
+        // In a real application, you would use code like this to send to your backend:
+        /*
+        const response = await fetch('/api/register-voter', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          document.getElementById("loadingIndicator").style.display = "none";
+          document.getElementById("successMessage").style.display = "block";
+          resetForm();
+        } else {
+          throw new Error('Failed to submit registration');
+        }
+        */
+        
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("loadingIndicator").style.display = "none";
+        alert("There was an error submitting your registration. Please try again.");
+      }
+    });
+
+    // Office contact information functions
+    function loadDistrictsContact() {
+      const districtSelect = document.getElementById("districtContact");
+      
+      // Clear previous options
+      districtSelect.innerHTML = '<option value="">-- Select District --</option>';
+      
+      // Add all 25 districts
+      districtsData.forEach(district => {
+        const option = document.createElement("option");
+        option.value = district;
+        option.textContent = district;
+        districtSelect.appendChild(option);
+      });
+    }
+    
+    function loadPradeshiyaSabhasContact() {
+      const district = document.getElementById("districtContact").value;
+      const pradeshiyaSabhaSelect = document.getElementById("pradeshiyaSabhaContact");
+      
+      // Clear previous options
+      pradeshiyaSabhaSelect.innerHTML = '<option value="">-- Select Pradeshiya Sabha --</option>';
+      
+      if (district && pradeshiyaSabhasData[district]) {
+        pradeshiyaSabhasData[district].forEach(sabha => {
+          const option = document.createElement("option");
+          option.value = sabha;
+          option.textContent = sabha;
+          pradeshiyaSabhaSelect.appendChild(option);
+        });
+      } else {
+        // If district not in our data, show a generic option
+        const option = document.createElement("option");
+        option.value = "other";
+        option.textContent = "Other (Please specify)";
+        pradeshiyaSabhaSelect.appendChild(option);
+      }
+      
+      // Hide office contact info when district changes
+      document.getElementById("officeContactInfo").style.display = "none";
+    }
+    
+    function showOfficeContact() {
+      const pradeshiyaSabha = document.getElementById("pradeshiyaSabhaContact").value;
+      const officeContactInfo = document.getElementById("officeContactInfo");
+      
+      if (!pradeshiyaSabha) {
+        officeContactInfo.style.display = "none";
+        return;
+      }
+      
+      const contactInfo = officeContactData[pradeshiyaSabha];
+      
+      if (!contactInfo) {
+        // If no specific contact info for this pradeshiya sabha, show generic info
+        document.getElementById("officePhone").textContent = "+94 011 286 8441";
+        document.getElementById("officeEmail").textContent = "info@elections.gov.lk";
+        document.getElementById("officeHours").textContent = "Monday-Friday: 8:30 AM - 4:30 PM";
+        document.getElementById("officeAddress").textContent = "Please contact the head office for location details";
+      } else {
+        // Show specific contact info
+        document.getElementById("officePhone").textContent = contactInfo.phone;
+        document.getElementById("officeEmail").textContent = contactInfo.email;
+        document.getElementById("officeHours").textContent = contactInfo.hours;
+        document.getElementById("officeAddress").textContent = contactInfo.address;
+      }
+      
+      officeContactInfo.style.display = "block";
+    }
+
+    // Initialize districts when page loads
+    window.onload = function() {
+      loadDistricts();
+      loadDistrictsContact(); // Also load districts for contact section
+    };
+  </script>
+</body>
+</html>

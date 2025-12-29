@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Agriculture - Agriculture & Market Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9f1;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        nav {
+            background-color: #1b5e20;
+            padding: 0.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: flex-start;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav a i {
+            margin-right: 0.5rem;
+        }
+        
+        nav a:hover {
+            background-color: #4caf50;
+            transform: translateY(-2px);
+        }
+        
+        .back-btn {
+            background-color: #0d3d11;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .problem-list {
+            margin-bottom: 2rem;
+        }
+        
+        .problem-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #4caf50;
+            transition: all 0.3s;
+        }
+        
+        .problem-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .problem-item h3 {
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .problem-item p {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #2e7d32;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0.5rem;
+        }
+        
+        .btn:hover {
+            background: #1b5e20;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: #4caf50;
+        }
+        
+        .btn-secondary:hover {
+            background: #2e7d32;
+        }
+        
+        .solution-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #e8f5e9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .solution-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .solution-section h3 {
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 0.5rem;
+        }
+        
+        .search-box {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .solution-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .solution-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .solution-item h4 {
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .solution-item p {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .guidelines-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #e8f5e9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .guidelines-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .guidelines-section h3 {
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 0.5rem;
+        }
+        
+        .guideline-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .guideline-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .guideline-item h4 {
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .guideline-item p {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .guideline-item ol, .guideline-item ul {
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .guideline-item li {
+            margin-bottom: 0.3rem;
+        }
+        
+        footer {
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #a5d6a7;
+            text-decoration: underline;
+        }
+        
+        .social-icons {
+            margin: 1rem 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .social-icons a:hover {
+            color: #a5d6a7;
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2e7d32;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #1b5e20;
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .logo-container {
+                margin-bottom: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            .page-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <i class="fas fa-leaf logo"></i>
+                <div>
+                    <h1>Agriculture & Market Portal</h1>
+                    <p class="tagline">Empowering Rural Sri Lanka with Sustainable Solutions</p>
+                </div>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="naja.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a></li>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="#"><i class="fas fa-phone"></i> Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-seedling"></i> Green Agriculture</h2>
+            <p>Sustainable farming practices and eco-friendly solutions for Sri Lankan farmers</p>
+        </div>
+        
+        <div class="problem-list">
+            <div class="problem-item">
+                <h3>Soil Degradation</h3>
+                <p>Poor soil quality affecting crop yield and fertility. Common issues include nutrient depletion, erosion, and loss of organic matter.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="soil-degradation">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="soil-degradation">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3>Water Management</h3>
+                <p>Inefficient use of water resources leading to wastage and inadequate irrigation during dry seasons.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="water-management">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="water-management">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3>Pest Control</h3>
+                <p>Damage to crops from pests and insects, leading to significant yield losses and reduced quality.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="pest-control">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="pest-control">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3>Organic Fertilizer Availability</h3>
+                <p>Difficulty in accessing affordable and effective organic fertilizers for sustainable farming.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="organic-fertilizer">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="organic-fertilizer">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3>Crop Rotation Planning</h3>
+                <p>Lack of knowledge about effective crop rotation patterns to maintain soil health and prevent diseases.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="crop-rotation">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="crop-rotation">Guidelines</button>
+            </div>
+        </div>
+        
+        <!-- Soil Degradation Solutions -->
+        <div class="solution-section" id="soil-degradation-solution">
+            <h3>Solutions for Soil Degradation</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Compost Application</h4>
+                <p>Apply organic compost to improve soil structure and nutrient content. Use farm waste, kitchen scraps, and animal manure to create compost.</p>
+                <p><strong>Benefits:</strong> Increases organic matter, improves water retention, enhances microbial activity</p>
+            </div>
+            <div class="solution-item">
+                <h4>Cover Cropping</h4>
+                <p>Plant cover crops like legumes during off-seasons to prevent soil erosion and fix nitrogen in the soil.</p>
+                <p><strong>Benefits:</strong> Reduces erosion, adds organic matter, improves soil fertility</p>
+            </div>
+            <div class="solution-item">
+                <h4>Crop Rotation</h4>
+                <p>Implement systematic crop rotation to prevent nutrient depletion and break pest cycles.</p>
+                <p><strong>Benefits:</strong> Maintains soil nutrients, reduces pest buildup, improves yield</p>
+            </div>
+            <div class="solution-item">
+                <h4>Terracing</h4>
+                <p>Construct terraces on sloped land to reduce soil erosion and water runoff.</p>
+                <p><strong>Benefits:</strong> Prevents soil loss, conserves water, enables cultivation on slopes</p>
+            </div>
+        </div>
+        
+        <!-- Soil Degradation Guidelines -->
+        <div class="guidelines-section" id="soil-degradation-guidelines">
+            <h3>Soil Management Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Soil Testing Protocol</h4>
+                <p>Follow these steps for proper soil testing:</p>
+                <ol>
+                    <li>Collect soil samples from different areas of your field</li>
+                    <li>Mix samples thoroughly and send to agricultural extension office</li>
+                    <li>Apply recommended fertilizers based on test results</li>
+                    <li>Repeat testing every 2-3 years</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Compost Preparation</h4>
+                <p>Steps to create quality compost:</p>
+                <ol>
+                    <li>Layer green materials (vegetable waste) and brown materials (dry leaves)</li>
+                    <li>Maintain proper moisture (like a wrung-out sponge)</li>
+                    <li>Turn the pile every 2-3 weeks for aeration</li>
+                    <li>Compost is ready in 2-3 months when dark and crumbly</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Erosion Control Measures</h4>
+                <p>Implement these practices to prevent soil erosion:</p>
+                <ul>
+                    <li>Plant grass strips along contours</li>
+                    <li>Use mulching on bare soil</li>
+                    <li>Avoid overgrazing</li>
+                    <li>Maintain ground cover throughout the year</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Water Management Solutions -->
+        <div class="solution-section" id="water-management-solution">
+            <h3>Solutions for Water Management</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Drip Irrigation</h4>
+                <p>Install drip irrigation systems to deliver water directly to plant roots, minimizing evaporation and runoff.</p>
+                <p><strong>Benefits:</strong> Saves 30-50% water, reduces weed growth, improves plant health</p>
+            </div>
+            <div class="solution-item">
+                <h4>Rainwater Harvesting</h4>
+                <p>Collect and store rainwater from rooftops and surfaces for irrigation during dry periods.</p>
+                <p><strong>Benefits:</strong> Free water source, reduces dependency on wells, prevents runoff</p>
+            </div>
+            <div class="solution-item">
+                <h4>Mulching</h4>
+                <p>Apply organic or plastic mulch around plants to reduce evaporation and maintain soil moisture.</p>
+                <p><strong>Benefits:</strong> Conserves soil moisture, controls weeds, regulates soil temperature</p>
+            </div>
+            <div class="solution-item">
+                <h4>Smart Scheduling</h4>
+                <p>Irrigate during early morning or late evening to minimize water loss through evaporation.</p>
+                <p><strong>Benefits:</strong> Maximizes water efficiency, reduces fungal diseases, saves energy</p>
+            </div>
+        </div>
+        
+        <!-- Water Management Guidelines -->
+        <div class="guidelines-section" id="water-management-guidelines">
+            <h3>Water Conservation Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Rainwater Harvesting Setup</h4>
+                <p>Steps to implement rainwater harvesting:</p>
+                <ol>
+                    <li>Identify collection surface (rooftop, paved area)</li>
+                    <li>Install gutters and downpipes</li>
+                    <li>Use filtration system to remove debris</li>
+                    <li>Store water in tanks or recharge groundwater</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Irrigation Scheduling</h4>
+                <p>Guidelines for efficient irrigation:</p>
+                <ul>
+                    <li>Water deeply but infrequently to encourage deep root growth</li>
+                    <li>Check soil moisture before irrigating</li>
+                    <li>Adjust schedule based on weather conditions</li>
+                    <li>Group plants with similar water needs together</li>
+                </ul>
+            </div>
+            <div class="guideline-item">
+                <h4>Drip System Maintenance</h4>
+                <p>Regular maintenance tasks for drip irrigation:</p>
+                <ol>
+                    <li>Check for clogged emitters weekly</li>
+                    <li>Flush system monthly to remove sediment</li>
+                    <li>Inspect pipes for leaks regularly</li>
+                    <li>Clean filters after heavy rains</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Pest Control Solutions -->
+        <div class="solution-section" id="pest-control-solution">
+            <h3>Solutions for Pest Control</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Biological Control</h4>
+                <p>Introduce natural predators like ladybugs, lacewings, and parasitic wasps to control pest populations.</p>
+                <p><strong>Benefits:</strong> Environmentally friendly, self-sustaining, no chemical residues</p>
+            </div>
+            <div class="solution-item">
+                <h4>Botanical Pesticides</h4>
+                <p>Use plant-based pesticides like neem oil, garlic spray, or chili extract to deter pests.</p>
+                <p><strong>Benefits:</strong> Biodegradable, safe for beneficial insects, low cost</p>
+            </div>
+            <div class="solution-item">
+                <h4>Companion Planting</h4>
+                <p>Plant certain crops together to repel pests or attract beneficial insects.</p>
+                <p><strong>Benefits:</strong> Natural pest control, improves biodiversity, enhances pollination</p>
+            </div>
+            <div class="solution-item">
+                <h4>Crop Rotation</h4>
+                <p>Change crop types in a field each season to disrupt pest life cycles.</p>
+                <p><strong>Benefits:</strong> Reduces pest buildup, improves soil health, minimizes disease</p>
+            </div>
+        </div>
+        
+        <!-- Pest Control Guidelines -->
+        <div class="guidelines-section" id="pest-control-guidelines">
+            <h3>Integrated Pest Management Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Pest Monitoring</h4>
+                <p>Regular monitoring steps:</p>
+                <ol>
+                    <li>Inspect crops twice weekly for pest damage</li>
+                    <li>Use sticky traps to monitor flying insects</li>
+                    <li>Keep records of pest populations and damage</li>
+                    <li>Identify pests accurately before treatment</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Natural Pesticide Preparation</h4>
+                <p>How to make common botanical pesticides:</p>
+                <ul>
+                    <li><strong>Neem spray:</strong> Crush 100g neem seeds, soak in 1L water overnight, strain and spray</li>
+                    <li><strong>Garlic spray:</strong> Blend 10 garlic cloves with 1L water, strain after 24 hours</li>
+                    <li><strong>Chili spray:</strong> Soak 100g crushed chilies in 1L water for 24 hours, strain and use</li>
+                </ul>
+            </div>
+            <div class="guideline-item">
+                <h4>Beneficial Insect Habitat</h4>
+                <p>Create environments to attract helpful insects:</p>
+                <ul>
+                    <li>Plant flowering herbs to attract pollinators</li>
+                    <li>Maintain small water sources for insects</li>
+                    <li>Leave some areas undisturbed for nesting</li>
+                    <li>Avoid broad-spectrum pesticides</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Organic Fertilizer Solutions -->
+        <div class="solution-section" id="organic-fertilizer-solution">
+            <h3>Solutions for Organic Fertilizer Availability</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Vermicomposting</h4>
+                <p>Use earthworms to convert organic waste into nutrient-rich fertilizer.</p>
+                <p><strong>Benefits:</strong> High-quality fertilizer, waste reduction, low cost</p>
+            </div>
+            <div class="solution-item">
+                <h4>Green Manure</h4>
+                <p>Grow specific plants and plow them into the soil to improve fertility.</p>
+                <p><strong>Benefits:</strong> Adds organic matter, fixes nitrogen, improves soil structure</p>
+            </div>
+            <div class="solution-item">
+                <h4>Farmyard Manure</h4>
+                <p>Properly compost animal manure for use as organic fertilizer.</p>
+                <p><strong>Benefits:</strong> Rich in nutrients, improves soil health, readily available</p>
+            </div>
+        </div>
+        
+        <!-- Organic Fertilizer Guidelines -->
+        <div class="guidelines-section" id="organic-fertilizer-guidelines">
+            <h3>Organic Fertilizer Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Vermicomposting Setup</h4>
+                <p>Steps to create a vermicomposting system:</p>
+                <ol>
+                    <li>Prepare a shaded container with drainage holes</li>
+                    <li>Add bedding material (shredded paper, coconut coir)</li>
+                    <li>Introduce composting worms (red wigglers)</li>
+                    <li>Add kitchen scraps gradually, avoiding citrus and meat</li>
+                    <li>Harvest compost after 2-3 months</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Green Manure Selection</h4>
+                <p>Choose appropriate green manure crops:</p>
+                <ul>
+                    <li><strong>Legumes:</strong> Fix nitrogen (clover, beans, peas)</li>
+                    <li><strong>Non-legumes:</strong> Add organic matter (rye, buckwheat)</li>
+                    <li><strong>Mixes:</strong> Combine benefits of both types</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Crop Rotation Solutions -->
+        <div class="solution-section" id="crop-rotation-solution">
+            <h3>Solutions for Crop Rotation Planning</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Rotation by Plant Family</h4>
+                <p>Rotate crops based on botanical families to prevent disease buildup.</p>
+                <p><strong>Benefits:</strong> Reduces pests and diseases, maintains soil balance</p>
+            </div>
+            <div class="solution-item">
+                <h4>Nutrient-Based Rotation</h4>
+                <p>Alternate heavy feeders with light feeders and soil builders.</p>
+                <p><strong>Benefits:</strong> Maintains soil fertility, reduces fertilizer needs</p>
+            </div>
+            <div class="solution-item">
+                <h4>Multi-Year Rotation Plans</h4>
+                <p>Develop 3-5 year rotation cycles for optimal soil health.</p>
+                <p><strong>Benefits:</strong> Comprehensive soil management, breaks pest cycles</p>
+            </div>
+        </div>
+        
+        <!-- Crop Rotation Guidelines -->
+        <div class="guidelines-section" id="crop-rotation-guidelines">
+            <h3>Crop Rotation Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Basic Rotation Principles</h4>
+                <p>Follow these fundamental rules for crop rotation:</p>
+                <ol>
+                    <li>Don't plant the same crop family in the same area for 3-4 years</li>
+                    <li>Follow heavy feeders with light feeders or soil builders</li>
+                    <li>Include cover crops in the rotation cycle</li>
+                    <li>Consider root depth variations (shallow vs deep roots)</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Sample 4-Year Rotation Plan</h4>
+                <p>Example rotation for a vegetable garden:</p>
+                <ul>
+                    <li><strong>Year 1:</strong> Tomatoes, peppers, eggplant (Solanaceae)</li>
+                    <li><strong>Year 2:</strong> Beans, peas (Legumes)</li>
+                    <li><strong>Year 3:</strong> Cabbage, broccoli, kale (Brassicas)</li>
+                    <li><strong>Year 4:</strong> Root vegetables (Carrots, beets, onions)</li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Agriculture & Market Portal</h3>
+            <p>Empowering Rural Sri Lanka with Sustainable Solutions</p>
+            
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">FAQs</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2023 Agriculture & Market Portal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation elements
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.getElementById('main-nav');
+            const backBtn = document.querySelector('.back-btn');
+            const solutionBtns = document.querySelectorAll('.solution-btn');
+            const guidelinesBtns = document.querySelectorAll('.guidelines-btn');
+            const solutionSections = document.querySelectorAll('.solution-section');
+            const guidelinesSections = document.querySelectorAll('.guidelines-section');
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Back button functionality - FIXED TO NAVIGATE TO NAJA.HTML
+            backBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Navigate to naja.html instead of showing alert
+                window.location.href = 'naja.html';
+            });
+            
+            // Solution button click
+            solutionBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const problem = this.getAttribute('data-problem');
+                    
+                    // Hide all solution and guidelines sections
+                    solutionSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    guidelinesSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the selected solution section
+                    document.getElementById(problem + '-solution').classList.add('active');
+                    
+                    // Scroll to the solution section
+                    document.getElementById(problem + '-solution').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Guidelines button click
+            guidelinesBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const problem = this.getAttribute('data-problem');
+                    
+                    // Hide all solution and guidelines sections
+                    solutionSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    guidelinesSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the selected guidelines section
+                    document.getElementById(problem + '-guidelines').classList.add('active');
+                    
+                    // Scroll to the guidelines section
+                    document.getElementById(problem + '-guidelines').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Search functionality for solutions
+            const searchInputs = document.querySelectorAll('.search-box input');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const solutionItems = this.closest('.solution-section').querySelectorAll('.solution-item');
+                    
+                    solutionItems.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(searchTerm)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Back to top button
+            const backToTopBtn = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

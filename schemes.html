@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Schemes & Financial Aid - LifeBridge Rural</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 50%;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e8b57;
+        }
+        
+        .title span {
+            color: #ff7e00;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav ul li a:hover {
+            color: #2e8b57;
+            background-color: #f0fff0;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+            border: 2px solid #2e8b57;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .login-btn {
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(to right, #246a44, #2e8b57);
+            transform: translateY(-2px);
+        }
+        
+        /* Page Banner */
+        .page-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1400&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .page-banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .page-banner p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Schemes Section */
+        .schemes-section {
+            padding: 40px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2e8b57;
+            font-size: 32px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #2e8b57, #ff7e00);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        .filter-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: white;
+            border: 2px solid #2e8b57;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background-color: #2e8b57;
+            color: white;
+        }
+        
+        .schemes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .scheme-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .scheme-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .scheme-image {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .scheme-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .scheme-content {
+            padding: 25px;
+        }
+        
+        .scheme-category {
+            display: inline-block;
+            background-color: #f0fff0;
+            color: #2e8b57;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .scheme-title {
+            color: #2e8b57;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .scheme-description {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .scheme-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .scheme-detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            color: #2e8b57;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: #777;
+        }
+        
+        .scheme-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .apply-btn {
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+        }
+        
+        .apply-btn:hover {
+            background-color: #246a44;
+        }
+        
+        .info-btn {
+            background-color: white;
+            color: #2e8b57;
+            border: 2px solid #2e8b57;
+        }
+        
+        .info-btn:hover {
+            background-color: #f0fff0;
+        }
+        
+        /* Application Form */
+        .application-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .application-container {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .application-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .application-header h2 {
+            color: #2e8b57;
+            margin-bottom: 10px;
+        }
+        
+        .application-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .application-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .application-form input, .application-form select, .application-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .application-form input:focus, .application-form select:focus, .application-form textarea:focus {
+            outline: none;
+            border-color: #2e8b57;
+        }
+        
+        .application-form button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .application-form button:hover {
+            background: linear-gradient(to right, #246a44, #2e8b57);
+        }
+        
+        /* Resources Section */
+        .resources-section {
+            padding: 60px 0;
+            background-color: #f0fff0;
+        }
+        
+        .resources-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .resource-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .resource-icon {
+            font-size: 2.5rem;
+            color: #2e8b57;
+            margin-bottom: 20px;
+        }
+        
+        .resource-card h3 {
+            color: #2e8b57;
+            margin-bottom: 15px;
+        }
+        
+        .resource-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .resource-link {
+            display: inline-block;
+            color: #ff7e00;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: 60px 0;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .contact-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .contact-info h3 {
+            color: #2e8b57;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .contact-item {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            color: #2e8b57;
+            margin-right: 15px;
+            min-width: 30px;
+        }
+        
+        .contact-details h4 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .contact-details p {
+            color: #666;
+        }
+        
+        .contact-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .contact-form h3 {
+            color: #2e8b57;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: #3cb371;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #3cb371;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: #3cb371;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-profile {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .page-banner h1 {
+                font-size: 2rem;
+            }
+            
+            .page-banner p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .scheme-details {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .scheme-actions {
+                flex-direction: column;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo and Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="https://i.ibb.co/0Q8Zz9X/lifebridge-logo.png" alt="LifeBridge Rural Logo">
+                </div>
+                <div class="title">Life<span>Bridge</span> Rural</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#dashboard">Dashboard</a></li>
+                    <li><a href="index.html#admin">Admin</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff" alt="User">
+                </div>
+                <div class="user-name">Guest</div>
+            </div>
+            <a class="login-btn">Login</a>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>Government Schemes & Financial Aid</h1>
+            <p>Discover available government programs and financial assistance for rural development in Sri Lanka</p>
+        </div>
+    </section>
+
+    <!-- Schemes Section -->
+    <section class="schemes-section">
+        <div class="container">
+            <h2 class="section-title">Available Schemes</h2>
+            
+            <div class="filter-options">
+                <button class="filter-btn active" data-filter="all">All Schemes</button>
+                <button class="filter-btn" data-filter="agriculture">Agriculture</button>
+                <button class="filter-btn" data-filter="housing">Housing</button>
+                <button class="filter-btn" data-filter="education">Education</button>
+                <button class="filter-btn" data-filter="health">Health</button>
+                <button class="filter-btn" data-filter="business">Business</button>
+            </div>
+            
+            <div class="schemes-grid">
+                <!-- Scheme 1 -->
+                <div class="scheme-card" data-category="agriculture">
+                    <div class="scheme-image">
+                        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1400&q=80" alt="Fertilizer Subsidy">
+                    </div>
+                    <div class="scheme-content">
+                        <span class="scheme-category">Agriculture</span>
+                        <h3 class="scheme-title">Fertilizer Subsidy Program</h3>
+                        <p class="scheme-description">Financial assistance for farmers to purchase fertilizers at subsidized rates.</p>
+                        
+                        <div class="scheme-details">
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">Up to 50%</span>
+                                <span class="detail-label">Subsidy</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">30 Days</span>
+                                <span class="detail-label">Processing</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">All Farmers</span>
+                                <span class="detail-label">Eligibility</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scheme-actions">
+                            <button class="action-btn apply-btn" data-scheme="fertilizer-subsidy">Apply Now</button>
+                            <button class="action-btn info-btn">More Info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scheme 2 -->
+                <div class="scheme-card" data-category="housing">
+                    <div class="scheme-image">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1400&q=80" alt="Housing Scheme">
+                    </div>
+                    <div class="scheme-content">
+                        <span class="scheme-category">Housing</span>
+                        <h3 class="scheme-title">Rural Housing Grant</h3>
+                        <p class="scheme-description">Financial support for low-income families to build or renovate their homes.</p>
+                        
+                        <div class="scheme-details">
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">LKR 300,000</span>
+                                <span class="detail-label">Maximum Grant</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">60 Days</span>
+                                <span class="detail-label">Processing</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">Low Income</span>
+                                <span class="detail-label">Eligibility</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scheme-actions">
+                            <button class="action-btn apply-btn" data-scheme="housing-grant">Apply Now</button>
+                            <button class="action-btn info-btn">More Info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scheme 3 -->
+                <div class="scheme-card" data-category="education">
+                    <div class="scheme-image">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1400&q=80" alt="Education Scholarship">
+                    </div>
+                    <div class="scheme-content">
+                        <span class="scheme-category">Education</span>
+                        <h3 class="scheme-title">Higher Education Scholarship</h3>
+                        <p class="scheme-description">Scholarships for talented students from rural areas to pursue higher education.</p>
+                        
+                        <div class="scheme-details">
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">Full</span>
+                                <span class="detail-label">Tuition Covered</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">45 Days</span>
+                                <span class="detail-label">Processing</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">A+ Students</span>
+                                <span class="detail-label">Eligibility</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scheme-actions">
+                            <button class="action-btn apply-btn" data-scheme="education-scholarship">Apply Now</button>
+                            <button class="action-btn info-btn">More Info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scheme 4 -->
+                <div class="scheme-card" data-category="health">
+                    <div class="scheme-image">
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1400&q=80" alt="Health Insurance">
+                    </div>
+                    <div class="scheme-content">
+                        <span class="scheme-category">Health</span>
+                        <h3 class="scheme-title">Universal Health Insurance</h3>
+                        <p class="scheme-description">Health insurance coverage for low-income families in rural areas.</p>
+                        
+                        <div class="scheme-details">
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">90%</span>
+                                <span class="detail-label">Coverage</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">15 Days</span>
+                                <span class="detail-label">Processing</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">All Citizens</span>
+                                <span class="detail-label">Eligibility</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scheme-actions">
+                            <button class="action-btn apply-btn" data-scheme="health-insurance">Apply Now</button>
+                            <button class="action-btn info-btn">More Info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scheme 5 -->
+                <div class="scheme-card" data-category="business">
+                    <div class="scheme-image">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1400&q=80" alt="Business Grant">
+                    </div>
+                    <div class="scheme-content">
+                        <span class="scheme-category">Business</span>
+                        <h3 class="scheme-title">Small Business Grant</h3>
+                        <p class="scheme-description">Financial support for entrepreneurs to start or expand small businesses in rural areas.</p>
+                        
+                        <div class="scheme-details">
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">LKR 500,000</span>
+                                <span class="detail-label">Maximum Grant</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">60 Days</span>
+                                <span class="detail-label">Processing</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">Entrepreneurs</span>
+                                <span class="detail-label">Eligibility</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scheme-actions">
+                            <button class="action-btn apply-btn" data-scheme="business-grant">Apply Now</button>
+                            <button class="action-btn info-btn">More Info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scheme 6 -->
+                <div class="scheme-card" data-category="agriculture">
+                    <div class="scheme-image">
+                        <img src="https://images.unsplash.com/photo-1590172205845-231adf3c5f2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1400&q=80" alt="Crop Insurance">
+                    </div>
+                    <div class="scheme-content">
+                        <span class="scheme-category">Agriculture</span>
+                        <h3 class="scheme-title">Crop Insurance Scheme</h3>
+                        <p class="scheme-description">Insurance protection for farmers against crop failure due to natural disasters.</p>
+                        
+                        <div class="scheme-details">
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">100%</span>
+                                <span class="detail-label">Coverage</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">30 Days</span>
+                                <span class="detail-label">Processing</span>
+                            </div>
+                            <div class="scheme-detail-item">
+                                <span class="detail-value">All Farmers</span>
+                                <span class="detail-label">Eligibility</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scheme-actions">
+                            <button class="action-btn apply-btn" data-scheme="crop-insurance">Apply Now</button>
+                            <button class="action-btn info-btn">More Info</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Modal -->
+    <div class="application-modal" id="applicationModal">
+        <div class="application-container">
+            <button class="close-btn" onclick="closeApplicationModal()">&times;</button>
+            <div class="application-header">
+                <h2 id="modalSchemeTitle">Apply for Scheme</h2>
+                <p>Fill out the form below to apply for this government scheme</p>
+            </div>
+            
+            <form class="application-form" onsubmit="submitApplication(event)">
+                <div class="form-group">
+                    <label for="applicantName">Full Name</label>
+                    <input type="text" id="applicantName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantEmail">Email Address</label>
+                    <input type="email" id="applicantEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantPhone">Phone Number</label>
+                    <input type="tel" id="applicantPhone" placeholder="Enter your phone number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantAddress">Address</label>
+                    <textarea id="applicantAddress" placeholder="Enter your complete address" rows="2" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantNIC">NIC Number</label>
+                    <input type="text" id="applicantNIC" placeholder="Enter your NIC number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantIncome">Monthly Income (LKR)</label>
+                    <input type="number" id="applicantIncome" placeholder="Enter your monthly income" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantDocuments">Supporting Documents</label>
+                    <input type="file" id="applicantDocuments" multiple>
+                    <small>Upload scanned copies of NIC, income proof, and other required documents</small>
+                </div>
+                
+                <button type="submit">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <div class="container">
+            <h2 class="section-title">Helpful Resources</h2>
+            
+            <div class="resources-container">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>Application Guides</h3>
+                    <p>Step-by-step guides on how to apply for various government schemes</p>
+                    <a href="#" class="resource-link">Download Guides</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Video Tutorials</h3>
+                    <p>Watch tutorials on completing application forms and understanding requirements</p>
+                    <a href="#" class="resource-link">Watch Videos</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>FAQ Section</h3>
+                    <p>Find answers to frequently asked questions about government schemes</p>
+                    <a href="#" class="resource-link">View FAQs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Address</h4>
+                            <p>Ministry of Rural Economy, Sri Jayawardenepura Kotte, Sri Lanka</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <p>+94 11 2 123 456</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>schemes@ruraleconomy.gov.lk</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Working Hours</h4>
+                            <p>Monday - Friday: 8:30 AM - 4:30 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Send Us a Message</h3>
+                    
+                    <form onsubmit="sendMessage(event)">
+                        <div class="form-group">
+                            <label for="messageName">Your Name</label>
+                            <input type="text" id="messageName" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="messageEmail">Your Email</label>
+                            <input type="email" id="messageEmail" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="messageSubject">Subject</label>
+                            <input type="text" id="messageSubject" placeholder="Enter subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="messageContent">Message</label>
+                            <textarea id="messageContent" placeholder="Enter your message" rows="4" required></textarea>
+                        </div>
+                        
+                        <button type="submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LifeBridge Rural Sri Lanka</h3>
+                    <p>Bridging Sri Lankan Villages to Resources</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#dashboard">Dashboard</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Government Partners</h3>
+                    <ul>
+                        <li><a href="#">Ministry of Rural Economy</a></li>
+                        <li><a href="#">Samurdhi Authority</a></li>
+                        <li><a href="#">Agrarian Development</a></li>
+                        <li><a href="#">Department of Agriculture</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Other Schemes</h3>
+                    <ul>
+                        <li><a href="#">Women Entrepreneurship</a></li>
+                        <li><a href="#">Youth Empowerment</a></li>
+                        <li><a href="#">Elderly Support</a></li>
+                        <li><a href="#">Disability Benefits</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 LifeBridge Rural Sri Lanka. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Code -->
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const schemeCards = document.querySelectorAll('.scheme-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    const filterValue = button.getAttribute('data-filter');
+                    
+                    // Filter schemes
+                    schemeCards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Application modal functionality
+            const applyButtons = document.querySelectorAll('.apply-btn');
+            const applicationModal = document.getElementById('applicationModal');
+            const modalSchemeTitle = document.getElementById('modalSchemeTitle');
+            
+            applyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const schemeName = button.parentElement.parentElement.querySelector('.scheme-title').textContent;
+                    modalSchemeTitle.textContent = `Apply for ${schemeName}`;
+                    applicationModal.style.display = 'flex';
+                });
+            });
+        });
+        
+        // Close application modal
+        function closeApplicationModal() {
+            document.getElementById('applicationModal').style.display = 'none';
+        }
+        
+        // Submit application form
+        function submitApplication(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('applicantName').value;
+            const email = document.getElementById('applicantEmail').value;
+            const scheme = document.getElementById('modalSchemeTitle').textContent;
+            
+            // In a real application, you would send this data to a server
+            // For this example, we'll just show an alert
+            
+            alert(`Thank you ${name}! Your application for ${scheme} has been submitted successfully. We will contact you at ${email} for further details.`);
+            
+            // Close modal and reset form
+            closeApplicationModal();
+            event.target.reset();
+            
+            return false;
+        }
+        
+        // Send message from contact form
+        function sendMessage(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('messageName').value;
+            const email = document.getElementById('messageEmail').value;
+            const subject = document.getElementById('messageSubject').value;
+            
+            // In a real application, you would send this data to a server
+            // For this example, we'll just show an alert
+            
+            alert(`Thank you ${name}! Your message about "${subject}" has been sent successfully. We will respond to you at ${email} shortly.`);
+            
+            // Reset form
+            event.target.reset();
+            
+            return false;
+        }
+        
+        // Close modal if clicked outside
+        window.addEventListener('click', function(event) {
+            const applicationModal = document.getElementById('applicationModal');
+            if (event.target === applicationModal) {
+                closeApplicationModal();
+            }
+        });
+    </script>
+</body>
+</html>

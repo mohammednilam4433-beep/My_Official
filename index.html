@@ -1,0 +1,2918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeBridge Rural - Sri Lanka</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 50%;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e8b57;
+        }
+        
+        .title span {
+            color: #ff7e00;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav ul li a:hover {
+            color: #2e8b57;
+            background-color: #f0fff0;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+            border: 2px solid #2e8b57;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .login-btn {
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(to right, #246a44, #2e8b57);
+            transform: translateY(-2px);
+        }
+        
+        /* Auth Modals */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .auth-header h2 {
+            color: #2e8b57;
+            margin-bottom: 10px;
+        }
+        
+        .auth-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .auth-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .auth-form input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .auth-form input:focus {
+            outline: none;
+            border-color: #2e8b57;
+        }
+        
+        .profile-picture-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border: 3px solid #2e8b57;
+        }
+        
+        .profile-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .auth-form button:hover {
+            background: linear-gradient(to right, #246a44, #2e8b57);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .auth-footer a {
+            color: #2e8b57;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        /* User Dashboard */
+        .dashboard {
+            display: none;
+            padding: 40px 0;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-header h2 {
+            color: #2e8b57;
+            margin-bottom: 10px;
+        }
+        
+        .user-forms-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .form-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .form-card h3 {
+            color: #2e8b57;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #2e8b57;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(to right, #246a44, #2e8b57);
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .category-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-icon {
+            height: 120px;
+            background: linear-gradient(to right, #2e8b57, #ff7e00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+        }
+        
+        .category-content {
+            padding: 25px;
+        }
+        
+        .category-content h3 {
+            margin-bottom: 15px;
+            color: #2e8b57;
+            font-size: 1.3rem;
+        }
+        
+        .category-content p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            padding: 40px 0;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .admin-header h2 {
+            color: #2e8b57;
+            margin-bottom: 10px;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: #2e8b57;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff7e00;
+        }
+        
+        .admin-actions {
+            margin-bottom: 30px;
+        }
+        
+        .admin-actions h3 {
+            color: #2e8b57;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .admin-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .control-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .control-card h4 {
+            color: #2e8b57;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .control-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .control-form input, .control-form select, .control-form textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .control-form button {
+            padding: 10px;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .control-form button:hover {
+            background-color: #246a44;
+        }
+        
+        .users-list, .solutions-table, .submissions-table, .bookings-table, .doctors-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .users-list th, .users-list td,
+        .solutions-table th, .solutions-table td,
+        .submissions-table th, .submissions-table td,
+        .bookings-table th, .bookings-table td,
+        .doctors-table th, .doctors-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .users-list th, .solutions-table th, .submissions-table th, .bookings-table th, .doctors-table th {
+            background-color: #2e8b57;
+            color: white;
+        }
+        
+        .users-list tr:hover, .solutions-table tr:hover, .submissions-table tr:hover, .bookings-table tr:hover, .doctors-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .edit-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .view-btn {
+            background-color: #2e8b57;
+            color: white;
+        }
+        
+        .approve-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .reject-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        /* Submission Modal */
+        .submission-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .submission-container {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .submission-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .submission-header h2 {
+            color: #2e8b57;
+            margin-bottom: 10px;
+        }
+        
+        .submission-details {
+            margin-bottom: 20px;
+        }
+        
+        .submission-detail-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .submission-detail-label {
+            font-weight: 500;
+            min-width: 120px;
+            color: #555;
+        }
+        
+        .submission-detail-value {
+            color: #333;
+            flex: 1;
+        }
+        
+        /* News Section Styles */
+        .news-section {
+            padding: 60px 0;
+            background-color: #f0f8f0;
+        }
+        
+        .news-container {
+            margin-top: 30px;
+        }
+        
+        .news-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .news-filter-btn {
+            padding: 8px 16px;
+            background-color: white;
+            border: 2px solid #2e8b57;
+            border-radius: 30px;
+            color: #2e8b57;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .news-filter-btn.active, .news-filter-btn:hover {
+            background-color: #2e8b57;
+            color: white;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .news-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .news-image {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .news-card:hover .news-image img {
+            transform: scale(1.05);
+        }
+        
+        .news-content {
+            padding: 20px;
+        }
+        
+        .news-category {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: #e6f7ee;
+            color: #2e8b57;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .news-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .news-excerpt {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .news-date {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .no-news {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Read More Button */
+        .read-more-btn {
+            padding: 8px 15px;
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 0;
+            display: inline-block;
+        }
+        
+        .read-more-btn:hover {
+            background: linear-gradient(to right, #246a44, #2e8b57);
+        }
+        
+        /* News Admin Controls */
+        .news-admin-controls {
+            margin-top: 30px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .user-forms-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-profile {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .admin-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .users-list, .solutions-table, .submissions-table, .bookings-table, .doctors-table {
+                font-size: 0.9rem;
+            }
+            
+            .users-list th, .users-list td,
+            .solutions-table th, .solutions-table td,
+            .submissions-table th, .submissions-table td,
+            .bookings-table th, .bookings-table td,
+            .doctors-table th, .doctors-table td {
+                padding: 8px 10px;
+            }
+            
+            .submission-detail-item {
+                flex-direction: column;
+            }
+            
+            .submission-detail-label {
+                margin-bottom: 5px;
+            }
+            
+            .news-filters {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .news-filter-btn {
+                width: 200px;
+                text-align: center;
+            }
+        }
+
+        /* Banner Styles */
+        .banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .banner h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-top: 20px;
+            color: #a2f5bf;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2e8b57;
+            font-size: 32px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #2e8b57, #ff7e00);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: #3cb371;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #3cb371;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: #3cb371;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Doctor Card Styles */
+        .doctor-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .doctor-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-approved {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="auth-modal" id="loginModal">
+        <div class="auth-container">
+            <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+            <div class="auth-header">
+                <h2>Login to Your Account</h2>
+                <p>Enter your credentials to access the portal</p>
+            </div>
+            
+            <form class="auth-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit">Login</button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Don't have an account? <a onclick="showSignupModal()">Sign up here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="auth-modal" id="signupModal">
+        <div class="auth-container">
+            <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+            <div class="auth-header">
+                <h2>Create an Account</h2>
+                <p>Join LifeBridge Rural to access resources</p>
+            </div>
+            
+            <div class="profile-picture-upload">
+                <div class="profile-preview">
+                    <img src="https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff" alt="Profile Preview" id="profilePreview">
+                </div>
+                <input type="file" id="profilePicture" accept="image/*" style="display: none;">
+                <button type="button" onclick="document.getElementById('profilePicture').click()">Choose Profile Picture</button>
+            </div>
+            
+            <form class="auth-form" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+                
+                <button type="submit">Create Account</button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a onclick="showLoginModal()">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submission Modal -->
+    <div class="submission-modal" id="submissionModal">
+        <div class="submission-container">
+            <button class="close-btn" onclick="closeSubmissionModal()">&times;</button>
+            <div class="submission-header">
+                <h2>User Problem Submission</h2>
+                <p>Detailed information about the user's problem</p>
+            </div>
+            
+            <div class="submission-details" id="submissionDetails">
+                <!-- Submission details will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Header with Logo and Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="logo.jpg" alt="LifeBridge Rural Logo" id="siteLogo">
+                </div>
+                <div class="title">Life<span>Bridge</span> Rural</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showHome()">Home</a></li>
+                    <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
+                    <li><a href="#" onclick="showAdminPanel()">Admin</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile" id="userProfileSection">
+                <div class="user-avatar">
+                    <img src="https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff" alt="User" id="userAvatar">
+                </div>
+                <div class="user-name" id="userName">Guest</div>
+            </div>
+            <a class="login-btn" id="authButton" onclick="showLoginModal()">Login</a>
+        </div>
+    </header>
+
+    <!-- Home Page Content -->
+    <div class="home-content" id="homeContent">
+        <!-- Banner Section -->
+        <section class="banner">
+            <div class="container">
+                <h1>Bridging Sri Lankan Villages to Resources</h1>
+                <p>LifeBridge Rural is designed to act as a bridge between rural communities in Sri Lanka and the resources they need to thrive</p>
+                <p class="tagline">"Connecting rural Sri Lankan communities to opportunities, resources, and a brighter future"</p>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories">
+            <div class="container">
+                <h2 class="section-title">Key Challenges for Rural Sri Lankan Communities</h2>
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fas fa-landmark"></i></div>
+                        <div class="category-content">
+                            <h3>Government Schemes & Financial Aid</h3>
+                            <p>Information on schemes like "Gama Samaga Pilisandarak", "Divi Neguma", and other rural development programs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="category-content">
+                            <h3>Government Regulations & Permissions</h3>
+                            <p>Guidance on obtaining permits for agriculture, small businesses, and housing in rural areas.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="category-content">
+                            <h3>Health & Safety</h3>
+                            <p>Access to information about rural health services, CKDu prevention, and maternal healthcare programs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fas fa-tractor"></i></div>
+                        <div class="category-content">
+                            <h3>Agriculture & Market</h3>
+                            <p>Support for tea, rubber, coconut, and spice farmers with market prices and modern techniques.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fas fa-hands-helping"></i></div>
+                        <div class="category-content">
+                            <h3>Social Welfare & Others</h3>
+                            <p>Information on Samurdhi benefits, educational scholarships, and vocational training programs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section class="news-section" id="newsSection">
+            <div class="container">
+                <h2 class="section-title">Latest News & Updates</h2>
+                
+                <div class="news-filters">
+                    <button class="news-filter-btn active" data-category="all">All News</button>
+                    <button class="news-filter-btn" data-category="government">Government Schemes</button>
+                    <button class="news-filter-btn" data-category="regulations">Regulations</button>
+                    <button class="news-filter-btn" data-category="health">Health & Safety</button>
+                    <button class="news-filter-btn" data-category="agriculture">Agriculture</button>
+                    <button class="news-filter-btn" data-category="welfare">Social Welfare</button>
+                </div>
+                
+                <div class="news-container">
+                    <div class="news-grid" id="newsGrid">
+                        <!-- News items will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- User Dashboard -->
+    <div class="dashboard container" id="userDashboard">
+        <div class="dashboard-header">
+            <h2>Welcome to Your Dashboard</h2>
+            <p>Manage your profile and submit your problems for assistance</p>
+        </div>
+        
+        <div class="user-forms-container">
+            <div class="form-card">
+                <h3>Personal Information</h3>
+                <form id="personalInfoForm" onsubmit="updatePersonalInfo(event)">
+                    <div class="form-group">
+                        <label for="personalName">Full Name</label>
+                        <input type="text" id="personalName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="personalEmail">Email Address</label>
+                        <input type="email" id="personalEmail" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="personalPhone">Phone Number</label>
+                        <input type="tel" id="personalPhone" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="personalAddress">Address</label>
+                        <textarea id="personalAddress" placeholder="Enter your complete address" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="personalDistrict">District</label>
+                        <select id="personalDistrict" required>
+                            <option value="">Select District</option>
+                            <option value="ampara">Ampara</option>
+                            <option value="anuradhapura">Anuradhapura</option>
+                            <option value="badulla">Badulla</option>
+                            <option value="batticaloa">Batticaloa</option>
+                            <option value="colombo">Colombo</option>
+                            <option value="galle">Galle</option>
+                            <option value="gampaha">Gampaha</option>
+                            <option value="hambantota">Hambantota</option>
+                            <option value="jaffna">Jaffna</option>
+                            <option value="kalutara">Kalutara</option>
+                            <option value="kandy">Kandy</option>
+                            <option value="kegalle">Kegalle</option>
+                            <option value="kilinochchi">Kilinochchi</option>
+                            <option value="kurunegala">Kurunegala</option>
+                            <option value="mannar">Mannar</option>
+                            <option value="matale">Matale</option>
+                            <option value="matara">Matara</option>
+                            <option value="monaragala">Monaragala</option>
+                            <option value="mullaitivu">Mullaitivu</option>
+                            <option value="nuwara-eliya">Nuwara Eliya</option>
+                            <option value="polonnaruwa">Polonnaruwa</option>
+                            <option value="puttalam">Puttalam</option>
+                            <option value="ratnapura">Ratnapura</option>
+                            <option value="trincomalee">Trincomalee</option>
+                            <option value="vavuniya">Vavuniya</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Update Information</button>
+                </form>
+            </div>
+            
+            <div class="form-card">
+                <h3>Submit Your Problem</h3>
+                <form id="problemForm" onsubmit="submitProblemForm(event)">
+                    <div class="form-group">
+                        <label for="problemCategory">Problem Category</label>
+                        <select id="problemCategory" required>
+                            <option value="">Select a category</option>
+                            <option value="government">Government Schemes & Financial Aid</option>
+                            <option value="regulations">Government Regulations & Permissions</option>
+                            <option value="health">Health & Safety</option>
+                            <option value="agriculture">Agriculture & Market</option>
+                            <option value="welfare">Social Welfare & Others</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="problemTitle">Problem Title</label>
+                        <input type="text" id="problemTitle" placeholder="Brief title of your problem" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="problemDescription">Problem Description</label>
+                        <textarea id="problemDescription" placeholder="Please describe your problem in detail..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="problemLocation">Location/Village</label>
+                        <input type="text" id="problemLocation" placeholder="Enter your village or location" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="problemContact">Contact Number</label>
+                        <input type="tel" id="problemContact" placeholder="Enter your contact number" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Submit Problem</button>
+                </form>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Browse Solutions by Category</h2>
+        <div class="categories-grid">
+            <div class="category-card" onclick="navigateToCategory('government')">
+                <div class="category-icon"><i class="fas fa-landmark"></i></div>
+                <div class="category-content">
+                    <h3>Government Schemes & Financial Aid</h3>
+                    <p>Find information about government programs and financial assistance.</p>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="navigateToCategory('regulations')">
+                <div class="category-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="category-content">
+                    <h3>Government Regulations & Permissions</h3>
+                    <p>Guidance on permits, licenses and regulatory requirements.</p>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="navigateToCategory('health')">
+                <div class="category-icon"><i class="fas fa-heartbeat"></i></div>
+                <div class="category-content">
+                    <h3>Health & Safety</h3>
+                    <p>Healthcare services, safety guidelines and wellness programs.</p>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="navigateToCategory('agriculture')">
+                <div class="category-icon"><i class="fas fa-tractor"></i></div>
+                <div class="category-content">
+                    <h3>Agriculture & Market</h3>
+                    <p>Farming techniques, market prices and agricultural support.</p>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="navigateToCategory('welfare')">
+                <div class="category-icon"><i class="fas fa-hands-helping"></i></div>
+                <div class="category-content">
+                    <h3>Social Welfare & Others</h3>
+                    <p>Social programs, educational support and community services.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel container" id="adminPanel">
+        <div class="admin-header">
+            <h2>Admin Dashboard</h2>
+            <p>Manage users, content, and system settings</p>
+        </div>
+        
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <div class="number" id="totalUsers">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Problem Submissions</h3>
+                <div class="number" id="totalSubmissions">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Resolved Issues</h3>
+                <div class="number" id="resolvedIssues">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>News Items</h3>
+                <div class="number" id="totalNews">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Draftsman Bookings</h3>
+                <div class="number" id="totalBookings">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Doctor Registrations</h3>
+                <div class="number" id="totalDoctors">0</div>
+            </div>
+        </div>
+        
+        <div class="admin-actions">
+            <h3>Management Tools</h3>
+            <div class="admin-controls">
+                <div class="control-card">
+                    <h4>User Management</h4>
+                    <div class="control-form">
+                        <input type="text" id="userSearch" placeholder="Search users..." onkeyup="searchUsers()">
+                    </div>
+                    <table class="users-list">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="control-card">
+                    <h4>Problem Submissions</h4>
+                    <table class="submissions-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissionsTableBody">
+                            <!-- Submissions will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="control-card">
+                    <h4>Draftsman Bookings</h4>
+                    <div class="control-form">
+                        <input type="text" id="bookingSearch" placeholder="Search bookings..." onkeyup="searchBookings()">
+                    </div>
+                    <table class="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>District</th>
+                                <th>Pradeshiya Sabha</th>
+                                <th>Draftsman</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <!-- Bookings will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Doctor Management Section -->
+            <div class="news-admin-controls">
+                <h3>Doctor Management</h3>
+                <div class="admin-controls">
+                    <div class="control-card">
+                        <h4>Doctor Registration Approvals</h4>
+                        <div class="control-form">
+                            <input type="text" id="doctorSearch" placeholder="Search doctors..." onkeyup="searchDoctors()">
+                        </div>
+                        <table class="doctors-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Specialization</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctorsTableBody">
+                                <!-- Doctors will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="control-card">
+                        <h4>Add New Doctor</h4>
+                        <form class="control-form" id="doctorForm" onsubmit="addDoctorItem(event)">
+                            <input type="text" id="doctorName" placeholder="Doctor Name" required>
+                            <select id="doctorSpecialization" required>
+                                <option value="">Select Specialization</option>
+                                <option value="general">General Practitioner</option>
+                                <option value="pediatrics">Pediatrics</option>
+                                <option value="gynecology">Gynecology</option>
+                                <option value="cardiology">Cardiology</option>
+                                <option value="dermatology">Dermatology</option>
+                                <option value="orthopedics">Orthopedics</option>
+                                <option value="psychiatry">Psychiatry</option>
+                                <option value="dentistry">Dentistry</option>
+                            </select>
+                            <input type="text" id="doctorQualification" placeholder="Qualifications" required>
+                            <input type="number" id="doctorExperience" placeholder="Years of Experience" required>
+                            <select id="doctorLocation" required>
+                                <option value="">Select Location</option>
+                                <option value="western">Western Province</option>
+                                <option value="central">Central Province</option>
+                                <option value="southern">Southern Province</option>
+                                <option value="northern">Northern Province</option>
+                                <option value="eastern">Eastern Province</option>
+                                <option value="north-western">North Western Province</option>
+                                <option value="north-central">North Central Province</option>
+                                <option value="uva">Uva Province</option>
+                                <option value="sabaragamuwa">Sabaragamuwa Province</option>
+                            </select>
+                            <input type="tel" id="doctorPhone" placeholder="Phone Number" required>
+                            <textarea id="doctorBio" placeholder="Professional Bio" rows="3" required></textarea>
+                            <input type="text" id="doctorAvailability" placeholder="Availability (e.g., Mon-Fri 9am-5pm)" required>
+                            <button type="submit">Add Doctor</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- News Management Section -->
+            <div class="news-admin-controls">
+                <h3>News Management</h3>
+                <div class="admin-controls">
+                    <div class="control-card">
+                        <h4>Add New News Item</h4>
+                        <form class="control-form" id="newsForm" onsubmit="addNewsItem(event)">
+                            <input type="text" id="newsTitle" placeholder="News Title" required>
+                            <select id="newsCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="government">Government Schemes</option>
+                                <option value="regulations">Regulations</option>
+                                <option value="health">Health & Safety</option>
+                                <option value="agriculture">Agriculture</option>
+                                <option value="welfare">Social Welfare</option>
+                            </select>
+                            <textarea id="newsContent" placeholder="News Content" rows="4" required></textarea>
+                            <input type="text" id="newsImage" placeholder="Image URL (optional)">
+                            <button type="submit">Add News Item</button>
+                        </form>
+                    </div>
+                    
+                    <div class="control-card">
+                        <h4>Manage News Items</h4>
+                        <div class="control-form">
+                            <input type="text" id="newsSearch" placeholder="Search news..." onkeyup="searchNews()">
+                        </div>
+                        <table class="submissions-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="newsTableBody">
+                                <!-- News items will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LifeBridge Rural Sri Lanka</h3>
+                    <p>Bridging Sri Lankan Villages to Resources</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" onclick="showHome()">Home</a></li>
+                        <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Government Partners</h3>
+                    <ul>
+                        <li><a href="#">Ministry of Rural Economy</a></li>
+                        <li><a href="#">Samurdhi Authority</a></li>
+                        <li><a href="#">Agrarian Development</a></li>
+                        <li><a href="#">Department of Agriculture</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 LifeBridge Rural Sri Lanka. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Code -->
+    <script>
+        // Initialize sample data
+        function initializeData() {
+            if (!localStorage.getItem('users')) {
+                const users = [
+                    { 
+                        id: 1, 
+                        name: 'Admin User', 
+                        email: 'admin@lifebridgelk.lk', 
+                        password: 'admin123', 
+                        role: 'admin',
+                        profilePicture: 'https://i.ibb.co/0Q8Zz9X/lifebridge-logo.png',
+                        joinDate: '2025-01-15',
+                        status: 'Active',
+                        phone: '+94 11 234 5678',
+                        address: '123 Admin Street, Colombo',
+                        district: 'colombo'
+                    },
+                    { 
+                        id: 2, 
+                        name: 'John Doe', 
+                        email: 'john@example.com', 
+                        password: 'user123', 
+                        role: 'user',
+                        profilePicture: 'https://ui-avatars.com/api/?name=John+Doe&background=2e8b57&color=fff',
+                        joinDate: '2025-09-01',
+                        status: 'Active',
+                        phone: '+94 77 123 4567',
+                        address: '456 Rural Road, Ampara',
+                        district: 'ampara'
+                    }
+                ];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            if (!localStorage.getItem('submissions')) {
+                const submissions = [
+                    { 
+                        id: 1, 
+                        userId: 2, 
+                        userName: 'John Doe',
+                        userEmail: 'john@example.com',
+                        category: 'agriculture', 
+                        title: 'Need assistance with fertilizer subsidy',
+                        description: 'I am a small-scale farmer struggling to access the government fertilizer subsidy program. The application process is complicated and I need guidance.',
+                        location: 'Ampara District',
+                        contact: '0712345678',
+                        date: '2025-09-16',
+                        status: 'Pending'
+                    }
+                ];
+                localStorage.setItem('submissions', JSON.stringify(submissions));
+            }
+            
+            if (!localStorage.getItem('news')) {
+                const news = [
+                    { 
+                        id: 2, 
+                        title: 'New Government Scheme for Rural Farmers', 
+                        category: 'government',
+                        content: 'The government has launched a new financial aid program for small-scale farmers in rural areas. The program offers subsidies for equipment and training.\n\nApplications for the program will be accepted starting next month through local agricultural offices. Farmers can receive up to 50% subsidy on approved equipment purchases and access free training sessions on modern farming techniques.',
+                        image: 'https://images.unsplash.com/photo-1625246335526-18cd7a16752f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+                        date: '2025-09-15',
+                        author: 'Admin'
+                    },
+                    { 
+                        id: 1, 
+                        title: 'Health Awareness Campaign in Rural Areas', 
+                        category: 'health',
+                        content: 'A new health awareness campaign focusing on CKDu prevention will be launched in rural districts next month. Free health screenings will be available.\n\nThe campaign will visit 15 districts over the next six months, providing free medical checkups and education about Chronic Kidney Disease of unknown etiology (CKDu). Mobile clinics will be set up in rural villages to make healthcare more accessible to remote communities.',
+                        image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+                        date: '2025-09-10',
+                        author: 'Admin'
+                    }
+                ];
+                localStorage.setItem('news', JSON.stringify(news));
+            }
+            
+            // Initialize draftsman bookings if not exists
+            if (!localStorage.getItem('draftsmanBookings')) {
+                localStorage.setItem('draftsmanBookings', JSON.stringify([]));
+            }
+            
+            // Initialize doctors if not exists
+            if (!localStorage.getItem('doctors')) {
+                const doctors = [
+                    {
+                        id: 1,
+                        name: "Dr. Priya Fernando",
+                        specialization: "General Practitioner",
+                        qualification: "MBBS, MD",
+                        experience: 12,
+                        location: "western",
+                        phone: "011-2345678",
+                        bio: "Experienced general practitioner with expertise in rural healthcare.",
+                        availability: "Mon-Fri 9am-5pm, Sat 9am-1pm",
+                        status: "approved",
+                        avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+                    },
+                    {
+                        id: 2,
+                        name: "Dr. Rajesh Kumar",
+                        specialization: "Pediatrics",
+                        qualification: "MBBS, DCH",
+                        experience: 8,
+                        location: "central",
+                        phone: "081-2345678",
+                        bio: "Specialized in child healthcare with focus on preventive medicine.",
+                        availability: "Mon-Sat 8am-4pm",
+                        status: "approved",
+                        avatar: "https://randomuser.me/api/portraits/men/32.jpg"
+                    },
+                    {
+                        id: 3,
+                        name: "Dr. Anjali Silva",
+                        specialization: "Gynecology",
+                        qualification: "MBBS, MS",
+                        experience: 15,
+                        location: "southern",
+                        phone: "041-2345678",
+                        bio: "Women's health specialist with extensive experience in rural communities.",
+                        availability: "Mon-Fri 10am-6pm",
+                        status: "approved",
+                        avatar: "https://randomuser.me/api/portraits/women/68.jpg"
+                    },
+                    {
+                        id: 4,
+                        name: "Dr. Suresh Perera",
+                        specialization: "Dermatology",
+                        qualification: "MBBS, DDVL",
+                        experience: 10,
+                        location: "western",
+                        phone: "011-3456789",
+                        bio: "Skin specialist with focus on tropical dermatological conditions.",
+                        availability: "Tue-Sat 9am-5pm",
+                        status: "pending",
+                        avatar: "https://randomuser.me/api/portraits/men/76.jpg"
+                    }
+                ];
+                localStorage.setItem('doctors', JSON.stringify(doctors));
+            }
+            
+            updateUserInterface();
+            updateStats();
+            loadUsersTable();
+            loadSubmissionsTable();
+            loadNewsTable();
+            loadBookingsTable();
+            loadDoctorsTable();
+            displayNews('all');
+            setupNewsFilters();
+        }
+        
+        // Update user interface based on login status
+        function updateUserInterface() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            const authButton = document.getElementById('authButton');
+            const userProfileSection = document.getElementById('userProfileSection');
+            const userName = document.getElementById('userName');
+            const userAvatar = document.getElementById('userAvatar');
+            
+            if (currentUser) {
+                // User is logged in
+                authButton.textContent = 'Logout';
+                authButton.onclick = handleLogout;
+                
+                // Show user profile
+                userProfileSection.style.display = 'flex';
+                userName.textContent = currentUser.name;
+                
+                // Set user avatar
+                userAvatar.src = currentUser.profilePicture || 'https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff';
+                
+                // Update profile section if on dashboard
+                if (document.getElementById('userDashboard').style.display === 'block') {
+                    loadPersonalInfoForm(currentUser);
+                }
+            } else {
+                // User is not logged in
+                authButton.textContent = 'Login';
+                authButton.onclick = showLoginModal;
+                userProfileSection.style.display = 'none';
+            }
+        }
+        
+        // Load personal info form with user data
+        function loadPersonalInfoForm(user) {
+            document.getElementById('personalName').value = user.name || '';
+            document.getElementById('personalEmail').value = user.email || '';
+            document.getElementById('personalPhone').value = user.phone || '';
+            document.getElementById('personalAddress').value = user.address || '';
+            document.getElementById('personalDistrict').value = user.district || '';
+        }
+        
+        // Update personal information
+        function updatePersonalInfo(event) {
+            event.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to update your information');
+                showLoginModal();
+                return;
+            }
+            
+            const name = document.getElementById('personalName').value;
+            const email = document.getElementById('personalEmail').value;
+            const phone = document.getElementById('personalPhone').value;
+            const address = document.getElementById('personalAddress').value;
+            const district = document.getElementById('personalDistrict').value;
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                users[userIndex].name = name;
+                users[userIndex].email = email;
+                users[userIndex].phone = phone;
+                users[userIndex].address = address;
+                users[userIndex].district = district;
+                
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(users[userIndex]));
+                
+                // Update UI
+                document.getElementById('userName').textContent = name;
+                updateUserInterface();
+                
+                alert('Your personal information has been updated successfully!');
+            }
+        }
+        
+        // Update admin statistics
+        function updateStats() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+            const news = JSON.parse(localStorage.getItem('news') || '[]');
+            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const resolved = submissions.filter(s => s.status === 'Resolved').length;
+            
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('totalSubmissions').textContent = submissions.length;
+            document.getElementById('resolvedIssues').textContent = resolved;
+            document.getElementById('totalNews').textContent = news.length;
+            document.getElementById('totalBookings').textContent = bookings.length;
+            document.getElementById('totalDoctors').textContent = doctors.length;
+        }
+        
+        // Load users table
+        function loadUsersTable() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const tableBody = document.getElementById('usersTableBody');
+            tableBody.innerHTML = '';
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.password}</td>
+                    <td>${user.role}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editUser(${user.id})">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteUser(${user.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Search users
+        function searchUsers() {
+            const searchText = document.getElementById('userSearch').value.toLowerCase();
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const tableBody = document.getElementById('usersTableBody');
+            tableBody.innerHTML = '';
+            
+            const filteredUsers = users.filter(user => 
+                user.name.toLowerCase().includes(searchText) || 
+                user.email.toLowerCase().includes(searchText)
+            );
+            
+            filteredUsers.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.password}</td>
+                    <td>${user.role}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editUser(${user.id})">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteUser(${user.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Load submissions table
+        function loadSubmissionsTable() {
+            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+            const tableBody = document.getElementById('submissionsTableBody');
+            tableBody.innerHTML = '';
+            
+            const categoryNames = {
+                'government': 'Government Schemes',
+                'regulations': 'Government Regulations',
+                'health': 'Health & Safety',
+                'agriculture': 'Agriculture & Market',
+                'welfare': 'Social Welfare'
+            };
+            
+            submissions.forEach(submission => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${submission.userName}</td>
+                    <td>${categoryNames[submission.category]}</td>
+                    <td>${submission.date}</td>
+                    <td>${submission.status}</td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewSubmission(${submission.id})">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteSubmission(${submission.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // View submission details
+        function viewSubmission(id) {
+            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+            const submission = submissions.find(s => s.id === id);
+            
+            if (submission) {
+                const categoryNames = {
+                    'government': 'Government Schemes',
+                    'regulations': 'Government Regulations',
+                    'health': 'Health & Safety',
+                    'agriculture': 'Agriculture & Market',
+                    'welfare': 'Social Welfare'
+                };
+                
+                const detailsContainer = document.getElementById('submissionDetails');
+                detailsContainer.innerHTML = `
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">User Name:</span>
+                        <span class="submission-detail-value">${submission.userName}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">User Email:</span>
+                        <span class="submission-detail-value">${submission.userEmail}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Category:</span>
+                        <span class="submission-detail-value">${categoryNames[submission.category]}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Title:</span>
+                        <span class="submission-detail-value">${submission.title}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Description:</span>
+                        <span class="submission-detail-value">${submission.description}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Location:</span>
+                        <span class="submission-detail-value">${submission.location}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Contact:</span>
+                        <span class="submission-detail-value">${submission.contact}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Date Submitted:</span>
+                        <span class="submission-detail-value">${submission.date}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Status:</span>
+                        <span class="submission-detail-value">${submission.status}</span>
+                    </div>
+                `;
+                
+                document.getElementById('submissionModal').style.display = 'flex';
+            }
+        }
+        
+        // Close submission modal
+        function closeSubmissionModal() {
+            document.getElementById('submissionModal').style.display = 'none';
+        }
+        
+        // Delete submission
+        function deleteSubmission(id) {
+            if (confirm('Are you sure you want to delete this submission?')) {
+                let submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+                submissions = submissions.filter(s => s.id !== id);
+                localStorage.setItem('submissions', JSON.stringify(submissions));
+                loadSubmissionsTable();
+                updateStats();
+                alert('Submission deleted successfully!');
+            }
+        }
+        
+        // Submit problem form
+        function submitProblemForm(event) {
+            event.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to submit a problem');
+                showLoginModal();
+                return;
+            }
+            
+            const category = document.getElementById('problemCategory').value;
+            const title = document.getElementById('problemTitle').value;
+            const description = document.getElementById('problemDescription').value;
+            const location = document.getElementById('problemLocation').value;
+            const contact = document.getElementById('problemContact').value;
+            
+            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+            const newId = submissions.length > 0 ? Math.max(...submissions.map(s => s.id)) + 1 : 1;
+            
+            submissions.push({
+                id: newId,
+                userId: currentUser.id,
+                userName: currentUser.name,
+                userEmail: currentUser.email,
+                category,
+                title,
+                description,
+                location,
+                contact,
+                date: new Date().toISOString().split('T')[0],
+                status: 'Pending'
+            });
+            
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+            
+            // Clear form
+            document.getElementById('problemForm').reset();
+            
+            alert('Your problem has been submitted successfully! Our team will contact you soon.');
+            
+            // If admin is viewing, update the submissions table
+            if (document.getElementById('adminPanel').style.display === 'block') {
+                loadSubmissionsTable();
+                updateStats();
+            }
+        }
+        
+        // Edit user
+        function editUser(id) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.id === id);
+            
+            if (user) {
+                const newName = prompt('Enter new name:', user.name);
+                if (newName !== null) {
+                    user.name = newName;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    loadUsersTable();
+                    alert('User updated successfully!');
+                }
+            }
+        }
+        
+        // Delete user
+        function deleteUser(id) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                users = users.filter(u => u.id !== id);
+                localStorage.setItem('users', JSON.stringify(users));
+                loadUsersTable();
+                updateStats();
+                alert('User deleted successfully!');
+            }
+        }
+        
+        // Show login modal
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('signupModal').style.display = 'none';
+        }
+        
+        // Show signup modal
+        function showSignupModal() {
+            document.getElementById('signupModal').style.display = 'flex';
+            document.getElementById('loginModal').style.display = 'none';
+            
+            // Setup profile picture preview
+            const profilePictureInput = document.getElementById('profilePicture');
+            const profilePreview = document.getElementById('profilePreview');
+            
+            profilePictureInput.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        }
+        
+        // Close auth modal
+        function closeAuthModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('signupModal').style.display = 'none';
+        }
+        
+        // Show home page
+        function showHome() {
+            document.getElementById('homeContent').style.display = 'block';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            updateUserInterface();
+        }
+        
+        // Show user dashboard
+        function showDashboard() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser) {
+                alert('Please login first to access the dashboard');
+                showLoginModal();
+                return;
+            }
+            
+            document.getElementById('homeContent').style.display = 'none';
+            document.getElementById('userDashboard').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            
+            // Load personal info form
+            loadPersonalInfoForm(currentUser);
+        }
+        
+        // Show admin panel
+        function showAdminPanel() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser) {
+                alert('Please login first to access the admin panel');
+                showLoginModal();
+                return;
+            }
+            
+            if (currentUser.role !== 'admin') {
+                alert('Access denied. Admin privileges required.');
+                return;
+            }
+            
+            document.getElementById('homeContent').style.display = 'none';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            updateStats();
+            loadUsersTable();
+            loadSubmissionsTable();
+            loadNewsTable();
+            loadBookingsTable();
+            loadDoctorsTable();
+        }
+        
+        // Handle login form submission
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                closeAuthModal();
+                updateUserInterface();
+                showDashboard();
+                
+                // Clear form fields
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+            } else {
+                alert('Invalid email or password. Please try again.');
+            }
+        }
+        
+        // Handle signup form submission
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const profilePictureInput = document.getElementById('profilePicture');
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if user already exists
+            if (users.some(u => u.email === email)) {
+                alert('User with this email already exists. Please login instead.');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: users.length + 1,
+                name,
+                email,
+                password,
+                role: 'user',
+                profilePicture: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=2e8b57&color=fff',
+                joinDate: new Date().toISOString().split('T')[0],
+                status: 'Active',
+                phone: '',
+                address: '',
+                district: ''
+            };
+            
+            // Handle profile picture if selected
+            if (profilePictureInput.files.length > 0) {
+                const file = profilePictureInput.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newUser.profilePicture = e.target.result;
+                    completeSignup(newUser, users);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                completeSignup(newUser, users);
+            }
+        }
+        
+        // Complete the signup process
+        function completeSignup(newUser, users) {
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            closeAuthModal();
+            updateUserInterface();
+            showDashboard();
+            
+            // Clear form fields
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('signupConfirmPassword').value = '';
+            document.getElementById('profilePicture').value = '';
+            document.getElementById('profilePreview').src = 'https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff';
+            
+            alert('Account created successfully! Welcome to LifeBridge Rural.');
+        }
+        
+        // Handle logout
+        function handleLogout() {
+            localStorage.removeItem('currentUser');
+            updateUserInterface();
+            showHome();
+        }
+        
+        // Navigate to category page
+        function navigateToCategory(category) {
+            const categoryUrls = {
+                'government': 'schemes.html',
+                'regulations': 'legi.html',
+                'health': 'shahnas.html',
+                'agriculture': 'naja.html',
+                'welfare': 'thiliban.html',
+            };
+            
+            window.open(categoryUrls[category], '_blank');
+        }
+        
+        // News Functions
+        function setupNewsFilters() {
+            const filterButtons = document.querySelectorAll('.news-filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    // Display news for selected category
+                    displayNews(this.getAttribute('data-category'));
+                });
+            });
+        }
+        
+        function displayNews(category) {
+            const newsGrid = document.getElementById('newsGrid');
+            const news = JSON.parse(localStorage.getItem('news') || '[]');
+            
+            // Clear the grid
+            newsGrid.innerHTML = '';
+            
+            // Filter news by category if not 'all'
+            const filteredNews = category === 'all' 
+                ? news 
+                : news.filter(item => item.category === category);
+            
+            if (filteredNews.length === 0) {
+                newsGrid.innerHTML = `
+                    <div class="no-news">
+                        <i class="fas fa-newspaper" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
+                        <h3>No news available</h3>
+                        <p>There are no news items in this category yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Display news items
+            filteredNews.forEach(item => {
+                const categoryNames = {
+                    'government': 'Government Schemes',
+                    'regulations': 'Regulations',
+                    'health': 'Health & Safety',
+                    'agriculture': 'Agriculture',
+                    'welfare': 'Social Welfare'
+                };
+                
+                const newsCard = document.createElement('div');
+                newsCard.className = 'news-card';
+                newsCard.innerHTML = `
+                    <div class="news-image">
+                        <img src="${item.image || 'https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'}" alt="${item.title}">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-category">${categoryNames[item.category]}</span>
+                        <h3 class="news-title">${item.title}</h3>
+                        <p class="news-excerpt">${item.content.substring(0, 100)}...</p>
+                        <button class="read-more-btn" onclick="viewFullNews(${item.id})">Read More</button>
+                        <div class="news-date">${item.date}</div>
+                    </div>
+                `;
+                newsGrid.appendChild(newsCard);
+            });
+        }
+        
+        function viewFullNews(id) {
+            const news = JSON.parse(localStorage.getItem('news') || '[]');
+            const newsItem = news.find(n => n.id === id);
+            
+            if (newsItem) {
+                const categoryNames = {
+                    'government': 'Government Schemes',
+                    'regulations': 'Regulations',
+                    'health': 'Health & Safety',
+                    'agriculture': 'Agriculture',
+                    'welfare': 'Social Welfare'
+                };
+                
+                // Create a modal to display the full news
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    z-index: 1000;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                `;
+                
+                modal.innerHTML = `
+                    <div class="modal-content" style="
+                        background-color: white;
+                        border-radius: 10px;
+                        width: 90%;
+                        max-width: 700px;
+                        max-height: 90vh;
+                        overflow-y: auto;
+                        padding: 30px;
+                        position: relative;
+                    ">
+                        <button class="close-btn" onclick="this.parentElement.parentElement.remove()" style="
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            background: none;
+                            border: none;
+                            font-size: 24px;
+                            cursor: pointer;
+                        ">&times;</button>
+                        
+                        <h2 style="color: #2e8b57; margin-bottom: 15px;">${newsItem.title}</h2>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <span class="news-category">${categoryNames[newsItem.category]}</span>
+                            <span class="news-date">${newsItem.date}</span>
+                        </div>
+                        
+                        ${newsItem.image ? `<img src="${newsItem.image}" alt="${newsItem.title}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">` : ''}
+                        
+                        <div style="line-height: 1.6;">
+                            ${newsItem.content.split('\n').map(paragraph => `<p style="margin-bottom: 15px;">${paragraph}</p>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Close modal when clicking outside
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
+                });
+            }
+        }
+        
+        function addNewsItem(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('newsTitle').value;
+            const category = document.getElementById('newsCategory').value;
+            const content = document.getElementById('newsContent').value;
+            const image = document.getElementById('newsImage').value;
+            
+            const news = JSON.parse(localStorage.getItem('news') || '[]');
+            const newId = news.length > 0 ? Math.max(...news.map(n => n.id)) + 1 : 1;
+            
+            // Add new item at the beginning of the array
+            news.unshift({
+                id: newId,
+                title,
+                category,
+                content,
+                image: image || 'https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+                date: new Date().toISOString().split('T')[0],
+                author: 'Admin'
+            });
+            
+            localStorage.setItem('news', JSON.stringify(news));
+            
+            // Clear form
+            document.getElementById('newsForm').reset();
+            
+            // Update news table and stats
+            loadNewsTable();
+            updateStats();
+            
+            alert('News item added successfully!');
+        }
+        
+        function loadNewsTable() {
+            const news = JSON.parse(localStorage.getItem('news') || '[]');
+            const tableBody = document.getElementById('newsTableBody');
+            tableBody.innerHTML = '';
+            
+            const categoryNames = {
+                'government': 'Government Schemes',
+                'regulations': 'Regulations',
+                'health': 'Health & Safety',
+                'agriculture': 'Agriculture',
+                'welfare': 'Social Welfare'
+            };
+            
+            news.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.title}</td>
+                    <td>${categoryNames[item.category]}</td>
+                    <td>${item.date}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editNews(${item.id})">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteNews(${item.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function searchNews() {
+            const searchText = document.getElementById('newsSearch').value.toLowerCase();
+            const news = JSON.parse(localStorage.getItem('news') || '[]');
+            const tableBody = document.getElementById('newsTableBody');
+            tableBody.innerHTML = '';
+            
+            const filteredNews = news.filter(item => 
+                item.title.toLowerCase().includes(searchText) || 
+                item.content.toLowerCase().includes(searchText)
+            );
+            
+            const categoryNames = {
+                'government': 'Government Schemes',
+                'regulations': 'Regulations',
+                'health': 'Health & Safety',
+                'agriculture': 'Agriculture',
+                'welfare': 'Social Welfare'
+            };
+            
+            filteredNews.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.title}</td>
+                    <td>${categoryNames[item.category]}</td>
+                    <td>${item.date}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editNews(${item.id})">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteNews(${item.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function editNews(id) {
+            const news = JSON.parse(localStorage.getItem('news') || '[]');
+            const newsItem = news.find(n => n.id === id);
+            
+            if (newsItem) {
+                const newTitle = prompt('Enter new title:', newsItem.title);
+                if (newTitle !== null) {
+                    newsItem.title = newTitle;
+                    localStorage.setItem('news', JSON.stringify(news));
+                    loadNewsTable();
+                    alert('News item updated successfully!');
+                }
+            }
+        }
+        
+        function deleteNews(id) {
+            if (confirm('Are you sure you want to delete this news item?')) {
+                let news = JSON.parse(localStorage.getItem('news') || '[]');
+                news = news.filter(n => n.id !== id);
+                localStorage.setItem('news', JSON.stringify(news));
+                loadNewsTable();
+                updateStats();
+                alert('News item deleted successfully!');
+            }
+        }
+        
+        // Draftsman Bookings Functions
+        function loadBookingsTable() {
+            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
+            const tableBody = document.getElementById('bookingsTableBody');
+            tableBody.innerHTML = '';
+            
+            // Sort bookings by date (newest first)
+            bookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${booking.name}</td>
+                    <td>${booking.district}</td>
+                    <td>${booking.pradeshiyaSabha}</td>
+                    <td>${booking.draftsman}</td>
+                    <td>${booking.date}</td>
+                    <td>${booking.status}</td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewBooking(${booking.id})">View</button>
+                        <button class="action-btn edit-btn" onclick="updateBookingStatus(${booking.id})">Update</button>
+                        <button class="action-btn delete-btn" onclick="deleteBooking(${booking.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Update stats
+            document.getElementById('totalBookings').textContent = bookings.length;
+        }
+        
+        function viewBooking(id) {
+            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
+            const booking = bookings.find(b => b.id === id);
+            
+            if (booking) {
+                const detailsContainer = document.getElementById('submissionDetails');
+                detailsContainer.innerHTML = `
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Name:</span>
+                        <span class="submission-detail-value">${booking.name}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Phone:</span>
+                        <span class="submission-detail-value">${booking.phone}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Email:</span>
+                        <span class="submission-detail-value">${booking.email}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">NIC:</span>
+                        <span class="submission-detail-value">${booking.nic}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">District:</span>
+                        <span class="submission-detail-value">${booking.district}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Pradeshiya Sabha:</span>
+                        <span class="submission-detail-value">${booking.pradeshiyaSabha}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Draftsman:</span>
+                        <span class="submission-detail-value">${booking.draftsman}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Draftsman Email:</span>
+                        <span class="submission-detail-value">${booking.draftsmanEmail}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Project Details:</span>
+                        <span class="submission-detail-value">${booking.projectDetails}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Date:</span>
+                        <span class="submission-detail-value">${booking.date}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Status:</span>
+                        <span class="submission-detail-value">${booking.status}</span>
+                    </div>
+                `;
+                
+                document.getElementById('submissionModal').style.display = 'flex';
+            }
+        }
+        
+        function updateBookingStatus(id) {
+            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
+            const bookingIndex = bookings.findIndex(b => b.id === id);
+            
+            if (bookingIndex !== -1) {
+                const newStatus = prompt('Update Status (Pending/Approved/Rejected/Completed):', bookings[bookingIndex].status);
+                if (newStatus !== null) {
+                    bookings[bookingIndex].status = newStatus;
+                    localStorage.setItem('draftsmanBookings', JSON.stringify(bookings));
+                    loadBookingsTable();
+                    alert('Booking status updated successfully!');
+                }
+            }
+        }
+        
+        function deleteBooking(id) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                let bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
+                bookings = bookings.filter(b => b.id !== id);
+                localStorage.setItem('draftsmanBookings', JSON.stringify(bookings));
+                loadBookingsTable();
+                alert('Booking deleted successfully!');
+            }
+        }
+        
+        function searchBookings() {
+            const searchText = document.getElementById('bookingSearch').value.toLowerCase();
+            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
+            const tableBody = document.getElementById('bookingsTableBody');
+            tableBody.innerHTML = '';
+            
+            const filteredBookings = bookings.filter(booking => 
+                booking.name.toLowerCase().includes(searchText) || 
+                booking.district.toLowerCase().includes(searchText) ||
+                booking.pradeshiyaSabha.toLowerCase().includes(searchText) ||
+                booking.draftsman.toLowerCase().includes(searchText) ||
+                booking.status.toLowerCase().includes(searchText)
+            );
+            
+            filteredBookings.forEach(booking => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${booking.name}</td>
+                    <td>${booking.district}</td>
+                    <td>${booking.pradeshiyaSabha}</td>
+                    <td>${booking.draftsman}</td>
+                    <td>${booking.date}</td>
+                    <td>${booking.status}</td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewBooking(${booking.id})">View</button>
+                        <button class="action-btn edit-btn" onclick="updateBookingStatus(${booking.id})">Update</button>
+                        <button class="action-btn delete-btn" onclick="deleteBooking(${booking.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Doctor Management Functions
+        function loadDoctorsTable() {
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const tableBody = document.getElementById('doctorsTableBody');
+            tableBody.innerHTML = '';
+            
+            const locationNames = {
+                'western': 'Western Province',
+                'central': 'Central Province',
+                'southern': 'Southern Province',
+                'northern': 'Northern Province',
+                'eastern': 'Eastern Province',
+                'north-western': 'North Western Province',
+                'north-central': 'North Central Province',
+                'uva': 'Uva Province',
+                'sabaragamuwa': 'Sabaragamuwa Province'
+            };
+            
+            doctors.forEach(doctor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${doctor.name}</td>
+                    <td>${doctor.specialization}</td>
+                    <td>${locationNames[doctor.location] || doctor.location}</td>
+                    <td>
+                        <span class="status-badge ${doctor.status === 'approved' ? 'status-approved' : doctor.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
+                            ${doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        ${doctor.status === 'pending' ? `
+                            <button class="action-btn approve-btn" onclick="approveDoctor(${doctor.id})">Approve</button>
+                            <button class="action-btn reject-btn" onclick="rejectDoctor(${doctor.id})">Reject</button>
+                        ` : ''}
+                        <button class="action-btn view-btn" onclick="viewDoctor(${doctor.id})">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteDoctor(${doctor.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function searchDoctors() {
+            const searchText = document.getElementById('doctorSearch').value.toLowerCase();
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const tableBody = document.getElementById('doctorsTableBody');
+            tableBody.innerHTML = '';
+            
+            const locationNames = {
+                'western': 'Western Province',
+                'central': 'Central Province',
+                'southern': 'Southern Province',
+                'northern': 'Northern Province',
+                'eastern': 'Eastern Province',
+                'north-western': 'North Western Province',
+                'north-central': 'North Central Province',
+                'uva': 'Uva Province',
+                'sabaragamuwa': 'Sabaragamuwa Province'
+            };
+            
+            const filteredDoctors = doctors.filter(doctor => 
+                doctor.name.toLowerCase().includes(searchText) || 
+                doctor.specialization.toLowerCase().includes(searchText) ||
+                (locationNames[doctor.location] && locationNames[doctor.location].toLowerCase().includes(searchText))
+            );
+            
+            filteredDoctors.forEach(doctor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${doctor.name}</td>
+                    <td>${doctor.specialization}</td>
+                    <td>${locationNames[doctor.location] || doctor.location}</td>
+                    <td>
+                        <span class="status-badge ${doctor.status === 'approved' ? 'status-approved' : doctor.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
+                            ${doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        ${doctor.status === 'pending' ? `
+                            <button class="action-btn approve-btn" onclick="approveDoctor(${doctor.id})">Approve</button>
+                            <button class="action-btn reject-btn" onclick="rejectDoctor(${doctor.id})">Reject</button>
+                        ` : ''}
+                        <button class="action-btn view-btn" onclick="viewDoctor(${doctor.id})">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteDoctor(${doctor.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function addDoctorItem(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('doctorName').value;
+            const specialization = document.getElementById('doctorSpecialization').value;
+            const qualification = document.getElementById('doctorQualification').value;
+            const experience = document.getElementById('doctorExperience').value;
+            const location = document.getElementById('doctorLocation').value;
+            const phone = document.getElementById('doctorPhone').value;
+            const bio = document.getElementById('doctorBio').value;
+            const availability = document.getElementById('doctorAvailability').value;
+            
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const newId = doctors.length > 0 ? Math.max(...doctors.map(d => d.id)) + 1 : 1;
+            
+            doctors.push({
+                id: newId,
+                name,
+                specialization,
+                qualification,
+                experience: parseInt(experience),
+                location,
+                phone,
+                bio,
+                availability,
+                status: 'approved',
+                avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 99)}.jpg`
+            });
+            
+            localStorage.setItem('doctors', JSON.stringify(doctors));
+            
+            // Clear form
+            document.getElementById('doctorForm').reset();
+            
+            // Update doctors table and stats
+            loadDoctorsTable();
+            updateStats();
+            
+            alert('Doctor added successfully!');
+        }
+        
+        function approveDoctor(id) {
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const doctorIndex = doctors.findIndex(d => d.id === id);
+            
+            if (doctorIndex !== -1) {
+                doctors[doctorIndex].status = 'approved';
+                localStorage.setItem('doctors', JSON.stringify(doctors));
+                loadDoctorsTable();
+                alert('Doctor approved successfully! They are now visible in the available doctors list.');
+            }
+        }
+        
+        function rejectDoctor(id) {
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const doctorIndex = doctors.findIndex(d => d.id === id);
+            
+            if (doctorIndex !== -1) {
+                doctors[doctorIndex].status = 'rejected';
+                localStorage.setItem('doctors', JSON.stringify(doctors));
+                loadDoctorsTable();
+                alert('Doctor rejected successfully!');
+            }
+        }
+        
+        function viewDoctor(id) {
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const doctor = doctors.find(d => d.id === id);
+            
+            if (doctor) {
+                const locationNames = {
+                    'western': 'Western Province',
+                    'central': 'Central Province',
+                    'southern': 'Southern Province',
+                    'northern': 'Northern Province',
+                    'eastern': 'Eastern Province',
+                    'north-western': 'North Western Province',
+                    'north-central': 'North Central Province',
+                    'uva': 'Uva Province',
+                    'sabaragamuwa': 'Sabaragamuwa Province'
+                };
+                
+                const detailsContainer = document.getElementById('submissionDetails');
+                detailsContainer.innerHTML = `
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Name:</span>
+                        <span class="submission-detail-value">${doctor.name}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Specialization:</span>
+                        <span class="submission-detail-value">${doctor.specialization}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Qualifications:</span>
+                        <span class="submission-detail-value">${doctor.qualification}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Experience:</span>
+                        <span class="submission-detail-value">${doctor.experience} years</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Location:</span>
+                        <span class="submission-detail-value">${locationNames[doctor.location] || doctor.location}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Phone:</span>
+                        <span class="submission-detail-value">${doctor.phone}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Bio:</span>
+                        <span class="submission-detail-value">${doctor.bio}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Availability:</span>
+                        <span class="submission-detail-value">${doctor.availability}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Status:</span>
+                        <span class="submission-detail-value">${doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}</span>
+                    </div>
+                `;
+                
+                document.getElementById('submissionModal').style.display = 'flex';
+            }
+        }
+        
+        function deleteDoctor(id) {
+            if (confirm('Are you sure you want to delete this doctor?')) {
+                let doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+                doctors = doctors.filter(d => d.id !== id);
+                localStorage.setItem('doctors', JSON.stringify(doctors));
+                loadDoctorsTable();
+                updateStats();
+                alert('Doctor deleted successfully!');
+            }
+        }
+        
+        // Initialize the application
+        window.onload = function() {
+            initializeData();
+        };
+    </script>
+</body>
+</html>

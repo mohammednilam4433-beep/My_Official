@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock Care - Agriculture & Market Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9f1;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        nav {
+            background-color: #1b5e20;
+            padding: 0.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: flex-start;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 1rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav a i {
+            margin-right: 0.5rem;
+        }
+        
+        nav a:hover {
+            background-color: #4caf50;
+            transform: translateY(-2px);
+        }
+        
+        .back-btn {
+            background-color: #0d3d11;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(to right, #8d6e63, #a1887f);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .problem-list {
+            margin-bottom: 2rem;
+        }
+        
+        .problem-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #8d6e63;
+            transition: all 0.3s;
+        }
+        
+        .problem-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .problem-item h3 {
+            color: #5d4037;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .problem-item p {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #8d6e63;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0.5rem;
+        }
+        
+        .btn:hover {
+            background: #6d4c41;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: #a1887f;
+        }
+        
+        .btn-secondary:hover {
+            background: #8d6e63;
+        }
+        
+        .solution-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #efebe9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .solution-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .solution-section h3 {
+            color: #5d4037;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #8d6e63;
+            padding-bottom: 0.5rem;
+        }
+        
+        .search-box {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .solution-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .solution-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .solution-item h4 {
+            color: #5d4037;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .solution-item p {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .guidelines-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #efebe9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .guidelines-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .guidelines-section h3 {
+            color: #5d4037;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #8d6e63;
+            padding-bottom: 0.5rem;
+        }
+        
+        .guideline-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .guideline-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .guideline-item h4 {
+            color: #5d4037;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .guideline-item p {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .guideline-item ol, .guideline-item ul {
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .guideline-item li {
+            margin-bottom: 0.3rem;
+        }
+        
+        .animal-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+            color: #8d6e63;
+        }
+        
+        footer {
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #a5d6a7;
+            text-decoration: underline;
+        }
+        
+        .social-icons {
+            margin: 1rem 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .social-icons a:hover {
+            color: #a5d6a7;
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #8d6e63;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #6d4c41;
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .logo-container {
+                margin-bottom: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+            
+            .page-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <i class="fas fa-paw logo"></i>
+                <div>
+                    <h1>Agriculture & Market Portal</h1>
+                    <p class="tagline">Empowering Rural Sri Lanka with Sustainable Solutions</p>
+                </div>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a></li>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="#"><i class="fas fa-phone"></i> Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-cow"></i> Livestock Care Guidance</h2>
+            <p>Expert advice on animal health, nutrition, and management practices for Sri Lankan livestock farmers</p>
+        </div>
+        
+        <div class="problem-list">
+            <div class="problem-item">
+                <h3><i class="fas fa-stethoscope animal-icon"></i> Animal Health Issues</h3>
+                <p>Common diseases and health problems affecting cattle, goats, and poultry. Symptoms include fever, loss of appetite, and abnormal behavior.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="animal-health">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="animal-health">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3><i class="fas fa-apple-alt animal-icon"></i> Feed Management</h3>
+                <p>High cost and poor quality of animal feed leading to malnutrition and reduced productivity in livestock.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="feed-management">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="feed-management">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3><i class="fas fa-baby animal-icon"></i> Breeding Problems</h3>
+                <p>Low conception rates, difficult births, and poor offspring quality affecting livestock reproduction.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="breeding-problems">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="breeding-problems">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3><i class="fas fa-home animal-icon"></i> Shelter Management</h3>
+                <p>Inadequate housing conditions leading to stress, disease spread, and reduced animal welfare.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="shelter-management">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="shelter-management">Guidelines</button>
+            </div>
+            
+            <div class="problem-item">
+                <h3><i class="fas fa-tint animal-icon"></i> Milk Production Issues</h3>
+                <p>Low milk yield, poor milk quality, and mastitis problems in dairy animals affecting profitability.</p>
+                <button class="btn btn-secondary solution-btn" data-problem="milk-production">View Solutions</button>
+                <button class="btn btn-secondary guidelines-btn" data-problem="milk-production">Guidelines</button>
+            </div>
+        </div>
+        
+        <!-- Animal Health Solutions -->
+        <div class="solution-section" id="animal-health-solution">
+            <h3><i class="fas fa-stethoscope"></i> Solutions for Animal Health Issues</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions for animal health...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Vaccination Program</h4>
+                <p>Implement a regular vaccination schedule against common diseases like foot-and-mouth disease, hemorrhagic septicemia, and black quarter.</p>
+                <p><strong>Benefits:</strong> Prevents disease outbreaks, reduces mortality, improves herd immunity</p>
+            </div>
+            <div class="solution-item">
+                <h4>Natural Remedies</h4>
+                <p>Use traditional herbal treatments like neem leaves for parasites, turmeric for wounds, and ginger for digestive issues.</p>
+                <p><strong>Benefits:</strong> Low cost, easily available, minimal side effects</p>
+            </div>
+            <div class="solution-item">
+                <h4>Regular Health Check-ups</h4>
+                <p>Conduct weekly health inspections to detect problems early. Check temperature, appetite, behavior, and physical condition.</p>
+                <p><strong>Benefits:</strong> Early disease detection, timely treatment, prevents spread</p>
+            </div>
+            <div class="solution-item">
+                <h4>Quarantine New Animals</h4>
+                <p>Isolate new animals for 2-3 weeks before introducing them to the main herd to prevent disease transmission.</p>
+                <p><strong>Benefits:</strong> Prevents disease introduction, allows health monitoring, protects existing stock</p>
+            </div>
+        </div>
+        
+        <!-- Animal Health Guidelines -->
+        <div class="guidelines-section" id="animal-health-guidelines">
+            <h3><i class="fas fa-stethoscope"></i> Animal Health Management Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Vaccination Schedule</h4>
+                <p>Follow this vaccination calendar for cattle:</p>
+                <ol>
+                    <li><strong>Foot-and-Mouth Disease:</strong> Every 6 months</li>
+                    <li><strong>Hemorrhagic Septicemia:</strong> Annually before monsoon</li>
+                    <li><strong>Black Quarter:</strong> Annually in endemic areas</li>
+                    <li><strong>Brucellosis:</strong> For breeding animals only</li>
+                    <li><strong>Anthrax:</strong> In high-risk areas annually</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Disease Identification</h4>
+                <p>Common symptoms to watch for:</p>
+                <ul>
+                    <li><strong>Fever:</strong> Temperature above 102.5°F</li>
+                    <li><strong>Loss of appetite:</strong> Refusing feed for more than 24 hours</li>
+                    <li><strong>Abnormal discharge:</strong> From nose, eyes, or vagina</li>
+                    <li><strong>Lameness:</strong> Difficulty walking or standing</li>
+                    <li><strong>Behavior changes:</strong> Isolation, aggression, or depression</li>
+                </ul>
+            </div>
+            <div class="guideline-item">
+                <h4>First Aid Kit</h4>
+                <p>Maintain these essential items:</p>
+                <ul>
+                    <li>Thermometer</li>
+                    <li>Antiseptic solution (iodine, betadine)</li>
+                    <li>Bandages and cotton</li>
+                    <li>Wound powder</li>
+                    <li>Electrolyte powders</li>
+                    <li>Common antibiotics (as prescribed by vet)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Feed Management Solutions -->
+        <div class="solution-section" id="feed-management-solution">
+            <h3><i class="fas fa-apple-alt"></i> Solutions for Feed Management</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions for feed management...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Fodder Cultivation</h4>
+                <p>Grow high-yield fodder crops like CO-4 grass, maize, and legumes on farm boundaries or dedicated plots.</p>
+                <p><strong>Benefits:</strong> Reduces feed costs, ensures quality, available year-round</p>
+            </div>
+            <div class="solution-item">
+                <h4>Silage Making</h4>
+                <p>Preserve green fodder through anaerobic fermentation in pits or silos for use during dry seasons.</p>
+                <p><strong>Benefits:</strong> Nutrient preservation, available offseason, reduces waste</p>
+            </div>
+            <div class="solution-item">
+                <h4>Feed Formulation</h4>
+                <p>Mix locally available ingredients to create balanced feed: 40% grains, 35% protein sources, 15% roughage, 10% minerals.</p>
+                <p><strong>Benefits:</strong> Cost-effective, customized nutrition, better growth</p>
+            </div>
+            <div class="solution-item">
+                <h4>Agricultural By-products</h4>
+                <p>Utilize rice bran, wheat bran, oil cakes, and vegetable waste as supplementary feed ingredients.</p>
+                <p><strong>Benefits:</strong> Low cost, reduces waste, nutritional value</p>
+            </div>
+        </div>
+        
+        <!-- Feed Management Guidelines -->
+        <div class="guidelines-section" id="feed-management-guidelines">
+            <h3><i class="fas fa-apple-alt"></i> Feed Management Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Daily Feeding Requirements</h4>
+                <p>Recommended feeding for adult cattle (per day):</p>
+                <ul>
+                    <li><strong>Green fodder:</strong> 25-30 kg</li>
+                    <li><strong>Dry fodder:</strong> 5-6 kg</li>
+                    <li><strong>Concentrate:</strong> 2-3 kg for maintenance, 1 kg extra per 2.5 liters milk</li>
+                    <li><strong>Mineral mixture:</strong> 50-60 grams</li>
+                    <li><strong>Salt:</strong> 25-30 grams</li>
+                    <li><strong>Water:</strong> 40-50 liters</li>
+                </ul>
+            </div>
+            <div class="guideline-item">
+                <h4>Silage Preparation Steps</h4>
+                <p>How to make quality silage:</p>
+                <ol>
+                    <li>Harvest fodder at proper stage (maize at dough stage)</li>
+                    <li>Chop into 1-2 inch pieces</li>
+                    <li>Fill silo pit in layers, compacting well</li>
+                    <li>Cover with plastic sheet and soil</li>
+                    <li>Seal completely to exclude air</li>
+                    <li>Open after 45-60 days for feeding</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Feed Storage Practices</h4>
+                <p>Proper storage guidelines:</p>
+                <ul>
+                    <li>Store feed in clean, dry, and ventilated areas</li>
+                    <li>Keep away from moisture and direct sunlight</li>
+                    <li>Use raised platforms to prevent rodent access</li>
+                    <li>Practice first-in-first-out rotation</li>
+                    <li>Check regularly for mold or pests</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Breeding Problems Solutions -->
+        <div class="solution-section" id="breeding-problems-solution">
+            <h3><i class="fas fa-baby"></i> Solutions for Breeding Problems</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions for breeding problems...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Artificial Insemination</h4>
+                <p>Use AI with quality semen from proven bulls to improve genetic quality and conception rates.</p>
+                <p><strong>Benefits:</strong> Better genetics, disease prevention, cost-effective</p>
+            </div>
+            <div class="solution-item">
+                <h4>Heat Detection</h4>
+                <p>Train staff to identify heat signs accurately: restlessness, mucus discharge, mounting other animals.</p>
+                <p><strong>Benefits:</strong> Proper timing, higher conception, efficient breeding</p>
+            </div>
+            <div class="solution-item">
+                <h4>Nutrition Management</h4>
+                <p>Provide balanced nutrition before and after breeding, including mineral supplements and extra energy.</p>
+                <p><strong>Benefits:</strong> Better body condition, improved fertility, healthy pregnancy</p>
+            </div>
+            <div class="solution-item">
+                <h4>Breeding Records</h4>
+                <p>Maintain detailed records of heat dates, breeding dates, expected calving, and offspring performance.</p>
+                <p><strong>Benefits:</strong> Better planning, genetic tracking, performance analysis</p>
+            </div>
+        </div>
+        
+        <!-- Breeding Problems Guidelines -->
+        <div class="guidelines-section" id="breeding-problems-guidelines">
+            <h3><i class="fas fa-baby"></i> Breeding Management Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Heat Detection Protocol</h4>
+                <p>Steps for effective heat detection:</p>
+                <ol>
+                    <li>Observe animals 3 times daily (morning, noon, evening)</li>
+                    <li>Look for primary signs: standing to be mounted, clear mucus discharge</li>
+                    <li>Note secondary signs: restlessness, bellowing, swollen vulva</li>
+                    <li>Use heat detection aids if available</li>
+                    <li>Breed 12 hours after first standing heat</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Pregnancy Care</h4>
+                <p>Management during pregnancy:</p>
+                <ul>
+                    <li>Provide extra nutrition in last 3 months</li>
+                    <li>Avoid stressful handling</li>
+                    <li>Vaccinate as per schedule</li>
+                    <li>Prepare calving area 2 weeks before due date</li>
+                    <li>Watch for calving signs: udder development, relaxation of pelvic ligaments</li>
+                </ul>
+            </div>
+            <div class="guideline-item">
+                <h4>Newborn Care</h4>
+                <p>Essential care for newborn calves:</p>
+                <ul>
+                    <li>Clear mucus from nose and mouth immediately</li>
+                    <li>Ensure colostrum feeding within 2 hours</li>
+                    <li>Dip navel in iodine solution</li>
+                    <li>Keep in clean, dry, and warm environment</li>
+                    <li>Monitor for normal standing and suckling</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Shelter Management Solutions -->
+        <div class="solution-section" id="shelter-management-solution">
+            <h3><i class="fas fa-home"></i> Solutions for Shelter Management</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions for shelter management...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Proper Ventilation</h4>
+                <p>Design shelters with adequate airflow to prevent respiratory issues and reduce heat stress.</p>
+                <p><strong>Benefits:</strong> Better air quality, reduced disease risk, improved comfort</p>
+            </div>
+            <div class="solution-item">
+                <h4>Drainage System</h4>
+                <p>Install proper drainage to keep animal housing dry and prevent foot problems and parasite infestation.</p>
+                <p><strong>Benefits:</strong> Dry flooring, reduced infections, better hygiene</p>
+            </div>
+            <div class="solution-item">
+                <h4>Space Management</h4>
+                <p>Provide adequate space per animal to prevent overcrowding and reduce stress and aggression.</p>
+                <p><strong>Benefits:</strong> Reduced injuries, better welfare, improved productivity</p>
+            </div>
+        </div>
+        
+        <!-- Shelter Management Guidelines -->
+        <div class="guidelines-section" id="shelter-management-guidelines">
+            <h3><i class="fas fa-home"></i> Shelter Management Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Space Requirements</h4>
+                <p>Minimum space per animal:</p>
+                <ul>
+                    <li><strong>Adult cattle:</strong> 40-50 sq ft per animal</li>
+                    <li><strong>Calves:</strong> 20-25 sq ft per animal</li>
+                    <li><strong>Goats/Sheep:</strong> 15-20 sq ft per animal</li>
+                    <li><strong>Poultry:</strong> 1-2 sq ft per bird</li>
+                </ul>
+            </div>
+            <div class="guideline-item">
+                <h4>Shelter Design</h4>
+                <p>Key design considerations:</p>
+                <ul>
+                    <li>East-west orientation for proper sunlight</li>
+                    <li>Height of 8-10 feet for proper ventilation</li>
+                    <li>Concrete flooring with proper slope for drainage</li>
+                    <li>Separate areas for feeding, resting, and calving</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Milk Production Solutions -->
+        <div class="solution-section" id="milk-production-solution">
+            <h3><i class="fas fa-tint"></i> Solutions for Milk Production Issues</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search solutions for milk production...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="solution-item">
+                <h4>Proper Milking Hygiene</h4>
+                <p>Implement strict milking hygiene practices including udder washing, teat dipping, and clean equipment.</p>
+                <p><strong>Benefits:</strong> Reduces mastitis, improves milk quality, longer shelf life</p>
+            </div>
+            <div class="solution-item">
+                <h4>Balanced Nutrition</h4>
+                <p>Provide balanced feed with adequate energy, protein, minerals, and vitamins for optimal milk production.</p>
+                <p><strong>Benefits:</strong> Higher milk yield, better milk quality, improved animal health</p>
+            </div>
+            <div class="solution-item">
+                <h4>Regular Milking Schedule</h4>
+                <p>Maintain consistent milking times and intervals to establish a regular milk let-down reflex.</p>
+                <p><strong>Benefits:</strong> Consistent production, reduced stress, better milk quality</p>
+            </div>
+        </div>
+        
+        <!-- Milk Production Guidelines -->
+        <div class="guidelines-section" id="milk-production-guidelines">
+            <h3><i class="fas fa-tint"></i> Milk Production Guidelines</h3>
+            <div class="guideline-item">
+                <h4>Milking Procedure</h4>
+                <p>Steps for proper milking:</p>
+                <ol>
+                    <li>Wash udder with clean water and dry with separate towel</li>
+                    <li>Check for signs of mastitis (swelling, pain, abnormal milk)</li>
+                    <li>Use clean, sanitized equipment</li>
+                    <li>Milk completely and quickly</li>
+                    <li>Dip teats in antiseptic solution after milking</li>
+                </ol>
+            </div>
+            <div class="guideline-item">
+                <h4>Milk Handling</h4>
+                <p>Proper milk handling practices:</p>
+                <ul>
+                    <li>Filter milk immediately after milking</li>
+                    <li>Cool to below 4°C within 2 hours</li>
+                    <li>Store in clean, food-grade containers</li>
+                    <li>Transport in insulated containers</li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Agriculture & Market Portal</h3>
+            <p>Empowering Rural Sri Lanka with Sustainable Solutions</p>
+            
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">FAQs</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2023 Agriculture & Market Portal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation elements
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.getElementById('main-nav');
+            const backBtn = document.querySelector('.back-btn');
+            const solutionBtns = document.querySelectorAll('.solution-btn');
+            const guidelinesBtns = document.querySelectorAll('.guidelines-btn');
+            const solutionSections = document.querySelectorAll('.solution-section');
+            const guidelinesSections = document.querySelectorAll('.guidelines-section');
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Back button functionality - FIXED TO NAVIGATE TO NAJA.HTML
+            backBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Navigate to naja.html instead of showing alert
+                window.location.href = 'naja.html';
+            });
+            
+            // Solution button click
+            solutionBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const problem = this.getAttribute('data-problem');
+                    
+                    // Hide all solution and guidelines sections
+                    solutionSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    guidelinesSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the selected solution section
+                    document.getElementById(problem + '-solution').classList.add('active');
+                    
+                    // Scroll to the solution section
+                    document.getElementById(problem + '-solution').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Guidelines button click
+            guidelinesBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const problem = this.getAttribute('data-problem');
+                    
+                    // Hide all solution and guidelines sections
+                    solutionSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    guidelinesSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the selected guidelines section
+                    document.getElementById(problem + '-guidelines').classList.add('active');
+                    
+                    // Scroll to the guidelines section
+                    document.getElementById(problem + '-guidelines').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Search functionality for solutions
+            const searchInputs = document.querySelectorAll('.search-box input');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const solutionItems = this.closest('.solution-section').querySelectorAll('.solution-item');
+                    
+                    solutionItems.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(searchTerm)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Back to top button
+            const backToTopBtn = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
