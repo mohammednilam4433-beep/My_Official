@@ -973,67 +973,66 @@
     }
     
     // NEW FUNCTION: Load draftsmen from localStorage with Pradeshiya Sabha filter
-    function loadDraftsmenFromLocalStorage() {
-      const district = document.getElementById("district").value;
-      const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
-      const draftsmanSelection = document.getElementById("draftsmanSelection");
-      
-      if (!district || !pradeshiyaSabha) {
-        draftsmanSelection.innerHTML = '<p>Please select a district and pradeshiya sabha to view available draftsmen.</p>';
-        return;
-      }
-      
-      // Get approved draftsmen from localStorage
-      const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-      
-      // Filter by district AND pradeshiya sabha
-      const approvedDraftsmen = providers.filter(p => {
-        const isDraftsman = p.type === 'draftsman';
-        const isApproved = p.status === 'approved';
-        const districtMatch = p.district && p.district.toLowerCase() === district.toLowerCase();
-        
-        // Check if provider has pradeshiyaSabha field and matches
-        let pradeshiyaSabhaMatch = false;
-        if (p.pradeshiyaSabha) {
-          pradeshiyaSabhaMatch = p.pradeshiyaSabha.toLowerCase() === pradeshiyaSabha.toLowerCase();
-        } else if (p.psDivision) {
-          pradeshiyaSabhaMatch = p.psDivision.toLowerCase() === pradeshiyaSabha.toLowerCase();
-        } else if (p.localAuthority) {
-          pradeshiyaSabhaMatch = p.localAuthority.toLowerCase() === pradeshiyaSabha.toLowerCase();
-        } else {
-          // If provider doesn't have pradeshiya sabha info, show them anyway
-          pradeshiyaSabhaMatch = true;
-        }
-        
-        return isDraftsman && isApproved && districtMatch && pradeshiyaSabhaMatch;
-      });
-      
-      if (approvedDraftsmen.length === 0) {
-        draftsmanSelection.innerHTML = `<p>No approved draftsmen available for ${pradeshiyaSabha}, ${district} district. Please try another location.</p>`;
-        return;
-      }
-      
-      let html = `<h3>Available Draftsmen in ${pradeshiyaSabha}, ${district}</h3>`;
-      html += '<div class="draftsman-grid">';
-      
-      approvedDraftsmen.forEach(draftsman => {
-        html += `
-          <div class="draftsman-card" onclick="selectDraftsmanFromLocalStorage(${draftsman.id})" id="draftsman-${draftsman.id}">
-            <h3>${draftsman.name}</h3>
-            <p><strong>Experience:</strong> ${draftsman.experience || 'Not specified'} years</p>
-            <p><strong>Specialty:</strong> ${draftsman.services ? draftsman.services.substring(0, 50) + '...' : 'General Drafting'}</p>
-            <p><strong>Rate:</strong> ${draftsman.rate || 'Contact for rates'}</p>
-            <p><strong>Availability:</strong> ${draftsman.availability || 'Contact for availability'}</p>
-            <p><strong>Contact:</strong> ${draftsman.phone || 'Not provided'}</p>
-            <p><strong>Pradeshiya Sabha:</strong> ${draftsman.pradeshiyaSabha || draftsman.psDivision || draftsman.localAuthority || 'Not specified'}</p>
-          </div>
-        `;
-      });
-      
-      html += '</div>';
-      draftsmanSelection.innerHTML = html;
+// buildings.html - இந்த function ஐ மட்டும் மாற்றவும்
+
+function loadDraftsmenFromLocalStorage() {
+    const district = document.getElementById("district").value;
+    const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
+    const draftsmanSelection = document.getElementById("draftsmanSelection");
+    
+    if (!district || !pradeshiyaSabha) {
+      draftsmanSelection.innerHTML = '<p>Please select a district and pradeshiya sabha to view available draftsmen.</p>';
+      return;
     }
     
+    // Get approved draftsmen from localStorage (from index.html system)
+    const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+    
+    // Filter logic: Check Type, Status, District AND Pradeshiya Sabha
+    const approvedDraftsmen = providers.filter(p => {
+      const isDraftsman = p.type === 'draftsman';
+      const isApproved = p.status === 'approved';
+      
+      // District check (Case insensitive)
+      const providerDistrict = p.district ? p.district.toLowerCase() : '';
+      const selectedDistrict = district.toLowerCase();
+      const districtMatch = providerDistrict === selectedDistrict;
+      
+      // Pradeshiya Sabha check (Case insensitive matching)
+      // Provider Data-வில் சேமிக்கப்பட்ட Pradeshiya Sabha-வுடன் ஒப்பிடுதல்
+      let providerPS = '';
+      if (p.pradeshiyaSabha) providerPS = p.pradeshiyaSabha;
+      else if (p.psDivision) providerPS = p.psDivision; // பழைய டேட்டா இருந்தால்
+      
+      const pradeshiyaSabhaMatch = providerPS.toLowerCase() === pradeshiyaSabha.toLowerCase();
+      
+      return isDraftsman && isApproved && districtMatch && pradeshiyaSabhaMatch;
+    });
+    
+    if (approvedDraftsmen.length === 0) {
+      draftsmanSelection.innerHTML = `<p style="color: red;">No approved draftsmen found for <strong>${pradeshiyaSabha}</strong> in <strong>${district}</strong> district.</p>`;
+      return;
+    }
+    
+    let html = `<h3>Available Draftsmen in ${pradeshiyaSabha}</h3>`;
+    html += '<div class="draftsman-grid">';
+    
+    approvedDraftsmen.forEach(draftsman => {
+      html += `
+        <div class="draftsman-card" onclick="selectDraftsmanFromLocalStorage(${draftsman.id})" id="draftsman-${draftsman.id}">
+          <h3>${draftsman.name}</h3>
+          <p><strong>District:</strong> ${draftsman.district}</p>
+          <p><strong>Area:</strong> ${draftsman.pradeshiyaSabha}</p>
+          <p><strong>Rate:</strong> ${draftsman.rate || 'Contact for rates'}</p>
+          <p><strong>Contact:</strong> ${draftsman.phone || 'Not provided'}</p>
+          <button style="margin-top:10px; padding:5px 10px; background:#28a745; color:white; border:none; border-radius:4px; cursor:pointer;">Select</button>
+        </div>
+      `;
+    });
+    
+    html += '</div>';
+    draftsmanSelection.innerHTML = html;
+}
     function selectDraftsmanFromLocalStorage(id) {
       const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
       
