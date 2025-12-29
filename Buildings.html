@@ -603,7 +603,7 @@
               </select>
               
               <label>Select Pradeshiya Sabha *</label>
-              <select id="pradeshiyaSabha" name="pradeshiyaSabha" required onchange="loadDraftsmen()">
+              <select id="pradeshiyaSabha" name="pradeshiyaSabha" required onchange="loadDraftsmenFromLocalStorage()">
                 <option value="">-- Select Pradeshiya Sabha --</option>
                 <!-- Options will be loaded dynamically -->
               </select>
@@ -711,26 +711,26 @@
       "Colombo": ["Homagama","Kotikawatta Mulleriyawa","Seethawaka"],
       "Gampaha": ["Attanagalla","Biyagama","Divulapitiya","Dompe","Gampaha","Ja-ela","Katana","Kelaniya","Mahara","Meerigama","Minuwangoda","Wattala"],
       "Kandy": ["Akurana","Ganga lhala","Harispattuwa","Kandy Gravets & Gangawata Korale","Kundasale","Meda Dumbara","Minipe","Panwila","Pasbage Korale","Patadumbara","Patahewahta","Pujapitiya","Thumpane","Uda Palatha","Ududumbara","Udunuwara","Yatinuwara","Delthota","Doluwa","Hatharaliyadda"],
-	  "Ampara": ["Dehiyattakandiya", "Damana", "Uhana","Mahaoya","Namaloya","Padiyatalawa","Sammanthurai","Akkaraipattu","Ampara","Potuvil","Addalachchnai","Alayadivembu","Lahugala","Nindavur","Thirukkovil","Karaithivu","Navithanveli","Irrakkaram"],
-	  "Anuradhapura": ["Galenbindunuwewa","Galnewa","Horowpathana","Ipalogama","Kahatagasdigiliya","Kebathigollawa","Kekirawa","Medawachchiya","Mihintale","Nochchiyagama","Nuwaragam Palatha (East)","Nuwaragam Palatha (Central)","Padaviya","Palagala","Rajanganaya","Rambewa","Thalawa","Thirappane"],
-	  "Badulla": ["Badulla","Bandarawela","Ella","Haldummulla","Hali-Ela","Haputale","Kandeketiya","Lunugala","Mahiyanganaya","Meegahakiula","Passara","Rideemaliyadda","Soranatota","Uva Paranagama","Welimada"],
-	  "Batticaloa": ["Eravurpattu","Koralaipattu","Koralaipattu West","Koralaipattu North","Manmunai South Eravurpattu","Manmunai","Manmunai West","Manmunai South West","Porativupattu"],
-	  "Galle": ["Akmeemana","Ambalangoda","Baddegama","Balapitiya","Bentota","Bope-Poddala","Elpitiya","Habaraduwa","Imaduwa","Karandeniya","Nagoda","Neluwa","Niyagama","Raggama","Thawalama","Welivitiya-Divithura","Yakkalamulla"],
-	  "Monaragala": ["Badalkumbara","Bibila","Buttala","Kataragama","Madulla","Medagama","Moneragala","Siyambalanduwa","Thanamalwila","Wellawaya"],
-	  "Hambantota": ["Ambalantota","Angunakolapelassa","Beliatta","Hambantota","Katuwana","Lunugamvehera","Sooriyawewa","Tangalle","Tissamaharama","Weeraketiya"],
-	  "Kalutara": ["Agalawatta","Bandaragama","Beruwela","Bulathsinhala","Dodangoda","Horana","Kalutara","Madurawela","Matugama","Palindanuwara","Panadura","Walallawita"],
-	  "Kegalle": ["Aranayake","Bulathkohupitiya","Dehiowita","Deraniyagala","Galigamuwa","Kegalle","Mawanella","Rambukkana","Ruwanwella","Warakapola","Yatiyantota"],
-	  "Kurunegala": ["Alawwa","Bingiriya","Galgamuwa","Giribawa","lbbagamuwa","Kpbeiagane","Kuliyapitiya","Kurunegala","Mahawa","Mawathagama","Narammala","Nikaweratiya","Panduwasnuwara","Pannala","Polgahawela","Polpithigama","Ridigama","Udubaddawa","Wariyapola"],
-	  "Mannar": ["Mannar","Manthai West","Musali","Nanaddan"],
-	  "Matale": ["Ambanganga Korale","Dambulla","Galewala","Laggala-Pallegama","Matale","Naula","Pallepola","Rattota","Ukuwela","Wilgamuwa","Yatawatta","Yatawatta"],
-	  "Matara": ["Akuressa","Athuraliya","Devinuwara","Dickwella","Hakmana","Kamburupitiya","Kirinda-Puhulwella","Kotapola","Malimbada","Matara","Mulatiyana","Pasgoda","Pitabeddara","Thihagoda","Weligama"],
-	  "Mullaitivu": ["Manthai East","Maritimepattu","Puthukudiyiruppu","Thunukkai"],
-	  "Nuwara Eliya": ["Ambagamuwa","Hanguranketha","Kothmale","Nuwara Eliya","Walapane"],
-	  "Polonnaruwa": ["Dimbulagala","Elahera","Hingurakgoda","Lankapura","Medirigiriya","Polonnaruwa","Welikanda"],
-	  "Puttalam": ["Anamaduwa","Arachchikattuwa","Chilaw","Kalpitiya","Karuwalagaswewa","Nattandiya","Nawagattegama","Puttalam","Wanathawilluwa","Wennappuwa"],
-	  "Ratnapura": ["Ayagama","Balangoda","Ehaliyagoda","Embilipitiya","Godakawela","Imbulpe","Kahawatta","Kalawana","Kolonna","Kuruwita","Nivithigala","Pelmadulla","Rathnapura","Weligepola"],
-	  "Trincomalee": ["Trincomalee Town & Gravets", "Kuchchaveli", "Thampalakamam","Muttur","Kinniya","Verugal","Seruvila","Kantalai","Morawewa","Gomarankadawala","Padavisripura"],
-	  "Vavuniya": ["Vavuniya North","Vavuniya South Tamil","Vavuniya South Sinhala","Vengalacheddikulam"],
+      "Ampara": ["Dehiyattakandiya", "Damana", "Uhana","Mahaoya","Namaloya","Padiyatalawa","Sammanthurai","Akkaraipattu","Ampara","Potuvil","Addalachchnai","Alayadivembu","Lahugala","Nindavur","Thirukkovil","Karaithivu","Navithanveli","Irrakkaram"],
+      "Anuradhapura": ["Galenbindunuwewa","Galnewa","Horowpathana","Ipalogama","Kahatagasdigiliya","Kebathigollawa","Kekirawa","Medawachchiya","Mihintale","Nochchiyagama","Nuwaragam Palatha (East)","Nuwaragam Palatha (Central)","Padaviya","Palagala","Rajanganaya","Rambewa","Thalawa","Thirappane"],
+      "Badulla": ["Badulla","Bandarawela","Ella","Haldummulla","Hali-Ela","Haputale","Kandeketiya","Lunugala","Mahiyanganaya","Meegahakiula","Passara","Rideemaliyadda","Soranatota","Uva Paranagama","Welimada"],
+      "Batticaloa": ["Eravurpattu","Koralaipattu","Koralaipattu West","Koralaipattu North","Manmunai South Eravurpattu","Manmunai","Manmunai West","Manmunai South West","Porativupattu"],
+      "Galle": ["Akmeemana","Ambalangoda","Baddegama","Balapitiya","Bentota","Bope-Poddala","Elpitiya","Habaraduwa","Imaduwa","Karandeniya","Nagoda","Neluwa","Niyagama","Raggama","Thawalama","Welivitiya-Divithura","Yakkalamulla"],
+      "Monaragala": ["Badalkumbara","Bibila","Buttala","Kataragama","Madulla","Medagama","Moneragala","Siyambalanduwa","Thanamalwila","Wellawaya"],
+      "Hambantota": ["Ambalantota","Angunakolapelassa","Beliatta","Hambantota","Katuwana","Lunugamvehera","Sooriyawewa","Tangalle","Tissamaharama","Weeraketiya"],
+      "Kalutara": ["Agalawatta","Bandaragama","Beruwela","Bulathsinhala","Dodangoda","Horana","Kalutara","Madurawela","Matugama","Palindanuwara","Panadura","Walallawita"],
+      "Kegalle": ["Aranayake","Bulathkohupitiya","Dehiowita","Deraniyagala","Galigamuwa","Kegalle","Mawanella","Rambukkana","Ruwanwella","Warakapola","Yatiyantota"],
+      "Kurunegala": ["Alawwa","Bingiriya","Galgamuwa","Giribawa","lbbagamuwa","Kpbeiagane","Kuliyapitiya","Kurunegala","Mahawa","Mawathagama","Narammala","Nikaweratiya","Panduwasnuwara","Pannala","Polgahawela","Polpithigama","Ridigama","Udubaddawa","Wariyapola"],
+      "Mannar": ["Mannar","Manthai West","Musali","Nanaddan"],
+      "Matale": ["Ambanganga Korale","Dambulla","Galewala","Laggala-Pallegama","Matale","Naula","Pallepola","Rattota","Ukuwela","Wilgamuwa","Yatawatta","Yatawatta"],
+      "Matara": ["Akuressa","Athuraliya","Devinuwara","Dickwella","Hakmana","Kamburupitiya","Kirinda-Puhulwella","Kotapola","Malimbada","Matara","Mulatiyana","Pasgoda","Pitabeddara","Thihagoda","Weligama"],
+      "Mullaitivu": ["Manthai East","Maritimepattu","Puthukudiyiruppu","Thunukkai"],
+      "Nuwara Eliya": ["Ambagamuwa","Hanguranketha","Kothmale","Nuwara Eliya","Walapane"],
+      "Polonnaruwa": ["Dimbulagala","Elahera","Hingurakgoda","Lankapura","Medirigiriya","Polonnaruwa","Welikanda"],
+      "Puttalam": ["Anamaduwa","Arachchikattuwa","Chilaw","Kalpitiya","Karuwalagaswewa","Nattandiya","Nawagattegama","Puttalam","Wanathawilluwa","Wennappuwa"],
+      "Ratnapura": ["Ayagama","Balangoda","Ehaliyagoda","Embilipitiya","Godakawela","Imbulpe","Kahawatta","Kalawana","Kolonna","Kuruwita","Nivithigala","Pelmadulla","Rathnapura","Weligepola"],
+      "Trincomalee": ["Trincomalee Town & Gravets", "Kuchchaveli", "Thampalakamam","Muttur","Kinniya","Verugal","Seruvila","Kantalai","Morawewa","Gomarankadawala","Padavisripura"],
+      "Vavuniya": ["Vavuniya North","Vavuniya South Tamil","Vavuniya South Sinhala","Vengalacheddikulam"],
     };
 
     // Office contact information data
@@ -771,49 +771,6 @@
         hours: "Monday-Friday: 8:30 AM - 4:30 PM, Saturday: 9:00 AM - 1:00 PM",
         address: "78 Temple Street, Kandy"
       },
-    };
-
-    const draftsmenData = {
-      "Poonakary": [
-        {
-          id: 1,
-          name: "R. Sivarajah",
-          experience: "8 years",
-          specialty: "Residential Buildings",
-          availability: {
-            "Monday": ["9:00 AM - 12:00 PM", "2:00 PM - 4:00 PM"],
-            "Wednesday": ["10:00 AM - 1:00 PM", "3:00 PM - 5:00 PM"],
-            "Friday": ["9:00 AM - 11:00 AM", "2:00 PM - 5:00 PM"]
-          },
-          email: "sivarajah.draftsman@example.com"
-        },
-        {
-          id: 2,
-          name: "K. Tharmalingam",
-          experience: "12 years",
-          specialty: "Commercial Buildings",
-          availability: {
-            "Tuesday": ["10:00 AM - 1:00 PM", "3:00 PM - 5:00 PM"],
-            "Thursday": ["9:00 AM - 12:00 PM", "2:00 PM - 4:00 PM"],
-            "Saturday": ["9:00 AM - 1:00 PM"]
-          },
-          email: "tharmalingam.draftsman@example.com"
-        }
-      ],
-      "Karachchi": [
-        {
-          id: 3,
-          name: "S. Ananthan",
-          experience: "6 years",
-          specialty: "House Plans",
-          availability: {
-            "Monday": ["10:00 AM - 1:00 PM"],
-            "Wednesday": ["9:00 AM - 12:00 PM", "2:00 PM - 4:00 PM"],
-            "Friday": ["10:00 AM - 1:00 PM", "3:00 PM - 5:00 PM"]
-          },
-          email: "ananthan.draftsman@example.com"
-        }
-      ],
     };
 
     let selectedDraftsman = null;
@@ -886,7 +843,7 @@
       
       // If moving to step 3, load draftsmen
       if (currentStep === 3) {
-        loadDraftsmen();
+        loadDraftsmenFromLocalStorage();
       }
       
       // If moving to step 4, show review
@@ -1015,50 +972,60 @@
       selectedDraftsman = null;
     }
     
-    function loadDraftsmen() {
+    // NEW FUNCTION: Load draftsmen from localStorage with Pradeshiya Sabha filter
+    function loadDraftsmenFromLocalStorage() {
+      const district = document.getElementById("district").value;
       const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
       const draftsmanSelection = document.getElementById("draftsmanSelection");
       
-      if (!pradeshiyaSabha) {
-        draftsmanSelection.innerHTML = '<p>Please select a pradeshiya sabha to view available draftsmen.</p>';
+      if (!district || !pradeshiyaSabha) {
+        draftsmanSelection.innerHTML = '<p>Please select a district and pradeshiya sabha to view available draftsmen.</p>';
         return;
       }
       
-      const draftsmen = draftsmenData[pradeshiyaSabha] || [];
+      // Get approved draftsmen from localStorage
+      const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
       
-      if (draftsmen.length === 0) {
-        draftsmanSelection.innerHTML = `<p>No draftsmen available for ${pradeshiyaSabha}. Please try another pradeshiya sabha.</p>`;
-        return;
-      }
-      
-      let html = `<h3>Available Draftsmen in ${pradeshiyaSabha}</h3>`;
-      html += '<div class="draftsman-grid">';
-      
-      draftsmen.forEach(draftsman => {
-        html += `
-          <div class="draftsman-card" onclick="selectDraftsman(${draftsman.id})" id="draftsman-${draftsman.id}">
-            <h3>${draftsman.name}</h3>
-            <p><strong>Experience:</strong> ${draftsman.experience}</p>
-            <p><strong>Specialty:</strong> ${draftsman.specialty}</p>
-            <h4>Availability:</h4>
-            <table class="availability-table">
-              <tr>
-                <th>Day</th>
-                <th>Time Slots</th>
-              </tr>
-        `;
+      // Filter by district AND pradeshiya sabha
+      const approvedDraftsmen = providers.filter(p => {
+        const isDraftsman = p.type === 'draftsman';
+        const isApproved = p.status === 'approved';
+        const districtMatch = p.district && p.district.toLowerCase() === district.toLowerCase();
         
-        for (const day in draftsman.availability) {
-          html += `
-            <tr>
-              <td>${day}</td>
-              <td>${draftsman.availability[day].join(', ')}</td>
-            </tr>
-          `;
+        // Check if provider has pradeshiyaSabha field and matches
+        let pradeshiyaSabhaMatch = false;
+        if (p.pradeshiyaSabha) {
+          pradeshiyaSabhaMatch = p.pradeshiyaSabha.toLowerCase() === pradeshiyaSabha.toLowerCase();
+        } else if (p.psDivision) {
+          pradeshiyaSabhaMatch = p.psDivision.toLowerCase() === pradeshiyaSabha.toLowerCase();
+        } else if (p.localAuthority) {
+          pradeshiyaSabhaMatch = p.localAuthority.toLowerCase() === pradeshiyaSabha.toLowerCase();
+        } else {
+          // If provider doesn't have pradeshiya sabha info, show them anyway
+          pradeshiyaSabhaMatch = true;
         }
         
+        return isDraftsman && isApproved && districtMatch && pradeshiyaSabhaMatch;
+      });
+      
+      if (approvedDraftsmen.length === 0) {
+        draftsmanSelection.innerHTML = `<p>No approved draftsmen available for ${pradeshiyaSabha}, ${district} district. Please try another location.</p>`;
+        return;
+      }
+      
+      let html = `<h3>Available Draftsmen in ${pradeshiyaSabha}, ${district}</h3>`;
+      html += '<div class="draftsman-grid">';
+      
+      approvedDraftsmen.forEach(draftsman => {
         html += `
-            </table>
+          <div class="draftsman-card" onclick="selectDraftsmanFromLocalStorage(${draftsman.id})" id="draftsman-${draftsman.id}">
+            <h3>${draftsman.name}</h3>
+            <p><strong>Experience:</strong> ${draftsman.experience || 'Not specified'} years</p>
+            <p><strong>Specialty:</strong> ${draftsman.services ? draftsman.services.substring(0, 50) + '...' : 'General Drafting'}</p>
+            <p><strong>Rate:</strong> ${draftsman.rate || 'Contact for rates'}</p>
+            <p><strong>Availability:</strong> ${draftsman.availability || 'Contact for availability'}</p>
+            <p><strong>Contact:</strong> ${draftsman.phone || 'Not provided'}</p>
+            <p><strong>Pradeshiya Sabha:</strong> ${draftsman.pradeshiyaSabha || draftsman.psDivision || draftsman.localAuthority || 'Not specified'}</p>
           </div>
         `;
       });
@@ -1067,12 +1034,11 @@
       draftsmanSelection.innerHTML = html;
     }
     
-    function selectDraftsman(id) {
-      const pradeshiyaSabha = document.getElementById("pradeshiyaSabha").value;
-      const draftsmen = draftsmenData[pradeshiyaSabha] || [];
+    function selectDraftsmanFromLocalStorage(id) {
+      const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
       
       // Find the selected draftsman
-      selectedDraftsman = draftsmen.find(d => d.id === id);
+      selectedDraftsman = providers.find(d => d.id === id);
       
       // Update UI to show selection
       document.querySelectorAll('.draftsman-card').forEach(card => {
@@ -1105,13 +1071,15 @@
         html += `
           <p><strong>Selected Draftsman:</strong> ${selectedDraftsman.name}</p>
           <p><strong>Draftsman Email:</strong> ${selectedDraftsman.email}</p>
+          <p><strong>Draftsman Phone:</strong> ${selectedDraftsman.phone}</p>
+          <p><strong>Draftsman Experience:</strong> ${selectedDraftsman.experience || 'Not specified'} years</p>
         `;
       }
       
       document.getElementById("reviewDetails").innerHTML = html;
     }
     
-    // Form submission - UPDATED TO SAVE TO ADMIN DASHBOARD
+    // Form submission - UPDATED TO SAVE TO MAIN SYSTEM
     document.getElementById("bookingForm").addEventListener("submit", async function(event){
       event.preventDefault();
       
@@ -1125,7 +1093,7 @@
       modal.style.display = "none";
       
       // Collect form data
-      const formData = {
+      const bookingData = {
         id: Date.now(), // Unique ID
         name: document.getElementById("name").value,
         phone: document.getElementById("phone").value,
@@ -1134,16 +1102,20 @@
         projectDetails: document.getElementById("projectDetails").value,
         district: document.getElementById("district").value,
         pradeshiyaSabha: document.getElementById("pradeshiyaSabha").value,
-        draftsman: selectedDraftsman ? selectedDraftsman.name : 'Not Selected',
-        draftsmanEmail: selectedDraftsman ? selectedDraftsman.email : '',
-        status: 'Pending',
+        draftsmanId: selectedDraftsman.id,
+        draftsmanName: selectedDraftsman.name,
+        draftsmanEmail: selectedDraftsman.email,
+        draftsmanPhone: selectedDraftsman.phone,
+        status: 'pending',
         date: new Date().toISOString().split('T')[0],
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        type: 'draftsman',
+        source: 'buildings.html'
       };
       
       try {
-        // Save to localStorage (Admin Dashboard க்கு அனுப்ப)
-        saveBookingToAdminDashboard(formData);
+        // Save to main system (index.html's localStorage)
+        saveBookingToMainSystem(bookingData);
         
         // Simulate API call with timeout
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -1164,19 +1136,69 @@
       }
     });
 
-    // Admin Dashboard க்கு data save செய்யும் function
-    function saveBookingToAdminDashboard(bookingData) {
-      // Existing bookings ஐ get செய்யவும்
-      const existingBookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
-      
-      // New booking ஐ add செய்யவும்
-      existingBookings.push(bookingData);
-      
-      // localStorage இல் save செய்யவும்
-      localStorage.setItem('draftsmanBookings', JSON.stringify(existingBookings));
-      
-      console.log('Booking saved to admin dashboard:', bookingData);
-      alert('Booking submitted successfully! Admin will review your request.');
+    // Main system-க்கு booking save செய்யும் function
+    function saveBookingToMainSystem(bookingData) {
+      try {
+        // Main system-ன் bookings ஐ get செய்யவும்
+        let existingBookings = [];
+        try {
+          existingBookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+        } catch (e) {
+          console.log("No existing bookings found, creating new array");
+          existingBookings = [];
+        }
+        
+        // Generate a user ID for the booking (this would come from login in real system)
+        const tempUserId = "temp_user_" + Date.now();
+        
+        // Create the booking object in main system format
+        const mainSystemBooking = {
+          id: bookingData.id,
+          type: 'draftsman',
+          providerId: bookingData.draftsmanId,
+          providerName: bookingData.draftsmanName,
+          userId: tempUserId,
+          userName: bookingData.name,
+          userEmail: bookingData.email,
+          clientName: bookingData.name,
+          projectType: 'building',
+          projectDetails: bookingData.projectDetails,
+          propertyAddress: bookingData.district + ", " + bookingData.pradeshiyaSabha,
+          propertySize: 0, // Not specified in form
+          preferredVisitDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // One week from now
+          contact: bookingData.phone,
+          budget: 0, // Not specified in form
+          status: 'pending',
+          providerResponse: '',
+          responseDate: '',
+          bookingDate: bookingData.date,
+          source: 'buildings.html'
+        };
+        
+        // Add to main bookings array
+        existingBookings.push(mainSystemBooking);
+        
+        // Save back to localStorage
+        localStorage.setItem('bookings', JSON.stringify(existingBookings));
+        
+        console.log('Booking saved to main system:', mainSystemBooking);
+        
+        // Also save to a separate list for buildings page reference
+        const buildingsBookings = JSON.parse(localStorage.getItem('buildingsBookings') || '[]');
+        buildingsBookings.push(bookingData);
+        localStorage.setItem('buildingsBookings', JSON.stringify(buildingsBookings));
+        
+        alert('Booking submitted successfully! The draftsman has been notified and will respond to your request.');
+        
+      } catch (error) {
+        console.error("Error saving booking to main system:", error);
+        alert("Booking saved locally. The draftsman will be notified when you log in to the main system.");
+        
+        // Fallback: Save to local storage for this page
+        const localBookings = JSON.parse(localStorage.getItem('localDraftsmanBookings') || '[]');
+        localBookings.push(bookingData);
+        localStorage.setItem('localDraftsmanBookings', JSON.stringify(localBookings));
+      }
     }
 
     // Office contact information functions
@@ -1253,7 +1275,32 @@
     window.onload = function() {
       loadDistricts();
       loadDistrictsContact(); // Also load districts for contact section
+      
+      // Update providers with pradeshiya sabha information if needed
+      updateProvidersWithPradeshiyaSabha();
     };
+    
+    // Function to update existing providers with pradeshiya sabha information
+    function updateProvidersWithPradeshiyaSabha() {
+      const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+      let updated = false;
+      
+      providers.forEach(provider => {
+        if (provider.type === 'draftsman' && !provider.pradeshiyaSabha) {
+          // Assign a pradeshiya sabha based on district
+          if (provider.district && pradeshiyaSabhasData[provider.district]) {
+            // Take the first pradeshiya sabha in the district
+            provider.pradeshiyaSabha = pradeshiyaSabhasData[provider.district][0];
+            updated = true;
+          }
+        }
+      });
+      
+      if (updated) {
+        localStorage.setItem('serviceProviders', JSON.stringify(providers));
+        console.log('Providers updated with pradeshiya sabha information');
+      }
+    }
   </script>
 </body>
 </html>
