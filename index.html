@@ -139,7 +139,7 @@
         }
         
         /* Auth Modals */
-        .auth-modal {
+        .auth-modal, .provider-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -152,13 +152,19 @@
             align-items: center;
         }
         
-        .auth-container {
+        .auth-container, .provider-container {
             background-color: white;
             border-radius: 10px;
             width: 90%;
-            max-width: 400px;
+            max-width: 500px;
             padding: 30px;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .provider-container {
+            max-width: 600px;
         }
         
         .auth-header {
@@ -182,7 +188,7 @@
             color: #555;
         }
         
-        .auth-form input {
+        .auth-form input, .auth-form select, .auth-form textarea {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -190,7 +196,7 @@
             font-size: 16px;
         }
         
-        .auth-form input:focus {
+        .auth-form input:focus, .auth-form select:focus, .auth-form textarea:focus {
             outline: none;
             border-color: #2e8b57;
         }
@@ -259,6 +265,36 @@
             font-size: 20px;
             cursor: pointer;
             color: #777;
+        }
+        
+        /* Provider Selection */
+        .provider-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .provider-card {
+            width: 180px;
+            padding: 20px;
+            text-align: center;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .provider-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .provider-icon {
+            font-size: 2.5rem;
+            color: #2e8b57;
+            margin-bottom: 15px;
         }
         
         /* User Dashboard */
@@ -487,7 +523,7 @@
             background-color: #246a44;
         }
         
-        .users-list, .solutions-table, .submissions-table, .bookings-table, .doctors-table {
+        .users-list, .solutions-table, .submissions-table, .bookings-table, .doctors-table, .providers-table, .provider-bookings-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
@@ -501,18 +537,20 @@
         .solutions-table th, .solutions-table td,
         .submissions-table th, .submissions-table td,
         .bookings-table th, .bookings-table td,
-        .doctors-table th, .doctors-table td {
+        .doctors-table th, .doctors-table td,
+        .providers-table th, .providers-table td,
+        .provider-bookings-table th, .provider-bookings-table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
         
-        .users-list th, .solutions-table th, .submissions-table th, .bookings-table th, .doctors-table th {
+        .users-list th, .solutions-table th, .submissions-table th, .bookings-table th, .doctors-table th, .providers-table th, .provider-bookings-table th {
             background-color: #2e8b57;
             color: white;
         }
         
-        .users-list tr:hover, .solutions-table tr:hover, .submissions-table tr:hover, .bookings-table tr:hover, .doctors-table tr:hover {
+        .users-list tr:hover, .solutions-table tr:hover, .submissions-table tr:hover, .bookings-table tr:hover, .doctors-table tr:hover, .providers-table tr:hover, .provider-bookings-table tr:hover {
             background-color: #f9f9f9;
         }
         
@@ -522,6 +560,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 0.85rem;
         }
         
         .edit-btn {
@@ -549,8 +588,13 @@
             color: white;
         }
         
+        .reply-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
         /* Submission Modal */
-        .submission-modal {
+        .submission-modal, .booking-details-modal, .response-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -563,7 +607,7 @@
             align-items: center;
         }
         
-        .submission-container {
+        .submission-container, .booking-details-container, .response-container {
             background-color: white;
             border-radius: 10px;
             width: 90%;
@@ -602,6 +646,93 @@
         .submission-detail-value {
             color: #333;
             flex: 1;
+        }
+        
+        /* Service Provider Dashboard */
+        .provider-dashboard {
+            display: none;
+            padding: 40px 0;
+        }
+        
+        .provider-welcome {
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .provider-welcome h2 {
+            margin-bottom: 10px;
+        }
+        
+        .provider-info-card {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .provider-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+            border: 3px solid #2e8b57;
+        }
+        
+        .provider-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .provider-details {
+            flex: 1;
+        }
+        
+        .provider-details h3 {
+            color: #2e8b57;
+            margin-bottom: 5px;
+        }
+        
+        .provider-details p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-approved {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
         }
         
         /* News Section Styles */
@@ -747,6 +878,11 @@
             .news-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
+            
+            .provider-selection {
+                flex-direction: column;
+                align-items: center;
+            }
         }
         
         @media (max-width: 768px) {
@@ -778,7 +914,7 @@
                 grid-template-columns: 1fr;
             }
             
-            .users-list, .solutions-table, .submissions-table, .bookings-table, .doctors-table {
+            .users-list, .solutions-table, .submissions-table, .bookings-table, .doctors-table, .providers-table, .provider-bookings-table {
                 font-size: 0.9rem;
             }
             
@@ -786,7 +922,9 @@
             .solutions-table th, .solutions-table td,
             .submissions-table th, .submissions-table td,
             .bookings-table th, .bookings-table td,
-            .doctors-table th, .doctors-table td {
+            .doctors-table th, .doctors-table td,
+            .providers-table th, .providers-table td,
+            .provider-bookings-table th, .provider-bookings-table td {
                 padding: 8px 10px;
             }
             
@@ -806,6 +944,16 @@
             .news-filter-btn {
                 width: 200px;
                 text-align: center;
+            }
+            
+            .provider-info-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .provider-avatar-large {
+                margin-right: 0;
+                margin-bottom: 15px;
             }
         }
 
@@ -957,30 +1105,92 @@
             margin-right: 15px;
         }
         
-        .status-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        /* Service Providers Section */
+        .providers-section {
+            padding: 60px 0;
+            background-color: #f0f8ff;
         }
         
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
+        .providers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
         
-        .status-approved {
-            background-color: #d1ecf1;
-            color: #0c5460;
+        .provider-service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            text-align: center;
+            padding: 30px;
         }
         
-        .status-rejected {
-            background-color: #f8d7da;
-            color: #721c24;
+        .provider-service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
         }
         
+        .provider-service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(to right, #2e8b57, #3cb371);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        /* Booking Form Styles */
+        .booking-form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Tabs for Provider Dashboard */
+        .provider-tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 30px;
+        }
+        
+        .provider-tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .provider-tab.active {
+            color: #2e8b57;
+            border-bottom: 3px solid #2e8b57;
+        }
+        
+        .provider-tab:hover:not(.active) {
+            color: #2e8b57;
+            background-color: #f9f9f9;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -993,7 +1203,7 @@
                 <p>Enter your credentials to access the portal</p>
             </div>
             
-            <form class="auth-form" onsubmit="handleLogin(event)">
+            <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)" novalidate>
                 <div class="form-group">
                     <label for="loginEmail">Email Address</label>
                     <input type="email" id="loginEmail" placeholder="Enter your email" required>
@@ -1004,11 +1214,23 @@
                     <input type="password" id="loginPassword" placeholder="Enter your password" required>
                 </div>
                 
+                <div class="form-group">
+                    <label for="loginRole">Login As</label>
+                    <select id="loginRole" required>
+                        <option value="">Select Role</option>
+                        <option value="user">User</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="draftsman">Draftsman</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                
                 <button type="submit">Login</button>
             </form>
             
             <div class="auth-footer">
                 <p>Don't have an account? <a onclick="showSignupModal()">Sign up here</a></p>
+                <p>Are you a service provider? <a onclick="showProviderSelectionModal()">Register here</a></p>
             </div>
         </div>
     </div>
@@ -1027,10 +1249,10 @@
                     <img src="https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff" alt="Profile Preview" id="profilePreview">
                 </div>
                 <input type="file" id="profilePicture" accept="image/*" style="display: none;">
-                <button type="button" onclick="document.getElementById('profilePicture').click()">Choose Profile Picture</button>
+                <button type="button" class="submit-btn" onclick="document.getElementById('profilePicture').click()">Choose Profile Picture</button>
             </div>
             
-            <form class="auth-form" onsubmit="handleSignup(event)">
+            <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)" novalidate>
                 <div class="form-group">
                     <label for="signupName">Full Name</label>
                     <input type="text" id="signupName" placeholder="Enter your full name" required>
@@ -1051,7 +1273,233 @@
                     <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
                 </div>
                 
+                <input type="hidden" id="signupRole" value="user">
+                
                 <button type="submit">Create Account</button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a onclick="showLoginModal()">Login here</a></p>
+                <p>Are you a service provider? <a onclick="showProviderSelectionModal()">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Provider Selection Modal -->
+    <div class="provider-modal" id="providerSelectionModal">
+        <div class="provider-container">
+            <button class="close-btn" onclick="closeProviderModal()">&times;</button>
+            <div class="auth-header">
+                <h2>Register as Service Provider</h2>
+                <p>Select your profession to register</p>
+            </div>
+            
+            <div class="provider-selection">
+                <div class="provider-card" onclick="showProviderRegistrationForm('doctor')">
+                    <div class="provider-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Doctor</h3>
+                    <p>Medical professional providing healthcare services</p>
+                </div>
+                
+                <div class="provider-card" onclick="showProviderRegistrationForm('draftsman')">
+                    <div class="provider-icon">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <h3>Draftsman</h3>
+                    <p>Technical drawing specialist for construction plans</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Provider Registration Modal - UPDATED VERSION with Pradeshiya Sabha -->
+    <div class="provider-modal" id="providerRegistrationModal">
+        <div class="provider-container">
+            <button class="close-btn" onclick="closeProviderRegistrationModal()">&times;</button>
+            <div class="auth-header">
+                <h2 id="providerFormTitle">Register as Service Provider</h2>
+                <p id="providerFormSubtitle">Please provide your professional details</p>
+            </div>
+            
+            <div class="profile-picture-upload">
+                <div class="profile-preview">
+                    <img src="https://ui-avatars.com/api/?name=Provider&background=2e8b57&color=fff" alt="Profile Preview" id="providerProfilePreview">
+                </div>
+                <input type="file" id="providerProfilePicture" accept="image/*" style="display: none;">
+                <button type="button" class="submit-btn" onclick="document.getElementById('providerProfilePicture').click()">Choose Profile Picture</button>
+            </div>
+            
+            <form class="auth-form" id="providerRegistrationForm" onsubmit="handleProviderRegistration(event)" novalidate>
+                <input type="hidden" id="providerType" value="">
+                
+                <!-- Common Fields -->
+                <div class="form-group">
+                    <label for="providerName">Full Name</label>
+                    <input type="text" id="providerName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="providerEmail">Email Address</label>
+                    <input type="email" id="providerEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="providerPassword">Password</label>
+                    <input type="password" id="providerPassword" placeholder="Create a password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="providerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="providerConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="providerPhone">Phone Number</label>
+                    <input type="tel" id="providerPhone" placeholder="Enter your phone number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="providerAddress">Address</label>
+                    <textarea id="providerAddress" placeholder="Enter your complete address" rows="3" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="providerDistrict">District</label>
+                    <select id="providerDistrict" required onchange="loadPradeshiyaSabhasForProvider()">
+                        <option value="">Select District</option>
+                        <option value="ampara">Ampara</option>
+                        <option value="anuradhapura">Anuradhapura</option>
+                        <option value="badulla">Badulla</option>
+                        <option value="batticaloa">Batticaloa</option>
+                        <option value="colombo">Colombo</option>
+                        <option value="galle">Galle</option>
+                        <option value="gampaha">Gampaha</option>
+                        <option value="hambantota">Hambantota</option>
+                        <option value="jaffna">Jaffna</option>
+                        <option value="kalutara">Kalutara</option>
+                        <option value="kandy">Kandy</option>
+                        <option value="kegalle">Kegalle</option>
+                        <option value="kilinochchi">Kilinochchi</option>
+                        <option value="kurunegala">Kurunegala</option>
+                        <option value="mannar">Mannar</option>
+                        <option value="matale">Matale</option>
+                        <option value="matara">Matara</option>
+                        <option value="monaragala">Monaragala</option>
+                        <option value="mullaitivu">Mullaitivu</option>
+                        <option value="nuwara-eliya">Nuwara Eliya</option>
+                        <option value="polonnaruwa">Polonnaruwa</option>
+                        <option value="puttalam">Puttalam</option>
+                        <option value="ratnapura">Ratnapura</option>
+                        <option value="trincomalee">Trincomalee</option>
+                        <option value="vavuniya">Vavuniya</option>
+                    </select>
+                </div>
+                
+                <!-- Pradeshiya Sabha Field - NEW ADDITION -->
+                <div class="form-group">
+                    <label for="providerPradeshiyaSabha">Pradeshiya Sabha</label>
+                    <select id="providerPradeshiyaSabha" required>
+                        <option value="">Select Pradeshiya Sabha</option>
+                        <!-- Options will be loaded dynamically -->
+                    </select>
+                </div>
+                
+                <!-- Doctor Specific Fields -->
+                <div id="doctorFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="doctorSpecialization">Specialization</label>
+                        <select id="doctorSpecialization">
+                            <option value="">Select Specialization</option>
+                            <option value="general">General Practitioner</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="gynecology">Gynecology</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="dermatology">Dermatology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                            <option value="psychiatry">Psychiatry</option>
+                            <option value="dentistry">Dentistry</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorQualification">Qualifications</label>
+                        <input type="text" id="doctorQualification" placeholder="MBBS, MD, etc.">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorRegistrationNo">Medical Registration Number</label>
+                        <input type="text" id="doctorRegistrationNo" placeholder="Enter your registration number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorExperience">Years of Experience</label>
+                        <input type="number" id="doctorExperience" placeholder="Number of years" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorHospital">Hospital/Clinic Name</label>
+                        <input type="text" id="doctorHospital" placeholder="Name of your hospital or clinic">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorAvailability">Availability</label>
+                        <input type="text" id="doctorAvailability" placeholder="e.g., Mon-Fri 9am-5pm, Sat 9am-1pm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorConsultationFee">Consultation Fee (LKR)</label>
+                        <input type="number" id="doctorConsultationFee" placeholder="Fee per consultation" min="0">
+                    </div>
+                </div>
+                
+                <!-- Draftsman Specific Fields -->
+                <div id="draftsmanFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="draftsmanQualification">Qualifications</label>
+                        <input type="text" id="draftsmanQualification" placeholder="Diploma/Degree in Drafting, etc.">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="draftsmanRegistrationNo">Professional Registration Number</label>
+                        <input type="text" id="draftsmanRegistrationNo" placeholder="Enter your registration number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="draftsmanExperience">Years of Experience</label>
+                        <input type="number" id="draftsmanExperience" placeholder="Number of years" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="draftsmanServices">Services Offered</label>
+                        <textarea id="draftsmanServices" placeholder="List the services you offer (e.g., house plans, site plans, etc.)" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="draftsmanRate">Service Rate (LKR)</label>
+                        <input type="text" id="draftsmanRate" placeholder="e.g., 10,000 per plan or hourly rate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="draftsmanAvailability">Availability</label>
+                        <input type="text" id="draftsmanAvailability" placeholder="e.g., Mon-Fri 9am-5pm, Weekends by appointment">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="providerBio">Professional Bio</label>
+                    <textarea id="providerBio" placeholder="Tell us about your professional background and experience" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="providerTerms" required>
+                        I certify that all information provided is accurate and I am a legitimate professional in my field
+                    </label>
+                </div>
+                
+                <button type="submit">Submit Registration</button>
             </form>
             
             <div class="auth-footer">
@@ -1075,6 +1523,50 @@
         </div>
     </div>
 
+    <!-- Booking Details Modal -->
+    <div class="booking-details-modal" id="bookingDetailsModal">
+        <div class="booking-details-container">
+            <button class="close-btn" onclick="closeBookingDetailsModal()">&times;</button>
+            <div class="submission-header">
+                <h2 id="bookingDetailsTitle">Booking Details</h2>
+                <p>Detailed information about the booking</p>
+            </div>
+            
+            <div class="submission-details" id="bookingDetailsContent">
+                <!-- Booking details will be dynamically added here -->
+            </div>
+            
+            <div id="responseSection" style="display: none; margin-top: 20px;">
+                <h3 style="color: #2e8b57; margin-bottom: 15px;">Your Response</h3>
+                <div id="existingResponse">
+                    <!-- Existing response will be shown here -->
+                </div>
+                <div id="responseFormContainer">
+                    <textarea id="providerResponse" placeholder="Enter your response to the user..." rows="4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px;"></textarea>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="submit-btn" onclick="submitProviderResponse()" style="flex: 1;">Submit Response</button>
+                        <button type="button" class="submit-btn" onclick="markBookingAsCompleted()" style="flex: 1; background: linear-gradient(to right, #28a745, #20c997);">Mark as Completed</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Response Modal -->
+    <div class="response-modal" id="responseModal">
+        <div class="response-container">
+            <button class="close-btn" onclick="closeResponseModal()">&times;</button>
+            <div class="submission-header">
+                <h2>Provider Response</h2>
+                <p>Provider's response to your booking</p>
+            </div>
+            
+            <div class="submission-details" id="responseDetails">
+                <!-- Response details will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Header with Logo and Navigation -->
     <header>
         <div class="container header-container">
@@ -1089,6 +1581,8 @@
                     <li><a href="#" onclick="showHome()">Home</a></li>
                     <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
                     <li><a href="#" onclick="showAdminPanel()">Admin</a></li>
+                    <li><a href="#" onclick="showServiceProviders()">Service Providers</a></li>
+                    <li><a href="#" onclick="showProviderDashboard()">Provider Dashboard</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
             </nav>
@@ -1161,6 +1655,184 @@
             </div>
         </section>
 
+        <!-- Service Providers Section -->
+        <section class="providers-section" id="serviceProvidersSection">
+            <div class="container">
+                <h2 class="section-title">Our Service Providers</h2>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto 30px; color: #666;">
+                    Connect with certified professionals who can help you with your specific needs. All providers are verified by our admin team.
+                </p>
+                
+                <div class="providers-grid">
+                    <div class="provider-service-card">
+                        <div class="provider-service-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3>Medical Services</h3>
+                        <p>Book appointments with certified doctors specializing in various fields. Get medical consultations and health advice.</p>
+                        <div style="margin-top: 20px;">
+                            <button class="read-more-btn" onclick="showAvailableDoctors()">View Available Doctors</button>
+                            <button class="read-more-btn" style="background: linear-gradient(to right, #ff7e00, #ff9f40); margin-top: 10px;" onclick="bookDoctor()">Book a Doctor</button>
+                        </div>
+                    </div>
+                    
+                    <div class="provider-service-card">
+                        <div class="provider-service-icon">
+                            <i class="fas fa-ruler-combined"></i>
+                        </div>
+                        <h3>Draftsman Services</h3>
+                        <p>Get professional drafting services for construction plans, site plans, and architectural drawings for your projects.</p>
+                        <div style="margin-top: 20px;">
+                            <button class="read-more-btn" onclick="showAvailableDraftsmen()">View Available Draftsmen</button>
+                            <button class="read-more-btn" style="background: linear-gradient(to right, #ff7e00, #ff9f40); margin-top: 10px;" onclick="bookDraftsman()">Book a Draftsman</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Available Doctors List -->
+                <div id="availableDoctors" style="display: none; margin-top: 40px;">
+                    <h3 style="color: #2e8b57; margin-bottom: 20px; text-align: center;">Available Doctors</h3>
+                    <div id="doctorsList" class="categories-grid">
+                        <!-- Doctors will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <!-- Available Draftsmen List -->
+                <div id="availableDraftsmen" style="display: none; margin-top: 40px;">
+                    <h3 style="color: #2e8b57; margin-bottom: 20px; text-align: center;">Available Draftsmen</h3>
+                    <div id="draftsmenList" class="categories-grid">
+                        <!-- Draftsmen will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <!-- Doctor Booking Form -->
+                <div id="doctorBookingForm" class="booking-form-container" style="display: none;">
+                    <h3 style="color: #2e8b57; margin-bottom: 20px;">Book a Doctor Appointment</h3>
+                    <form id="doctorBookingFormContent" onsubmit="submitDoctorBooking(event)" novalidate>
+                        <div class="form-group">
+                            <label for="bookingDoctor">Select Doctor</label>
+                            <select id="bookingDoctor" required>
+                                <option value="">Select a doctor</option>
+                                <!-- Doctors will be dynamically added here -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patientName">Patient Name</label>
+                            <input type="text" id="patientName" placeholder="Enter patient's full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patientAge">Patient Age</label>
+                            <input type="number" id="patientAge" placeholder="Enter age" min="0" max="120" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patientGender">Patient Gender</label>
+                            <select id="patientGender" required>
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="medicalIssue">Medical Issue/Concern</label>
+                            <textarea id="medicalIssue" placeholder="Describe the medical issue or concern" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="preferredDate">Preferred Date</label>
+                            <input type="date" id="preferredDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="preferredTime">Preferred Time</label>
+                            <input type="time" id="preferredTime" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookingContact">Contact Number</label>
+                            <input type="tel" id="bookingContact" placeholder="Enter contact number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookingNotes">Additional Notes</label>
+                            <textarea id="bookingNotes" placeholder="Any additional information or special requirements" rows="2"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Book Appointment</button>
+                        <button type="button" class="submit-btn" onclick="cancelBooking()" style="background: linear-gradient(to right, #6c757d, #868e96); margin-left: 10px;">Cancel</button>
+                    </form>
+                </div>
+                
+                <!-- Draftsman Booking Form -->
+                <div id="draftsmanBookingForm" class="booking-form-container" style="display: none;">
+                    <h3 style="color: #2e8b57; margin-bottom: 20px;">Book a Draftsman</h3>
+                    <form id="draftsmanBookingFormContent" onsubmit="submitDraftsmanBooking(event)" novalidate>
+                        <div class="form-group">
+                            <label for="bookingDraftsman">Select Draftsman</label>
+                            <select id="bookingDraftsman" required>
+                                <option value="">Select a draftsman</option>
+                                <!-- Draftsmen will be dynamically added here -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="clientName">Client Name</label>
+                            <input type="text" id="clientName" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="projectType">Project Type</label>
+                            <select id="projectType" required>
+                                <option value="">Select project type</option>
+                                <option value="house">House Plan</option>
+                                <option value="commercial">Commercial Building</option>
+                                <option value="renovation">Renovation Plan</option>
+                                <option value="site">Site Plan</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="projectDetails">Project Details</label>
+                            <textarea id="projectDetails" placeholder="Describe your project requirements in detail" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="propertyAddress">Property Address</label>
+                            <textarea id="propertyAddress" placeholder="Enter complete property address" rows="2" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="propertySize">Property Size (perches)</label>
+                            <input type="number" id="propertySize" placeholder="Enter property size in perches" min="0" step="0.01" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="preferredVisitDate">Preferred Site Visit Date</label>
+                            <input type="date" id="preferredVisitDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="draftsmanContact">Contact Number</label>
+                            <input type="tel" id="draftsmanContact" placeholder="Enter contact number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="draftsmanBudget">Budget Estimate (LKR)</label>
+                            <input type="number" id="draftsmanBudget" placeholder="Enter estimated budget" min="0" required>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Book Draftsman</button>
+                        <button type="button" class="submit-btn" onclick="cancelBooking()" style="background: linear-gradient(to right, #6c757d, #868e96); margin-left: 10px;">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
         <!-- News Section -->
         <section class="news-section" id="newsSection">
             <div class="container">
@@ -1194,7 +1866,7 @@
         <div class="user-forms-container">
             <div class="form-card">
                 <h3>Personal Information</h3>
-                <form id="personalInfoForm" onsubmit="updatePersonalInfo(event)">
+                <form id="personalInfoForm" onsubmit="updatePersonalInfo(event)" novalidate>
                     <div class="form-group">
                         <label for="personalName">Full Name</label>
                         <input type="text" id="personalName" placeholder="Enter your full name" required>
@@ -1247,13 +1919,18 @@
                         </select>
                     </div>
                     
+                    <div class="form-group">
+                        <label for="personalPradeshiyaSabha">Pradeshiya Sabha</label>
+                        <input type="text" id="personalPradeshiyaSabha" placeholder="Enter your Pradeshiya Sabha">
+                    </div>
+                    
                     <button type="submit" class="submit-btn">Update Information</button>
                 </form>
             </div>
             
             <div class="form-card">
                 <h3>Submit Your Problem</h3>
-                <form id="problemForm" onsubmit="submitProblemForm(event)">
+                <form id="problemForm" onsubmit="submitProblemForm(event)" novalidate>
                     <div class="form-group">
                         <label for="problemCategory">Problem Category</label>
                         <select id="problemCategory" required>
@@ -1288,6 +1965,14 @@
                     
                     <button type="submit" class="submit-btn">Submit Problem</button>
                 </form>
+            </div>
+        </div>
+        
+        <!-- User Bookings Section -->
+        <div class="form-card" style="margin-top: 30px;">
+            <h3>Your Bookings</h3>
+            <div id="userBookingsList">
+                <!-- User's bookings will be dynamically added here -->
             </div>
         </div>
         
@@ -1335,6 +2020,148 @@
         </div>
     </div>
 
+    <!-- Service Provider Dashboard -->
+    <div class="provider-dashboard container" id="providerDashboard">
+        <div class="dashboard-header">
+            <h2>Service Provider Dashboard</h2>
+            <p>Manage your professional profile and respond to bookings</p>
+        </div>
+        
+        <div class="provider-welcome">
+            <h2>Welcome, <span id="providerWelcomeName">Provider</span></h2>
+            <p>You are logged in as a <span id="providerTypeDisplay">Service Provider</span></p>
+        </div>
+        
+        <div class="provider-info-card">
+            <div class="provider-avatar-large">
+                <img src="https://ui-avatars.com/api/?name=Provider&background=2e8b57&color=fff" alt="Provider" id="providerDashboardAvatar">
+            </div>
+            <div class="provider-details">
+                <h3 id="providerDashboardName">Provider Name</h3>
+                <p id="providerDashboardSpecialization">Specialization</p>
+                <p id="providerDashboardLocation">Location</p>
+                <p id="providerDashboardContact">Contact Information</p>
+                <span class="status-badge" id="providerDashboardStatus">Status</span>
+                <p id="providerDashboardBio" style="margin-top: 10px;">Professional bio will appear here</p>
+            </div>
+        </div>
+        
+        <div class="provider-tabs">
+            <button class="provider-tab active" onclick="switchProviderTab('bookings')">My Bookings</button>
+            <button class="provider-tab" onclick="switchProviderTab('profile')">My Profile</button>
+            <button class="provider-tab" onclick="switchProviderTab('availability')">Availability</button>
+        </div>
+        
+        <!-- Bookings Tab -->
+        <div id="providerBookingsTab" class="tab-content active">
+            <div class="form-card">
+                <h3>Your Bookings</h3>
+                <p>Manage and respond to customer bookings</p>
+                
+                <table class="provider-bookings-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Service Type</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="providerBookingsTableBody">
+                        <!-- Provider bookings will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Profile Tab -->
+        <div id="providerProfileTab" class="tab-content">
+            <div class="form-card">
+                <h3>Update Your Profile</h3>
+                <form id="providerProfileForm" onsubmit="updateProviderProfile(event)" novalidate>
+                    <div class="form-group">
+                        <label for="updateProviderName">Full Name</label>
+                        <input type="text" id="updateProviderName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="updateProviderPhone">Phone Number</label>
+                        <input type="tel" id="updateProviderPhone" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="updateProviderAddress">Address</label>
+                        <textarea id="updateProviderAddress" placeholder="Enter your complete address" rows="3" required></textarea>
+                    </div>
+                    
+                    <div id="doctorProfileFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="updateDoctorHospital">Hospital/Clinic Name</label>
+                            <input type="text" id="updateDoctorHospital" placeholder="Name of your hospital or clinic" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="updateDoctorAvailability">Availability</label>
+                            <input type="text" id="updateDoctorAvailability" placeholder="e.g., Mon-Fri 9am-5pm, Sat 9am-1pm" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="updateDoctorConsultationFee">Consultation Fee (LKR)</label>
+                            <input type="number" id="updateDoctorConsultationFee" placeholder="Fee per consultation" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <div id="draftsmanProfileFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="updateDraftsmanServices">Services Offered</label>
+                            <textarea id="updateDraftsmanServices" placeholder="List the services you offer" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="updateDraftsmanRate">Service Rate (LKR)</label>
+                            <input type="text" id="updateDraftsmanRate" placeholder="e.g., 10,000 per plan or hourly rate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="updateDraftsmanAvailability">Availability</label>
+                            <input type="text" id="updateDraftsmanAvailability" placeholder="e.g., Mon-Fri 9am-5pm, Weekends by appointment" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="updateProviderBio">Professional Bio</label>
+                        <textarea id="updateProviderBio" placeholder="Tell us about your professional background and experience" rows="4" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Update Profile</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Availability Tab -->
+        <div id="providerAvailabilityTab" class="tab-content">
+            <div class="form-card">
+                <h3>Manage Your Availability</h3>
+                <div class="form-group">
+                    <label>Current Status: <span id="currentAvailabilityStatus" style="color: #2e8b57; font-weight: bold;">Available</span></label>
+                    <div style="margin-top: 15px;">
+                        <button type="button" class="submit-btn" onclick="changeAvailabilityStatus('available')" style="background: linear-gradient(to right, #28a745, #20c997); margin-right: 10px;">Mark as Available</button>
+                        <button type="button" class="submit-btn" onclick="changeAvailabilityStatus('busy')" style="background: linear-gradient(to right, #ffc107, #ffd54f); margin-right: 10px;">Mark as Busy</button>
+                        <button type="button" class="submit-btn" onclick="changeAvailabilityStatus('unavailable')" style="background: linear-gradient(to right, #dc3545, #e35d6a);">Mark as Unavailable</button>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 30px;">
+                    <h4>Upcoming Bookings</h4>
+                    <div id="providerUpcomingBookings">
+                        <!-- Upcoming bookings will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Admin Panel -->
     <div class="admin-panel container" id="adminPanel">
         <div class="admin-header">
@@ -1359,18 +2186,18 @@
             </div>
             
             <div class="stat-card">
-                <h3>News Items</h3>
-                <div class="number" id="totalNews">0</div>
+                <h3>Service Providers</h3>
+                <div class="number" id="totalProviders">0</div>
             </div>
             
             <div class="stat-card">
-                <h3>Draftsman Bookings</h3>
+                <h3>Total Bookings</h3>
                 <div class="number" id="totalBookings">0</div>
             </div>
             
             <div class="stat-card">
-                <h3>Doctor Registrations</h3>
-                <div class="number" id="totalDoctors">0</div>
+                <h3>Pending Approvals</h3>
+                <div class="number" id="pendingApprovals">0</div>
             </div>
         </div>
         
@@ -1387,8 +2214,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Password</th>
                                 <th>Role</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -1417,88 +2244,51 @@
                 </div>
                 
                 <div class="control-card">
-                    <h4>Draftsman Bookings</h4>
+                    <h4>Service Provider Approvals</h4>
                     <div class="control-form">
-                        <input type="text" id="bookingSearch" placeholder="Search bookings..." onkeyup="searchBookings()">
+                        <input type="text" id="providerSearch" placeholder="Search providers..." onkeyup="searchProviders()">
                     </div>
-                    <table class="bookings-table">
+                    <table class="providers-table">
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>District</th>
-                                <th>Pradeshiya Sabha</th>
-                                <th>Draftsman</th>
-                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Email</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="bookingsTableBody">
-                            <!-- Bookings will be dynamically added here -->
+                        <tbody id="providersTableBody">
+                            <!-- Providers will be dynamically added here -->
                         </tbody>
                     </table>
                 </div>
             </div>
             
-            <!-- Doctor Management Section -->
+            <!-- Bookings Management Section -->
             <div class="news-admin-controls">
-                <h3>Doctor Management</h3>
+                <h3>Bookings Management</h3>
                 <div class="admin-controls">
                     <div class="control-card">
-                        <h4>Doctor Registration Approvals</h4>
+                        <h4>All Bookings</h4>
                         <div class="control-form">
-                            <input type="text" id="doctorSearch" placeholder="Search doctors..." onkeyup="searchDoctors()">
+                            <input type="text" id="bookingSearch" placeholder="Search bookings..." onkeyup="searchBookings()">
                         </div>
-                        <table class="doctors-table">
+                        <table class="bookings-table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Specialization</th>
-                                    <th>Location</th>
+                                    <th>Customer</th>
+                                    <th>Provider</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="doctorsTableBody">
-                                <!-- Doctors will be dynamically added here -->
+                            <tbody id="bookingsTableBody">
+                                <!-- Bookings will be dynamically added here -->
                             </tbody>
                         </table>
-                    </div>
-                    
-                    <div class="control-card">
-                        <h4>Add New Doctor</h4>
-                        <form class="control-form" id="doctorForm" onsubmit="addDoctorItem(event)">
-                            <input type="text" id="doctorName" placeholder="Doctor Name" required>
-                            <select id="doctorSpecialization" required>
-                                <option value="">Select Specialization</option>
-                                <option value="general">General Practitioner</option>
-                                <option value="pediatrics">Pediatrics</option>
-                                <option value="gynecology">Gynecology</option>
-                                <option value="cardiology">Cardiology</option>
-                                <option value="dermatology">Dermatology</option>
-                                <option value="orthopedics">Orthopedics</option>
-                                <option value="psychiatry">Psychiatry</option>
-                                <option value="dentistry">Dentistry</option>
-                            </select>
-                            <input type="text" id="doctorQualification" placeholder="Qualifications" required>
-                            <input type="number" id="doctorExperience" placeholder="Years of Experience" required>
-                            <select id="doctorLocation" required>
-                                <option value="">Select Location</option>
-                                <option value="western">Western Province</option>
-                                <option value="central">Central Province</option>
-                                <option value="southern">Southern Province</option>
-                                <option value="northern">Northern Province</option>
-                                <option value="eastern">Eastern Province</option>
-                                <option value="north-western">North Western Province</option>
-                                <option value="north-central">North Central Province</option>
-                                <option value="uva">Uva Province</option>
-                                <option value="sabaragamuwa">Sabaragamuwa Province</option>
-                            </select>
-                            <input type="tel" id="doctorPhone" placeholder="Phone Number" required>
-                            <textarea id="doctorBio" placeholder="Professional Bio" rows="3" required></textarea>
-                            <input type="text" id="doctorAvailability" placeholder="Availability (e.g., Mon-Fri 9am-5pm)" required>
-                            <button type="submit">Add Doctor</button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -1509,7 +2299,7 @@
                 <div class="admin-controls">
                     <div class="control-card">
                         <h4>Add New News Item</h4>
-                        <form class="control-form" id="newsForm" onsubmit="addNewsItem(event)">
+                        <form class="control-form" id="newsForm" onsubmit="addNewsItem(event)" novalidate>
                             <input type="text" id="newsTitle" placeholder="News Title" required>
                             <select id="newsCategory" required>
                                 <option value="">Select Category</option>
@@ -1568,7 +2358,7 @@
                     <ul>
                         <li><a href="#" onclick="showHome()">Home</a></li>
                         <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="#" onclick="showServiceProviders()">Service Providers</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
@@ -1582,6 +2372,16 @@
                         <li><a href="#">Department of Agriculture</a></li>
                     </ul>
                 </div>
+                
+                <div class="footer-section">
+                    <h3>Service Providers</h3>
+                    <ul>
+                        <li><a href="#" onclick="showProviderSelectionModal()">Register as Provider</a></li>
+                        <li><a href="#" onclick="showProviderDashboard()">Provider Login</a></li>
+                        <li><a href="#" onclick="showAvailableDoctors()">Find Doctors</a></li>
+                        <li><a href="#" onclick="showAvailableDraftsmen()">Find Draftsmen</a></li>
+                    </ul>
+                </div>
             </div>
             
             <div class="copyright">
@@ -1590,10 +2390,40 @@
         </div>
     </footer>
 
-    <!-- JavaScript Code -->
+    <!-- JavaScript Code - UPDATED VERSION with Buildings.html integration -->
     <script>
-        // Initialize sample data
+        // Pradeshiya Sabha data for Sri Lanka
+        const pradeshiyaSabhasData = {
+            "Ampara": ["Akkaraipattu", "Ampara", "Dehiattakandiya", "Kalmunai", "Mahaoya", "Padiyatalawa", "Sammanthurai", "Uhana"],
+            "Anuradhapura": ["Anuradhapura", "Galenbindunuwewa", "Horowpathana", "Kahatagasdigiliya", "Kekirawa", "Medawachchiya", "Mihintale", "Nochchiyagama", "Padaviya", "Palagala", "Talawa"],
+            "Badulla": ["Badulla", "Bandarawela", "Ella", "Haldummulla", "Hali-Ela", "Haputale", "Mahiyanganaya", "Meegahakiula", "Passara", "Welimada"],
+            "Batticaloa": ["Eravur Pattu", "Koralai Pattu", "Manmunai", "Porativu Pattu"],
+            "Colombo": ["Colombo", "Dehiwala-Mount Lavinia", "Homagama", "Kaduwela", "Kesbewa", "Kolonnawa", "Kotte", "Maharagama", "Moratuwa", "Ratmalana", "Seethawaka"],
+            "Galle": ["Akmeemana", "Ambalangoda", "Baddegama", "Bentota", "Bope-Poddala", "Elpitiya", "Galle", "Habaraduwa", "Imaduwa", "Karandeniya", "Nagoda", "Neluwa", "Niyagama", "Thawalama"],
+            "Gampaha": ["Attanagalla", "Biyagama", "Divulapitiya", "Dompe", "Gampaha", "Ja-Ela", "Katana", "Kelaniya", "Mahara", "Minuwangoda", "Mirigama", "Negombo", "Wattala"],
+            "Hambantota": ["Ambalantota", "Angunakolapelessa", "Beliatta", "Hambantota", "Lunugamvehera", "Sooriyawewa", "Tangalle", "Tissamaharama", "Weeraketiya"],
+            "Jaffna": ["Chavakachcheri", "Delft", "Jaffna", "Karainagar", "Kayts", "Nallur", "Point Pedro", "Valikamam", "Velanai"],
+            "Kalutara": ["Agalawatta", "Bandaragama", "Beruwala", "Bulathsinhala", "Dodangoda", "Horana", "Kalutara", "Madurawela", "Matugama", "Panadura", "Walallawita"],
+            "Kandy": ["Akurana", "Gangawata Korale", "Harispattuwa", "Kandy", "Kundasale", "Meda Dumbara", "Minipe", "Panvila", "Pasbage Korale", "Pathadumbara", "Poojapitiya", "Thumpane", "Uda Palatha", "Udunuwara", "Yatinuwara"],
+            "Kegalle": ["Aranayake", "Bulathkohupitiya", "Dehiowita", "Deraniyagala", "Galigamuwa", "Kegalle", "Mawanella", "Rambukkana", "Ruwanwella", "Warakapola", "Yatiyantota"],
+            "Kilinochchi": ["Karachchi", "Pachchilaipalli", "Poonakary"],
+            "Kurunegala": ["Alawwa", "Bingiriya", "Galgamuwa", "Giribawa", "Ibbagamuwa", "Kobeigane", "Kuliyapitiya", "Kurunegala", "Mawathagama", "Narammala", "Nikaweratiya", "Panduwasnuwara", "Polgahawela", "Polpithigama", "Wariyapola"],
+            "Mannar": ["Mannar", "Manthai West", "Musali", "Nanaddan"],
+            "Matale": ["Ambanganga Korale", "Dambulla", "Galewela", "Laggala-Pallegama", "Matale", "Naula", "Pallepola", "Rattota", "Ukuwela", "Wilgamuwa", "Yatawatta"],
+            "Matara": ["Akuressa", "Athuraliya", "Devinuwara", "Dickwella", "Hakmana", "Kamburupitiya", "Kirinda Puhulwella", "Kotapola", "Malimbada", "Matara", "Mulatiyana", "Pasgoda", "Pitabeddara", "Thihagoda", "Weligama"],
+            "Moneragala": ["Badalkumbura", "Bibile", "Buttala", "Kataragama", "Madulla", "Medagama", "Moneragala", "Siyambalanduwa", "Thanamalvila", "Wellawaya"],
+            "Mullaitivu": ["Manthai East", "Maritimepattu", "Puthukudiyiruppu", "Thunukkai"],
+            "Nuwara Eliya": ["Ambagamuwa", "Hanguranketha", "Kothmale", "Nuwara Eliya", "Walapane"],
+            "Polonnaruwa": ["Dimbulagala", "Elahera", "Hingurakgoda", "Lankapura", "Medirigiriya", "Polonnaruwa", "Welikanda"],
+            "Puttalam": ["Anamaduwa", "Arachchikattuwa", "Chilaw", "Kalpitiya", "Karuwalagaswewa", "Nattandiya", "Nawagattegama", "Puttalam", "Wennappuwa"],
+            "Ratnapura": ["Ayagama", "Balangoda", "Eheliyagoda", "Elapattha", "Embilipitiya", "Godakawela", "Imbulpe", "Kahawatta", "Kalawana", "Kolonna", "Kuruwita", "Nivithigala", "Opanayaka", "Pelmadulla", "Ratnapura", "Weligepola"],
+            "Trincomalee": ["Gomarankadawala", "Kantalai", "Kinniya", "Kuchchaveli", "Morawewa", "Muttur", "Padavi Sri Pura", "Seruwila", "Thambalagamuwa", "Trincomalee"],
+            "Vavuniya": ["Vavuniya", "Vavuniya North", "Vavuniya South", "Vengalacheddikulam"]
+        };
+
+        // Initialize sample data - UPDATED WITH PRADESHIYA SABHA
         function initializeData() {
+            // Initialize users if not exists
             if (!localStorage.getItem('users')) {
                 const users = [
                     { 
@@ -1607,7 +2437,8 @@
                         status: 'Active',
                         phone: '+94 11 234 5678',
                         address: '123 Admin Street, Colombo',
-                        district: 'colombo'
+                        district: 'colombo',
+                        pradeshiyaSabha: 'Colombo'
                     },
                     { 
                         id: 2, 
@@ -1620,12 +2451,14 @@
                         status: 'Active',
                         phone: '+94 77 123 4567',
                         address: '456 Rural Road, Ampara',
-                        district: 'ampara'
+                        district: 'ampara',
+                        pradeshiyaSabha: 'Ampara'
                     }
                 ];
                 localStorage.setItem('users', JSON.stringify(users));
             }
             
+            // Initialize submissions if not exists
             if (!localStorage.getItem('submissions')) {
                 const submissions = [
                     { 
@@ -1645,6 +2478,7 @@
                 localStorage.setItem('submissions', JSON.stringify(submissions));
             }
             
+            // Initialize news if not exists
             if (!localStorage.getItem('news')) {
                 const news = [
                     { 
@@ -1669,91 +2503,175 @@
                 localStorage.setItem('news', JSON.stringify(news));
             }
             
-            // Initialize draftsman bookings if not exists
-            if (!localStorage.getItem('draftsmanBookings')) {
-                localStorage.setItem('draftsmanBookings', JSON.stringify([]));
-            }
-            
-            // Initialize doctors if not exists
-            if (!localStorage.getItem('doctors')) {
-                const doctors = [
+            // Initialize service providers if not exists - UPDATED WITH PRADESHIYA SABHA
+            if (!localStorage.getItem('serviceProviders')) {
+                const providers = [
                     {
                         id: 1,
-                        name: "Dr. Priya Fernando",
-                        specialization: "General Practitioner",
-                        qualification: "MBBS, MD",
+                        type: 'doctor',
+                        name: 'Dr. Priya Fernando',
+                        email: 'drpriya@example.com',
+                        password: 'doctor123',
+                        phone: '011-2345678',
+                        address: '123 Medical Street, Colombo',
+                        district: 'colombo',
+                        pradeshiyaSabha: 'Colombo',
+                        specialization: 'general',
+                        qualification: 'MBBS, MD',
+                        registrationNo: 'SLMC-12345',
                         experience: 12,
-                        location: "western",
-                        phone: "011-2345678",
-                        bio: "Experienced general practitioner with expertise in rural healthcare.",
-                        availability: "Mon-Fri 9am-5pm, Sat 9am-1pm",
-                        status: "approved",
-                        avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+                        hospital: 'Colombo General Hospital',
+                        availability: 'Mon-Fri 9am-5pm, Sat 9am-1pm',
+                        consultationFee: 1500,
+                        bio: 'Experienced general practitioner with expertise in rural healthcare. Special interest in preventive medicine and community health.',
+                        profilePicture: 'https://randomuser.me/api/portraits/women/44.jpg',
+                        status: 'approved',
+                        availabilityStatus: 'available',
+                        joinDate: '2025-01-10'
                     },
                     {
                         id: 2,
-                        name: "Dr. Rajesh Kumar",
-                        specialization: "Pediatrics",
-                        qualification: "MBBS, DCH",
+                        type: 'draftsman',
+                        name: 'Mr. Anura Perera',
+                        email: 'anura.draftsman@example.com',
+                        password: 'draftsman123',
+                        phone: '077-9876543',
+                        address: '456 Design Road, Kandy',
+                        district: 'kandy',
+                        pradeshiyaSabha: 'Kandy',
+                        qualification: 'Diploma in Architectural Drafting',
+                        registrationNo: 'IDC-54321',
                         experience: 8,
-                        location: "central",
-                        phone: "081-2345678",
-                        bio: "Specialized in child healthcare with focus on preventive medicine.",
-                        availability: "Mon-Sat 8am-4pm",
-                        status: "approved",
-                        avatar: "https://randomuser.me/api/portraits/men/32.jpg"
+                        services: 'House plans, site plans, renovation plans, commercial building designs',
+                        rate: '10,000 - 50,000 LKR per project',
+                        availability: 'Mon-Fri 9am-5pm, Weekends by appointment',
+                        bio: 'Professional draftsman with 8 years of experience in residential and commercial projects. Specialized in traditional and modern Sri Lankan architecture.',
+                        profilePicture: 'https://randomuser.me/api/portraits/men/67.jpg',
+                        status: 'approved',
+                        availabilityStatus: 'available',
+                        joinDate: '2025-02-15'
                     },
                     {
                         id: 3,
-                        name: "Dr. Anjali Silva",
-                        specialization: "Gynecology",
-                        qualification: "MBBS, MS",
-                        experience: 15,
-                        location: "southern",
-                        phone: "041-2345678",
-                        bio: "Women's health specialist with extensive experience in rural communities.",
-                        availability: "Mon-Fri 10am-6pm",
-                        status: "approved",
-                        avatar: "https://randomuser.me/api/portraits/women/68.jpg"
+                        type: 'draftsman',
+                        name: 'Mr. Rajan Sivarajah',
+                        email: 'rajan.draftsman@example.com',
+                        password: 'draftsman456',
+                        phone: '021-1234567',
+                        address: '123 Drafting Street, Jaffna',
+                        district: 'jaffna',
+                        pradeshiyaSabha: 'Jaffna',
+                        qualification: 'B.Sc. in Architectural Technology',
+                        registrationNo: 'IDC-98765',
+                        experience: 10,
+                        services: 'Residential buildings, commercial complexes, interior design',
+                        rate: '15,000 - 75,000 LKR per project',
+                        availability: 'Mon-Sat 9am-6pm',
+                        bio: 'Experienced draftsman with expertise in modern architectural designs and sustainable building solutions.',
+                        profilePicture: 'https://randomuser.me/api/portraits/men/45.jpg',
+                        status: 'approved',
+                        availabilityStatus: 'available',
+                        joinDate: '2025-03-10'
                     },
                     {
                         id: 4,
-                        name: "Dr. Suresh Perera",
-                        specialization: "Dermatology",
-                        qualification: "MBBS, DDVL",
-                        experience: 10,
-                        location: "western",
-                        phone: "011-3456789",
-                        bio: "Skin specialist with focus on tropical dermatological conditions.",
-                        availability: "Tue-Sat 9am-5pm",
-                        status: "pending",
-                        avatar: "https://randomuser.me/api/portraits/men/76.jpg"
+                        type: 'doctor',
+                        name: 'Dr. Rajesh Kumar',
+                        email: 'drrajesh@example.com',
+                        password: 'doctor456',
+                        phone: '081-2345678',
+                        address: '789 Health Lane, Kandy',
+                        district: 'kandy',
+                        pradeshiyaSabha: 'Kandy',
+                        specialization: 'pediatrics',
+                        qualification: 'MBBS, DCH',
+                        registrationNo: 'SLMC-67890',
+                        experience: 8,
+                        hospital: 'Kandy Children\'s Hospital',
+                        availability: 'Mon-Sat 8am-4pm',
+                        consultationFee: 1200,
+                        bio: 'Specialized in child healthcare with focus on preventive medicine. Experienced in rural pediatric care.',
+                        profilePicture: 'https://randomuser.me/api/portraits/men/32.jpg',
+                        status: 'pending',
+                        availabilityStatus: 'available',
+                        joinDate: '2025-09-01'
                     }
                 ];
-                localStorage.setItem('doctors', JSON.stringify(doctors));
+                localStorage.setItem('serviceProviders', JSON.stringify(providers));
+            }
+            
+            // Initialize bookings if not exists - INCLUDING BUILDINGS.HTML BOOKINGS
+            if (!localStorage.getItem('bookings')) {
+                const bookings = [
+                    {
+                        id: 1,
+                        type: 'doctor',
+                        providerId: 1,
+                        providerName: 'Dr. Priya Fernando',
+                        userId: 2,
+                        userName: 'John Doe',
+                        userEmail: 'john@example.com',
+                        patientName: 'John Doe',
+                        patientAge: 35,
+                        patientGender: 'male',
+                        medicalIssue: 'Persistent cough and fever for 5 days',
+                        preferredDate: '2025-09-20',
+                        preferredTime: '10:00',
+                        contact: '0712345678',
+                        notes: 'No known allergies',
+                        status: 'confirmed',
+                        providerResponse: '',
+                        responseDate: '',
+                        bookingDate: '2025-09-16'
+                    },
+                    {
+                        id: 2,
+                        type: 'draftsman',
+                        providerId: 2,
+                        providerName: 'Mr. Anura Perera',
+                        userId: 2,
+                        userName: 'John Doe',
+                        userEmail: 'john@example.com',
+                        clientName: 'John Doe',
+                        projectType: 'house',
+                        projectDetails: 'Need a house plan for a 2-story, 3-bedroom house on a 10-perch land',
+                        propertyAddress: '456 Rural Road, Ampara',
+                        propertySize: 10,
+                        preferredVisitDate: '2025-09-25',
+                        contact: '0712345678',
+                        budget: 25000,
+                        status: 'pending',
+                        providerResponse: '',
+                        responseDate: '',
+                        bookingDate: '2025-09-17'
+                    }
+                ];
+                localStorage.setItem('bookings', JSON.stringify(bookings));
             }
             
             updateUserInterface();
             updateStats();
             loadUsersTable();
             loadSubmissionsTable();
-            loadNewsTable();
+            loadProvidersTable();
             loadBookingsTable();
-            loadDoctorsTable();
+            loadNewsTable();
             displayNews('all');
             setupNewsFilters();
+            loadAvailableProviders();
         }
         
         // Update user interface based on login status
         function updateUserInterface() {
             const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
             const authButton = document.getElementById('authButton');
             const userProfileSection = document.getElementById('userProfileSection');
             const userName = document.getElementById('userName');
             const userAvatar = document.getElementById('userAvatar');
             
             if (currentUser) {
-                // User is logged in
+                // Regular user is logged in
                 authButton.textContent = 'Logout';
                 authButton.onclick = handleLogout;
                 
@@ -1762,14 +2680,31 @@
                 userName.textContent = currentUser.name;
                 
                 // Set user avatar
-                userAvatar.src = currentUser.profilePicture || 'https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff';
+                userAvatar.src = currentUser.profilePicture || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.name) + '&background=2e8b57&color=fff';
                 
                 // Update profile section if on dashboard
                 if (document.getElementById('userDashboard').style.display === 'block') {
                     loadPersonalInfoForm(currentUser);
+                    loadUserBookings();
+                }
+            } else if (currentProvider) {
+                // Service provider is logged in
+                authButton.textContent = 'Logout';
+                authButton.onclick = handleProviderLogout;
+                
+                // Show provider profile
+                userProfileSection.style.display = 'flex';
+                userName.textContent = currentProvider.name;
+                
+                // Set provider avatar
+                userAvatar.src = currentProvider.profilePicture || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentProvider.name) + '&background=2e8b57&color=fff';
+                
+                // Update provider dashboard if visible
+                if (document.getElementById('providerDashboard').style.display === 'block') {
+                    loadProviderDashboard(currentProvider);
                 }
             } else {
-                // User is not logged in
+                // No one is logged in
                 authButton.textContent = 'Login';
                 authButton.onclick = showLoginModal;
                 userProfileSection.style.display = 'none';
@@ -1783,6 +2718,7 @@
             document.getElementById('personalPhone').value = user.phone || '';
             document.getElementById('personalAddress').value = user.address || '';
             document.getElementById('personalDistrict').value = user.district || '';
+            document.getElementById('personalPradeshiyaSabha').value = user.pradeshiyaSabha || '';
         }
         
         // Update personal information
@@ -1801,6 +2737,7 @@
             const phone = document.getElementById('personalPhone').value;
             const address = document.getElementById('personalAddress').value;
             const district = document.getElementById('personalDistrict').value;
+            const pradeshiyaSabha = document.getElementById('personalPradeshiyaSabha').value;
             
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const userIndex = users.findIndex(u => u.id === currentUser.id);
@@ -1811,6 +2748,7 @@
                 users[userIndex].phone = phone;
                 users[userIndex].address = address;
                 users[userIndex].district = district;
+                users[userIndex].pradeshiyaSabha = pradeshiyaSabha;
                 
                 localStorage.setItem('users', JSON.stringify(users));
                 localStorage.setItem('currentUser', JSON.stringify(users[userIndex]));
@@ -1823,21 +2761,219 @@
             }
         }
         
+        // Load user bookings
+        function loadUserBookings() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) return;
+            
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            
+            // Get bookings from this user (by email or user ID)
+            const userBookings = bookings.filter(b => 
+                b.userEmail === currentUser.email || 
+                b.userId === currentUser.id ||
+                (b.userId && b.userId.toString().includes('temp_user_') && b.userName === currentUser.name)
+            );
+            
+            const bookingsList = document.getElementById('userBookingsList');
+            
+            if (userBookings.length === 0) {
+                bookingsList.innerHTML = '<p>You have no bookings yet.</p>';
+                return;
+            }
+            
+            let html = '<table class="provider-bookings-table"><thead><tr><th>Service</th><th>Provider</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+            
+            userBookings.forEach(booking => {
+                const serviceType = booking.type === 'doctor' ? 'Doctor Appointment' : 'Draftsman Service';
+                const statusClass = booking.status === 'confirmed' ? 'status-approved' : 
+                                   booking.status === 'pending' ? 'status-pending' : 
+                                   booking.status === 'completed' ? 'status-completed' : 'status-rejected';
+                
+                html += `
+                    <tr>
+                        <td>${serviceType}</td>
+                        <td>${booking.providerName}</td>
+                        <td>${booking.preferredDate || booking.bookingDate}</td>
+                        <td><span class="status-badge ${statusClass}">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span></td>
+                        <td>
+                            <button class="action-btn view-btn" onclick="viewUserBooking(${booking.id})">View</button>
+                            ${booking.providerResponse ? `<button class="action-btn reply-btn" onclick="viewProviderResponse(${booking.id})">Response</button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            bookingsList.innerHTML = html;
+        }
+        
+        // View user booking
+        function viewUserBooking(id) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === id);
+            
+            if (booking) {
+                let details = '';
+                
+                if (booking.type === 'doctor') {
+                    details = `
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Service Type:</span>
+                            <span class="submission-detail-value">Doctor Appointment</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Doctor:</span>
+                            <span class="submission-detail-value">${booking.providerName}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Patient Name:</span>
+                            <span class="submission-detail-value">${booking.patientName}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Patient Age:</span>
+                            <span class="submission-detail-value">${booking.patientAge}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Patient Gender:</span>
+                            <span class="submission-detail-value">${booking.patientGender}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Medical Issue:</span>
+                            <span class="submission-detail-value">${booking.medicalIssue}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Preferred Date:</span>
+                            <span class="submission-detail-value">${booking.preferredDate}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Preferred Time:</span>
+                            <span class="submission-detail-value">${booking.preferredTime}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Contact:</span>
+                            <span class="submission-detail-value">${booking.contact}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Notes:</span>
+                            <span class="submission-detail-value">${booking.notes || 'None'}</span>
+                        </div>
+                    `;
+                } else {
+                    details = `
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Service Type:</span>
+                            <span class="submission-detail-value">Draftsman Service</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Draftsman:</span>
+                            <span class="submission-detail-value">${booking.providerName}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Client Name:</span>
+                            <span class="submission-detail-value">${booking.clientName}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Project Type:</span>
+                            <span class="submission-detail-value">${booking.projectType}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Project Details:</span>
+                            <span class="submission-detail-value">${booking.projectDetails}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Property Address:</span>
+                            <span class="submission-detail-value">${booking.propertyAddress}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Property Size:</span>
+                            <span class="submission-detail-value">${booking.propertySize} perches</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Preferred Visit Date:</span>
+                            <span class="submission-detail-value">${booking.preferredVisitDate}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Contact:</span>
+                            <span class="submission-detail-value">${booking.contact}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Budget:</span>
+                            <span class="submission-detail-value">LKR ${booking.budget}</span>
+                        </div>
+                    `;
+                }
+                
+                details += `
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Status:</span>
+                        <span class="submission-detail-value">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Booking Date:</span>
+                        <span class="submission-detail-value">${booking.bookingDate}</span>
+                    </div>
+                `;
+                
+                document.getElementById('bookingDetailsTitle').textContent = 'Booking Details';
+                document.getElementById('bookingDetailsContent').innerHTML = details;
+                document.getElementById('responseSection').style.display = 'none';
+                document.getElementById('bookingDetailsModal').style.display = 'flex';
+            }
+        }
+        
+        // View provider response
+        function viewProviderResponse(id) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === id);
+            
+            if (booking && booking.providerResponse) {
+                const detailsContainer = document.getElementById('responseDetails');
+                detailsContainer.innerHTML = `
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Booking ID:</span>
+                        <span class="submission-detail-value">${booking.id}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Service:</span>
+                        <span class="submission-detail-value">${booking.type === 'doctor' ? 'Doctor Appointment' : 'Draftsman Service'}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Provider:</span>
+                        <span class="submission-detail-value">${booking.providerName}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Response Date:</span>
+                        <span class="submission-detail-value">${booking.responseDate || 'Not specified'}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Provider's Response:</span>
+                        <span class="submission-detail-value">${booking.providerResponse}</span>
+                    </div>
+                `;
+                
+                document.getElementById('responseModal').style.display = 'flex';
+            } else {
+                alert('No response from provider yet.');
+            }
+        }
+        
         // Update admin statistics
         function updateStats() {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
             const news = JSON.parse(localStorage.getItem('news') || '[]');
-            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
-            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
             const resolved = submissions.filter(s => s.status === 'Resolved').length;
+            const pendingProviders = providers.filter(p => p.status === 'pending').length;
             
             document.getElementById('totalUsers').textContent = users.length;
             document.getElementById('totalSubmissions').textContent = submissions.length;
             document.getElementById('resolvedIssues').textContent = resolved;
-            document.getElementById('totalNews').textContent = news.length;
+            document.getElementById('totalProviders').textContent = providers.length;
             document.getElementById('totalBookings').textContent = bookings.length;
-            document.getElementById('totalDoctors').textContent = doctors.length;
+            document.getElementById('pendingApprovals').textContent = pendingProviders;
         }
         
         // Load users table
@@ -1851,8 +2987,8 @@
                 row.innerHTML = `
                     <td>${user.name}</td>
                     <td>${user.email}</td>
-                    <td>${user.password}</td>
                     <td>${user.role}</td>
+                    <td>${user.status}</td>
                     <td>
                         <button class="action-btn edit-btn" onclick="editUser(${user.id})">Edit</button>
                         <button class="action-btn delete-btn" onclick="deleteUser(${user.id})">Delete</button>
@@ -1879,8 +3015,8 @@
                 row.innerHTML = `
                     <td>${user.name}</td>
                     <td>${user.email}</td>
-                    <td>${user.password}</td>
                     <td>${user.role}</td>
+                    <td>${user.status}</td>
                     <td>
                         <button class="action-btn edit-btn" onclick="editUser(${user.id})">Edit</button>
                         <button class="action-btn delete-btn" onclick="deleteUser(${user.id})">Delete</button>
@@ -2075,12 +3211,16 @@
         function showLoginModal() {
             document.getElementById('loginModal').style.display = 'flex';
             document.getElementById('signupModal').style.display = 'none';
+            document.getElementById('providerSelectionModal').style.display = 'none';
+            document.getElementById('providerRegistrationModal').style.display = 'none';
         }
         
         // Show signup modal
         function showSignupModal() {
             document.getElementById('signupModal').style.display = 'flex';
             document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('providerSelectionModal').style.display = 'none';
+            document.getElementById('providerRegistrationModal').style.display = 'none';
             
             // Setup profile picture preview
             const profilePictureInput = document.getElementById('profilePicture');
@@ -2098,10 +3238,100 @@
             };
         }
         
+        // Show provider selection modal
+        function showProviderSelectionModal() {
+            document.getElementById('providerSelectionModal').style.display = 'flex';
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('signupModal').style.display = 'none';
+            document.getElementById('providerRegistrationModal').style.display = 'none';
+        }
+        
+        // Show provider registration form - UPDATED WITH PRADESHIYA SABHA
+        function showProviderRegistrationForm(type) {
+            console.log('Showing provider registration form for:', type);
+            
+            document.getElementById('providerRegistrationModal').style.display = 'flex';
+            document.getElementById('providerSelectionModal').style.display = 'none';
+            
+            const providerType = document.getElementById('providerType');
+            const doctorFields = document.getElementById('doctorFields');
+            const draftsmanFields = document.getElementById('draftsmanFields');
+            const formTitle = document.getElementById('providerFormTitle');
+            const formSubtitle = document.getElementById('providerFormSubtitle');
+            
+            providerType.value = type;
+            
+            if (type === 'doctor') {
+                doctorFields.style.display = 'block';
+                draftsmanFields.style.display = 'none';
+                formTitle.textContent = 'Register as a Doctor';
+                formSubtitle.textContent = 'Please provide your professional medical details';
+            } else if (type === 'draftsman') {
+                doctorFields.style.display = 'none';
+                draftsmanFields.style.display = 'block';
+                formTitle.textContent = 'Register as a Draftsman';
+                formSubtitle.textContent = 'Please provide your professional drafting details';
+            }
+            
+            // Setup profile picture preview
+            const profilePictureInput = document.getElementById('providerProfilePicture');
+            const profilePreview = document.getElementById('providerProfilePreview');
+            
+            profilePictureInput.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            // Reset form
+            document.getElementById('providerRegistrationForm').reset();
+            document.getElementById('providerProfilePreview').src = 'https://ui-avatars.com/api/?name=Provider&background=2e8b57&color=fff';
+            document.getElementById('providerPradeshiyaSabha').innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
+        }
+        
+        // Load Pradeshiya Sabhas for provider registration
+        function loadPradeshiyaSabhasForProvider() {
+            const district = document.getElementById('providerDistrict').value;
+            const pradeshiyaSabhaSelect = document.getElementById('providerPradeshiyaSabha');
+            
+            // Clear previous options
+            pradeshiyaSabhaSelect.innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
+            
+            if (district && pradeshiyaSabhasData[district]) {
+                pradeshiyaSabhasData[district].forEach(sabha => {
+                    const option = document.createElement("option");
+                    option.value = sabha;
+                    option.textContent = sabha;
+                    pradeshiyaSabhaSelect.appendChild(option);
+                });
+            } else {
+                // If district not in our data, allow manual entry
+                const option = document.createElement("option");
+                option.value = "other";
+                option.textContent = "Other (Please specify)";
+                pradeshiyaSabhaSelect.appendChild(option);
+            }
+        }
+        
         // Close auth modal
         function closeAuthModal() {
             document.getElementById('loginModal').style.display = 'none';
             document.getElementById('signupModal').style.display = 'none';
+        }
+        
+        // Close provider modal
+        function closeProviderModal() {
+            document.getElementById('providerSelectionModal').style.display = 'none';
+        }
+        
+        // Close provider registration modal
+        function closeProviderRegistrationModal() {
+            document.getElementById('providerRegistrationModal').style.display = 'none';
         }
         
         // Show home page
@@ -2109,12 +3339,27 @@
             document.getElementById('homeContent').style.display = 'block';
             document.getElementById('userDashboard').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('providerDashboard').style.display = 'none';
             updateUserInterface();
+        }
+        
+        // Show service providers section
+        function showServiceProviders() {
+            showHome();
+            // Scroll to service providers section
+            document.getElementById('serviceProvidersSection').scrollIntoView({ behavior: 'smooth' });
         }
         
         // Show user dashboard
         function showDashboard() {
             const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
+            
+            if (currentProvider) {
+                // If provider is logged in, show provider dashboard instead
+                showProviderDashboard();
+                return;
+            }
             
             if (!currentUser) {
                 alert('Please login first to access the dashboard');
@@ -2125,9 +3370,466 @@
             document.getElementById('homeContent').style.display = 'none';
             document.getElementById('userDashboard').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('providerDashboard').style.display = 'none';
             
             // Load personal info form
             loadPersonalInfoForm(currentUser);
+            loadUserBookings();
+        }
+        
+        // Show provider dashboard
+        function showProviderDashboard() {
+            const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
+            
+            if (!currentProvider) {
+                alert('Please login as a service provider first');
+                showLoginModal();
+                return;
+            }
+            
+            document.getElementById('homeContent').style.display = 'none';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('providerDashboard').style.display = 'block';
+            
+            // Load provider dashboard
+            loadProviderDashboard(currentProvider);
+        }
+        
+        // Load provider dashboard
+        function loadProviderDashboard(provider) {
+            // Update welcome section
+            document.getElementById('providerWelcomeName').textContent = provider.name;
+            document.getElementById('providerTypeDisplay').textContent = provider.type === 'doctor' ? 'Doctor' : 'Draftsman';
+            
+            // Update provider info card
+            document.getElementById('providerDashboardName').textContent = provider.name;
+            document.getElementById('providerDashboardAvatar').src = provider.profilePicture || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(provider.name) + '&background=2e8b57&color=fff';
+            
+            if (provider.type === 'doctor') {
+                document.getElementById('providerDashboardSpecialization').textContent = `Specialization: ${getSpecializationName(provider.specialization)}`;
+                document.getElementById('providerDashboardLocation').textContent = `Hospital: ${provider.hospital}`;
+                document.getElementById('providerDashboardContact').textContent = `Contact: ${provider.phone} | Fee: LKR ${provider.consultationFee}`;
+            } else {
+                document.getElementById('providerDashboardSpecialization').textContent = `Services: ${provider.services ? provider.services.substring(0, 50) + '...' : 'General Drafting'}`;
+                document.getElementById('providerDashboardLocation').textContent = `Location: ${provider.pradeshiyaSabha || provider.district}`;
+                document.getElementById('providerDashboardContact').textContent = `Contact: ${provider.phone} | Rate: ${provider.rate || 'Contact for rates'}`;
+            }
+            
+            // Update status badge
+            const statusBadge = document.getElementById('providerDashboardStatus');
+            statusBadge.textContent = provider.status.charAt(0).toUpperCase() + provider.status.slice(1);
+            statusBadge.className = 'status-badge ' + (provider.status === 'approved' ? 'status-approved' : 
+                                                      provider.status === 'pending' ? 'status-pending' : 'status-rejected');
+            
+            // Update bio
+            document.getElementById('providerDashboardBio').textContent = provider.bio;
+            
+            // Load provider bookings
+            loadProviderBookings(provider.id);
+            
+            // Load provider profile form
+            loadProviderProfileForm(provider);
+            
+            // Load availability
+            document.getElementById('currentAvailabilityStatus').textContent = provider.availabilityStatus || 'available';
+            loadUpcomingBookings(provider.id);
+        }
+        
+        // Load provider bookings
+        function loadProviderBookings(providerId) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const providerBookings = bookings.filter(b => b.providerId === providerId);
+            const tableBody = document.getElementById('providerBookingsTableBody');
+            tableBody.innerHTML = '';
+            
+            if (providerBookings.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No bookings yet.</td></tr>';
+                return;
+            }
+            
+            // Sort by date (newest first)
+            providerBookings.sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
+            
+            providerBookings.forEach(booking => {
+                const serviceType = booking.type === 'doctor' ? 'Doctor Appointment' : 'Draftsman Service';
+                const statusClass = booking.status === 'confirmed' ? 'status-approved' : 
+                                   booking.status === 'pending' ? 'status-pending' : 
+                                   booking.status === 'completed' ? 'status-completed' : 'status-rejected';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${booking.userName}</td>
+                    <td>${serviceType}</td>
+                    <td>${booking.preferredDate || booking.bookingDate}</td>
+                    <td><span class="status-badge ${statusClass}">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span></td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewProviderBooking(${booking.id})">View</button>
+                        ${booking.status === 'pending' || booking.status === 'confirmed' ? `<button class="action-btn reply-btn" onclick="respondToBooking(${booking.id})">Respond</button>` : ''}
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Load provider profile form
+        function loadProviderProfileForm(provider) {
+            document.getElementById('updateProviderName').value = provider.name || '';
+            document.getElementById('updateProviderPhone').value = provider.phone || '';
+            document.getElementById('updateProviderAddress').value = provider.address || '';
+            document.getElementById('updateProviderBio').value = provider.bio || '';
+            
+            if (provider.type === 'doctor') {
+                document.getElementById('doctorProfileFields').style.display = 'block';
+                document.getElementById('draftsmanProfileFields').style.display = 'none';
+                document.getElementById('updateDoctorHospital').value = provider.hospital || '';
+                document.getElementById('updateDoctorAvailability').value = provider.availability || '';
+                document.getElementById('updateDoctorConsultationFee').value = provider.consultationFee || '';
+            } else {
+                document.getElementById('doctorProfileFields').style.display = 'none';
+                document.getElementById('draftsmanProfileFields').style.display = 'block';
+                document.getElementById('updateDraftsmanServices').value = provider.services || '';
+                document.getElementById('updateDraftsmanRate').value = provider.rate || '';
+                document.getElementById('updateDraftsmanAvailability').value = provider.availability || '';
+            }
+        }
+        
+        // Load upcoming bookings for provider
+        function loadUpcomingBookings(providerId) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const providerBookings = bookings.filter(b => b.providerId === providerId && (b.status === 'confirmed' || b.status === 'pending'));
+            const upcomingBookingsDiv = document.getElementById('providerUpcomingBookings');
+            
+            if (providerBookings.length === 0) {
+                upcomingBookingsDiv.innerHTML = '<p>No upcoming bookings.</p>';
+                return;
+            }
+            
+            // Sort by date
+            providerBookings.sort((a, b) => new Date(a.preferredDate || a.bookingDate) - new Date(b.preferredDate || b.bookingDate));
+            
+            let html = '<table class="provider-bookings-table" style="font-size: 0.9rem;"><thead><tr><th>Customer</th><th>Date</th><th>Time</th><th>Status</th></tr></thead><tbody>';
+            
+            providerBookings.forEach(booking => {
+                html += `
+                    <tr>
+                        <td>${booking.userName}</td>
+                        <td>${booking.preferredDate || booking.bookingDate}</td>
+                        <td>${booking.preferredTime || 'N/A'}</td>
+                        <td><span class="status-badge ${booking.status === 'confirmed' ? 'status-approved' : 'status-pending'}">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            upcomingBookingsDiv.innerHTML = html;
+        }
+        
+        // Switch provider tab
+        function switchProviderTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.provider-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Activate selected tab
+            document.querySelector(`.provider-tab[onclick*="${tabName}"]`).classList.add('active');
+            document.getElementById(`provider${tabName.charAt(0).toUpperCase() + tabName.slice(1)}Tab`).classList.add('active');
+        }
+        
+        // View provider booking
+        function viewProviderBooking(id) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === id);
+            const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
+            
+            if (booking && currentProvider && booking.providerId === currentProvider.id) {
+                let details = '';
+                
+                if (booking.type === 'doctor') {
+                    details = `
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Service Type:</span>
+                            <span class="submission-detail-value">Doctor Appointment</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Patient Name:</span>
+                            <span class="submission-detail-value">${booking.patientName}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Patient Age:</span>
+                            <span class="submission-detail-value">${booking.patientAge}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Patient Gender:</span>
+                            <span class="submission-detail-value">${booking.patientGender}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Medical Issue:</span>
+                            <span class="submission-detail-value">${booking.medicalIssue}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Preferred Date:</span>
+                            <span class="submission-detail-value">${booking.preferredDate}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Preferred Time:</span>
+                            <span class="submission-detail-value">${booking.preferredTime}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Contact:</span>
+                            <span class="submission-detail-value">${booking.contact}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Notes:</span>
+                            <span class="submission-detail-value">${booking.notes || 'None'}</span>
+                        </div>
+                    `;
+                } else {
+                    details = `
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Service Type:</span>
+                            <span class="submission-detail-value">Draftsman Service</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Client Name:</span>
+                            <span class="submission-detail-value">${booking.clientName}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Project Type:</span>
+                            <span class="submission-detail-value">${booking.projectType}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Project Details:</span>
+                            <span class="submission-detail-value">${booking.projectDetails}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Property Address:</span>
+                            <span class="submission-detail-value">${booking.propertyAddress}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Property Size:</span>
+                            <span class="submission-detail-value">${booking.propertySize} perches</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Preferred Visit Date:</span>
+                            <span class="submission-detail-value">${booking.preferredVisitDate}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Contact:</span>
+                            <span class="submission-detail-value">${booking.contact}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Budget:</span>
+                            <span class="submission-detail-value">LKR ${booking.budget}</span>
+                        </div>
+                    `;
+                }
+                
+                details += `
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Status:</span>
+                        <span class="submission-detail-value">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Booking Date:</span>
+                        <span class="submission-detail-value">${booking.bookingDate}</span>
+                    </div>
+                `;
+                
+                document.getElementById('bookingDetailsTitle').textContent = 'Booking Details';
+                document.getElementById('bookingDetailsContent').innerHTML = details;
+                
+                // Show response section if booking is not completed
+                const responseSection = document.getElementById('responseSection');
+                const existingResponse = document.getElementById('existingResponse');
+                const responseFormContainer = document.getElementById('responseFormContainer');
+                
+                if (booking.status !== 'completed' && booking.status !== 'rejected') {
+                    responseSection.style.display = 'block';
+                    
+                    if (booking.providerResponse) {
+                        existingResponse.innerHTML = `
+                            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                                <strong>Your previous response (${booking.responseDate}):</strong>
+                                <p>${booking.providerResponse}</p>
+                            </div>
+                        `;
+                        responseFormContainer.style.display = 'block';
+                    } else {
+                        existingResponse.innerHTML = '';
+                        responseFormContainer.style.display = 'block';
+                    }
+                    
+                    // Store current booking ID for response submission
+                    responseFormContainer.dataset.bookingId = booking.id;
+                } else {
+                    responseSection.style.display = 'none';
+                }
+                
+                document.getElementById('bookingDetailsModal').style.display = 'flex';
+            }
+        }
+        
+        // Respond to booking
+        function respondToBooking(id) {
+            viewProviderBooking(id);
+        }
+        
+        // Submit provider response
+        function submitProviderResponse() {
+            const responseText = document.getElementById('providerResponse').value.trim();
+            const bookingId = document.getElementById('responseFormContainer').dataset.bookingId;
+            
+            if (!responseText) {
+                alert('Please enter a response');
+                return;
+            }
+            
+            if (!bookingId) {
+                alert('Booking ID not found');
+                return;
+            }
+            
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const bookingIndex = bookings.findIndex(b => b.id === parseInt(bookingId));
+            
+            if (bookingIndex !== -1) {
+                bookings[bookingIndex].providerResponse = responseText;
+                bookings[bookingIndex].responseDate = new Date().toISOString().split('T')[0];
+                bookings[bookingIndex].status = 'confirmed';
+                
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                
+                // Send notification to user (simulated)
+                const userEmail = bookings[bookingIndex].userEmail;
+                alert(`Response submitted successfully! Notification sent to ${userEmail}`);
+                
+                // Update provider dashboard
+                const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
+                if (currentProvider) {
+                    loadProviderBookings(currentProvider.id);
+                    loadUpcomingBookings(currentProvider.id);
+                }
+                
+                // Update user dashboard if they're viewing
+                loadUserBookings();
+                
+                // Close modal
+                closeBookingDetailsModal();
+            }
+        }
+        
+        // Mark booking as completed
+        function markBookingAsCompleted() {
+            const bookingId = document.getElementById('responseFormContainer').dataset.bookingId;
+            
+            if (!bookingId) {
+                alert('Booking ID not found');
+                return;
+            }
+            
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const bookingIndex = bookings.findIndex(b => b.id === parseInt(bookingId));
+            
+            if (bookingIndex !== -1) {
+                bookings[bookingIndex].status = 'completed';
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                
+                alert('Booking marked as completed!');
+                
+                // Update provider dashboard
+                const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
+                if (currentProvider) {
+                    loadProviderBookings(currentProvider.id);
+                    loadUpcomingBookings(currentProvider.id);
+                }
+                
+                // Update user dashboard
+                loadUserBookings();
+                
+                // Close modal
+                closeBookingDetailsModal();
+            }
+        }
+        
+        // Update provider profile
+        function updateProviderProfile(event) {
+            event.preventDefault();
+            
+            const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
+            if (!currentProvider) {
+                alert('Please login as a service provider first');
+                showLoginModal();
+                return;
+            }
+            
+            const name = document.getElementById('updateProviderName').value;
+            const phone = document.getElementById('updateProviderPhone').value;
+            const address = document.getElementById('updateProviderAddress').value;
+            const bio = document.getElementById('updateProviderBio').value;
+            
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const providerIndex = providers.findIndex(p => p.id === currentProvider.id);
+            
+            if (providerIndex !== -1) {
+                providers[providerIndex].name = name;
+                providers[providerIndex].phone = phone;
+                providers[providerIndex].address = address;
+                providers[providerIndex].bio = bio;
+                
+                if (currentProvider.type === 'doctor') {
+                    providers[providerIndex].hospital = document.getElementById('updateDoctorHospital').value;
+                    providers[providerIndex].availability = document.getElementById('updateDoctorAvailability').value;
+                    providers[providerIndex].consultationFee = document.getElementById('updateDoctorConsultationFee').value;
+                } else {
+                    providers[providerIndex].services = document.getElementById('updateDraftsmanServices').value;
+                    providers[providerIndex].rate = document.getElementById('updateDraftsmanRate').value;
+                    providers[providerIndex].availability = document.getElementById('updateDraftsmanAvailability').value;
+                }
+                
+                localStorage.setItem('serviceProviders', JSON.stringify(providers));
+                localStorage.setItem('currentProvider', JSON.stringify(providers[providerIndex]));
+                
+                // Update UI
+                document.getElementById('userName').textContent = name;
+                loadProviderDashboard(providers[providerIndex]);
+                
+                alert('Your profile has been updated successfully!');
+            }
+        }
+        
+        // Change availability status
+        function changeAvailabilityStatus(status) {
+            const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
+            if (!currentProvider) return;
+            
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const providerIndex = providers.findIndex(p => p.id === currentProvider.id);
+            
+            if (providerIndex !== -1) {
+                providers[providerIndex].availabilityStatus = status;
+                localStorage.setItem('serviceProviders', JSON.stringify(providers));
+                localStorage.setItem('currentProvider', JSON.stringify(providers[providerIndex]));
+                
+                document.getElementById('currentAvailabilityStatus').textContent = status;
+                alert(`Availability status changed to ${status}`);
+            }
+        }
+        
+        // Close booking details modal
+        function closeBookingDetailsModal() {
+            document.getElementById('bookingDetailsModal').style.display = 'none';
+        }
+        
+        // Close response modal
+        function closeResponseModal() {
+            document.getElementById('responseModal').style.display = 'none';
         }
         
         // Show admin panel
@@ -2148,12 +3850,13 @@
             document.getElementById('homeContent').style.display = 'none';
             document.getElementById('userDashboard').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('providerDashboard').style.display = 'none';
             updateStats();
             loadUsersTable();
             loadSubmissionsTable();
-            loadNewsTable();
+            loadProvidersTable();
             loadBookingsTable();
-            loadDoctorsTable();
+            loadNewsTable();
         }
         
         // Handle login form submission
@@ -2162,21 +3865,51 @@
             
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
             
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                closeAuthModal();
-                updateUserInterface();
-                showDashboard();
+            if (role === 'user' || role === 'admin') {
+                // Login as regular user or admin
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password && u.role === role);
                 
-                // Clear form fields
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.removeItem('currentProvider');
+                    closeAuthModal();
+                    updateUserInterface();
+                    
+                    if (role === 'admin') {
+                        showAdminPanel();
+                    } else {
+                        showDashboard();
+                    }
+                    
+                    // Clear form fields
+                    document.getElementById('loginEmail').value = '';
+                    document.getElementById('loginPassword').value = '';
+                } else {
+                    alert('Invalid email or password for the selected role. Please try again.');
+                }
+            } else if (role === 'doctor' || role === 'draftsman') {
+                // Login as service provider
+                const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+                const provider = providers.find(p => p.email === email && p.password === password && p.type === role && p.status === 'approved');
+                
+                if (provider) {
+                    localStorage.setItem('currentProvider', JSON.stringify(provider));
+                    localStorage.removeItem('currentUser');
+                    closeAuthModal();
+                    updateUserInterface();
+                    showProviderDashboard();
+                    
+                    // Clear form fields
+                    document.getElementById('loginEmail').value = '';
+                    document.getElementById('loginPassword').value = '';
+                } else {
+                    alert('Invalid credentials or your account is not approved yet. Please contact admin if you have already registered.');
+                }
             } else {
-                alert('Invalid email or password. Please try again.');
+                alert('Please select a role to login.');
             }
         }
         
@@ -2205,7 +3938,7 @@
             
             // Create new user
             const newUser = {
-                id: users.length + 1,
+                id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
                 name,
                 email,
                 password,
@@ -2215,7 +3948,8 @@
                 status: 'Active',
                 phone: '',
                 address: '',
-                district: ''
+                district: '',
+                pradeshiyaSabha: ''
             };
             
             // Handle profile picture if selected
@@ -2253,8 +3987,182 @@
             alert('Account created successfully! Welcome to LifeBridge Rural.');
         }
         
+        // Handle provider registration - UPDATED WITH PRADESHIYA SABHA
+        function handleProviderRegistration(event) {
+            event.preventDefault();
+            
+            try {
+                // Get form values
+                const providerType = document.getElementById('providerType').value;
+                const name = document.getElementById('providerName').value.trim();
+                const email = document.getElementById('providerEmail').value.trim();
+                const password = document.getElementById('providerPassword').value;
+                const confirmPassword = document.getElementById('providerConfirmPassword').value;
+                const phone = document.getElementById('providerPhone').value.trim();
+                const address = document.getElementById('providerAddress').value.trim();
+                const district = document.getElementById('providerDistrict').value;
+                const pradeshiyaSabha = document.getElementById('providerPradeshiyaSabha').value;
+                const bio = document.getElementById('providerBio').value.trim();
+                const termsChecked = document.getElementById('providerTerms').checked;
+                
+                console.log('Provider registration attempt:', { providerType, name, email, pradeshiyaSabha });
+                
+                // Validation
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match. Please try again.');
+                    return false;
+                }
+                
+                if (!name || !email || !password || !phone || !address || !district || !pradeshiyaSabha || !bio) {
+                    alert('Please fill all required fields.');
+                    return false;
+                }
+                
+                if (!termsChecked) {
+                    alert('Please accept the terms and conditions.');
+                    return false;
+                }
+                
+                // Provider-specific validation
+                if (providerType === 'doctor') {
+                    const specialization = document.getElementById('doctorSpecialization').value;
+                    const qualification = document.getElementById('doctorQualification').value.trim();
+                    const registrationNo = document.getElementById('doctorRegistrationNo').value.trim();
+                    const experience = document.getElementById('doctorExperience').value;
+                    const hospital = document.getElementById('doctorHospital').value.trim();
+                    const availability = document.getElementById('doctorAvailability').value.trim();
+                    const consultationFee = document.getElementById('doctorConsultationFee').value;
+                    
+                    if (!specialization || !qualification || !registrationNo || !experience || 
+                        !hospital || !availability || !consultationFee) {
+                        alert('Please fill all doctor-specific fields.');
+                        return false;
+                    }
+                } else if (providerType === 'draftsman') {
+                    const qualification = document.getElementById('draftsmanQualification').value.trim();
+                    const registrationNo = document.getElementById('draftsmanRegistrationNo').value.trim();
+                    const experience = document.getElementById('draftsmanExperience').value;
+                    const services = document.getElementById('draftsmanServices').value.trim();
+                    const rate = document.getElementById('draftsmanRate').value.trim();
+                    const availability = document.getElementById('draftsmanAvailability').value.trim();
+                    
+                    if (!qualification || !registrationNo || !experience || !services || 
+                        !rate || !availability) {
+                        alert('Please fill all draftsman-specific fields.');
+                        return false;
+                    }
+                }
+                
+                console.log('All validations passed');
+                
+                // Check if email already exists
+                const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                if (providers.some(p => p.email === email) || users.some(u => u.email === email)) {
+                    alert('Email already exists. Please use a different email.');
+                    return false;
+                }
+                
+                console.log('Email check passed');
+                
+                // Create provider object
+                const newId = providers.length > 0 ? Math.max(...providers.map(p => p.id)) + 1 : 1;
+                const newProvider = {
+                    id: newId,
+                    type: providerType,
+                    name,
+                    email,
+                    password,
+                    phone,
+                    address,
+                    district,
+                    pradeshiyaSabha,
+                    bio,
+                    profilePicture: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=2e8b57&color=fff',
+                    status: 'pending',
+                    availabilityStatus: 'available',
+                    joinDate: new Date().toISOString().split('T')[0]
+                };
+                
+                // Add provider-specific fields
+                if (providerType === 'doctor') {
+                    newProvider.specialization = document.getElementById('doctorSpecialization').value;
+                    newProvider.qualification = document.getElementById('doctorQualification').value;
+                    newProvider.registrationNo = document.getElementById('doctorRegistrationNo').value;
+                    newProvider.experience = parseInt(document.getElementById('doctorExperience').value);
+                    newProvider.hospital = document.getElementById('doctorHospital').value;
+                    newProvider.availability = document.getElementById('doctorAvailability').value;
+                    newProvider.consultationFee = parseInt(document.getElementById('doctorConsultationFee').value);
+                } else {
+                    newProvider.qualification = document.getElementById('draftsmanQualification').value;
+                    newProvider.registrationNo = document.getElementById('draftsmanRegistrationNo').value;
+                    newProvider.experience = parseInt(document.getElementById('draftsmanExperience').value);
+                    newProvider.services = document.getElementById('draftsmanServices').value;
+                    newProvider.rate = document.getElementById('draftsmanRate').value;
+                    newProvider.availability = document.getElementById('draftsmanAvailability').value;
+                }
+                
+                console.log('Provider object created with pradeshiya sabha:', pradeshiyaSabha);
+                
+                // Handle profile picture
+                const profilePictureInput = document.getElementById('providerProfilePicture');
+                if (profilePictureInput.files.length > 0) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        newProvider.profilePicture = e.target.result;
+                        completeProviderRegistration(newProvider, providers);
+                    };
+                    reader.readAsDataURL(profilePictureInput.files[0]);
+                } else {
+                    completeProviderRegistration(newProvider, providers);
+                }
+                
+                return false;
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Error during registration: ' + error.message);
+                return false;
+            }
+        }
+        
+        // Complete provider registration
+        function completeProviderRegistration(newProvider, providers) {
+            providers.push(newProvider);
+            localStorage.setItem('serviceProviders', JSON.stringify(providers));
+            
+            // Close modal
+            document.getElementById('providerRegistrationModal').style.display = 'none';
+            
+            // Clear form
+            document.getElementById('providerRegistrationForm').reset();
+            document.getElementById('providerProfilePreview').src = 'https://ui-avatars.com/api/?name=Provider&background=2e8b57&color=fff';
+            document.getElementById('providerPradeshiyaSabha').innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
+            
+            // Show success message
+            alert('Registration submitted successfully! Your account will be reviewed by our admin team. You will receive an email notification once approved.');
+            
+            // Update admin stats if admin is viewing
+            if (document.getElementById('adminPanel').style.display === 'block') {
+                updateStats();
+                loadProvidersTable();
+            }
+            
+            console.log('Provider registered with pradeshiya sabha:', newProvider.pradeshiyaSabha);
+        }
+        
         // Handle logout
         function handleLogout() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentProvider');
+            updateUserInterface();
+            showHome();
+        }
+        
+        // Handle provider logout
+        function handleProviderLogout() {
+            localStorage.removeItem('currentProvider');
             localStorage.removeItem('currentUser');
             updateUserInterface();
             showHome();
@@ -2271,6 +4179,671 @@
             };
             
             window.open(categoryUrls[category], '_blank');
+        }
+        
+        // Load available providers
+        function loadAvailableProviders() {
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const approvedDoctors = providers.filter(p => p.type === 'doctor' && p.status === 'approved');
+            const approvedDraftsmen = providers.filter(p => p.type === 'draftsman' && p.status === 'approved');
+            
+            // Load doctors for booking form
+            const doctorSelect = document.getElementById('bookingDoctor');
+            doctorSelect.innerHTML = '<option value="">Select a doctor</option>';
+            approvedDoctors.forEach(doctor => {
+                const option = document.createElement('option');
+                option.value = doctor.id;
+                option.textContent = `${doctor.name} - ${getSpecializationName(doctor.specialization)} (${doctor.hospital})`;
+                doctorSelect.appendChild(option);
+            });
+            
+            // Load draftsmen for booking form
+            const draftsmanSelect = document.getElementById('bookingDraftsman');
+            draftsmanSelect.innerHTML = '<option value="">Select a draftsman</option>';
+            approvedDraftsmen.forEach(draftsman => {
+                const option = document.createElement('option');
+                option.value = draftsman.id;
+                option.textContent = `${draftsman.name} - ${draftsman.services ? draftsman.services.substring(0, 50) + '...' : 'General Drafting'}`;
+                draftsmanSelect.appendChild(option);
+            });
+        }
+        
+        // Get specialization name
+        function getSpecializationName(code) {
+            const specializations = {
+                'general': 'General Practitioner',
+                'pediatrics': 'Pediatrics',
+                'gynecology': 'Gynecology',
+                'cardiology': 'Cardiology',
+                'dermatology': 'Dermatology',
+                'orthopedics': 'Orthopedics',
+                'psychiatry': 'Psychiatry',
+                'dentistry': 'Dentistry'
+            };
+            return specializations[code] || code;
+        }
+        
+        // Show available doctors
+        function showAvailableDoctors() {
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const approvedDoctors = providers.filter(p => p.type === 'doctor' && p.status === 'approved');
+            
+            const doctorsList = document.getElementById('doctorsList');
+            doctorsList.innerHTML = '';
+            
+            if (approvedDoctors.length === 0) {
+                doctorsList.innerHTML = '<p>No doctors available at the moment.</p>';
+            } else {
+                approvedDoctors.forEach(doctor => {
+                    const doctorCard = document.createElement('div');
+                    doctorCard.className = 'category-card';
+                    doctorCard.innerHTML = `
+                        <div class="category-icon"><i class="fas fa-user-md"></i></div>
+                        <div class="category-content">
+                            <h3>${doctor.name}</h3>
+                            <p><strong>Specialization:</strong> ${getSpecializationName(doctor.specialization)}</p>
+                            <p><strong>Hospital:</strong> ${doctor.hospital}</p>
+                            <p><strong>Experience:</strong> ${doctor.experience} years</p>
+                            <p><strong>Fee:</strong> LKR ${doctor.consultationFee}</p>
+                            <p><strong>Availability:</strong> ${doctor.availability}</p>
+                            <button class="read-more-btn" onclick="bookDoctorWithId(${doctor.id})" style="margin-top: 10px;">Book Now</button>
+                        </div>
+                    `;
+                    doctorsList.appendChild(doctorCard);
+                });
+            }
+            
+            document.getElementById('availableDoctors').style.display = 'block';
+            document.getElementById('availableDraftsmen').style.display = 'none';
+            document.getElementById('doctorBookingForm').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'none';
+        }
+        
+        // Show available draftsmen
+        function showAvailableDraftsmen() {
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const approvedDraftsmen = providers.filter(p => p.type === 'draftsman' && p.status === 'approved');
+            
+            const draftsmenList = document.getElementById('draftsmenList');
+            draftsmenList.innerHTML = '';
+            
+            if (approvedDraftsmen.length === 0) {
+                draftsmenList.innerHTML = '<p>No draftsmen available at the moment.</p>';
+            } else {
+                approvedDraftsmen.forEach(draftsman => {
+                    const draftsmanCard = document.createElement('div');
+                    draftsmanCard.className = 'category-card';
+                    draftsmanCard.innerHTML = `
+                        <div class="category-icon"><i class="fas fa-ruler-combined"></i></div>
+                        <div class="category-content">
+                            <h3>${draftsman.name}</h3>
+                            <p><strong>Experience:</strong> ${draftsman.experience} years</p>
+                            <p><strong>Services:</strong> ${draftsman.services ? draftsman.services.substring(0, 100) + '...' : 'General Drafting'}</p>
+                            <p><strong>Rate:</strong> ${draftsman.rate}</p>
+                            <p><strong>Availability:</strong> ${draftsman.availability}</p>
+                            <button class="read-more-btn" onclick="bookDraftsmanWithId(${draftsman.id})" style="margin-top: 10px;">Book Now</button>
+                        </div>
+                    `;
+                    draftsmenList.appendChild(draftsmanCard);
+                });
+            }
+            
+            document.getElementById('availableDoctors').style.display = 'none';
+            document.getElementById('availableDraftsmen').style.display = 'block';
+            document.getElementById('doctorBookingForm').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'none';
+        }
+        
+        // Book doctor
+        function bookDoctor() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to book a doctor');
+                showLoginModal();
+                return;
+            }
+            
+            document.getElementById('availableDoctors').style.display = 'none';
+            document.getElementById('availableDraftsmen').style.display = 'none';
+            document.getElementById('doctorBookingForm').style.display = 'block';
+            document.getElementById('draftsmanBookingForm').style.display = 'none';
+            
+            // Set default values from user profile
+            document.getElementById('patientName').value = currentUser.name;
+            document.getElementById('bookingContact').value = currentUser.phone;
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('preferredDate').min = today;
+        }
+        
+        // Book doctor with specific ID
+        function bookDoctorWithId(doctorId) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to book a doctor');
+                showLoginModal();
+                return;
+            }
+            
+            // Set the selected doctor
+            document.getElementById('bookingDoctor').value = doctorId;
+            bookDoctor();
+        }
+        
+        // Book draftsman
+        function bookDraftsman() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to book a draftsman');
+                showLoginModal();
+                return;
+            }
+            
+            document.getElementById('availableDoctors').style.display = 'none';
+            document.getElementById('availableDraftsmen').style.display = 'none';
+            document.getElementById('doctorBookingForm').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'block';
+            
+            // Set default values from user profile
+            document.getElementById('clientName').value = currentUser.name;
+            document.getElementById('draftsmanContact').value = currentUser.phone;
+            document.getElementById('propertyAddress').value = currentUser.address;
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('preferredVisitDate').min = today;
+        }
+        
+        // Book draftsman with specific ID
+        function bookDraftsmanWithId(draftsmanId) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to book a draftsman');
+                showLoginModal();
+                return;
+            }
+            
+            // Set the selected draftsman
+            document.getElementById('bookingDraftsman').value = draftsmanId;
+            bookDraftsman();
+        }
+        
+        // Cancel booking
+        function cancelBooking() {
+            document.getElementById('availableDoctors').style.display = 'none';
+            document.getElementById('availableDraftsmen').style.display = 'none';
+            document.getElementById('doctorBookingForm').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'none';
+        }
+        
+        // Submit doctor booking
+        function submitDoctorBooking(event) {
+            event.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to book a doctor');
+                showLoginModal();
+                return;
+            }
+            
+            const doctorId = parseInt(document.getElementById('bookingDoctor').value);
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const doctor = providers.find(p => p.id === doctorId && p.type === 'doctor' && p.status === 'approved');
+            
+            if (!doctor) {
+                alert('Please select a valid doctor');
+                return;
+            }
+            
+            const patientName = document.getElementById('patientName').value;
+            const patientAge = document.getElementById('patientAge').value;
+            const patientGender = document.getElementById('patientGender').value;
+            const medicalIssue = document.getElementById('medicalIssue').value;
+            const preferredDate = document.getElementById('preferredDate').value;
+            const preferredTime = document.getElementById('preferredTime').value;
+            const contact = document.getElementById('bookingContact').value;
+            const notes = document.getElementById('bookingNotes').value;
+            
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const newId = bookings.length > 0 ? Math.max(...bookings.map(b => b.id)) + 1 : 1;
+            
+            bookings.push({
+                id: newId,
+                type: 'doctor',
+                providerId: doctorId,
+                providerName: doctor.name,
+                userId: currentUser.id,
+                userName: currentUser.name,
+                userEmail: currentUser.email,
+                patientName,
+                patientAge: parseInt(patientAge),
+                patientGender,
+                medicalIssue,
+                preferredDate,
+                preferredTime,
+                contact,
+                notes,
+                status: 'pending',
+                providerResponse: '',
+                responseDate: '',
+                bookingDate: new Date().toISOString().split('T')[0]
+            });
+            
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+            // Clear form
+            document.getElementById('doctorBookingFormContent').reset();
+            
+            alert('Doctor appointment booked successfully! The doctor will respond to your booking soon.');
+            
+            // Update stats and bookings
+            updateStats();
+            loadBookingsTable();
+            loadUserBookings();
+            
+            // Hide booking form
+            cancelBooking();
+        }
+        
+        // Submit draftsman booking
+        function submitDraftsmanBooking(event) {
+            event.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser) {
+                alert('Please login to book a draftsman');
+                showLoginModal();
+                return;
+            }
+            
+            const draftsmanId = parseInt(document.getElementById('bookingDraftsman').value);
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const draftsman = providers.find(p => p.id === draftsmanId && p.type === 'draftsman' && p.status === 'approved');
+            
+            if (!draftsman) {
+                alert('Please select a valid draftsman');
+                return;
+            }
+            
+            const clientName = document.getElementById('clientName').value;
+            const projectType = document.getElementById('projectType').value;
+            const projectDetails = document.getElementById('projectDetails').value;
+            const propertyAddress = document.getElementById('propertyAddress').value;
+            const propertySize = parseFloat(document.getElementById('propertySize').value);
+            const preferredVisitDate = document.getElementById('preferredVisitDate').value;
+            const contact = document.getElementById('draftsmanContact').value;
+            const budget = parseInt(document.getElementById('draftsmanBudget').value);
+            
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const newId = bookings.length > 0 ? Math.max(...bookings.map(b => b.id)) + 1 : 1;
+            
+            bookings.push({
+                id: newId,
+                type: 'draftsman',
+                providerId: draftsmanId,
+                providerName: draftsman.name,
+                userId: currentUser.id,
+                userName: currentUser.name,
+                userEmail: currentUser.email,
+                clientName,
+                projectType,
+                projectDetails,
+                propertyAddress,
+                propertySize,
+                preferredVisitDate,
+                contact,
+                budget,
+                status: 'pending',
+                providerResponse: '',
+                responseDate: '',
+                bookingDate: new Date().toISOString().split('T')[0]
+            });
+            
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+            // Clear form
+            document.getElementById('draftsmanBookingFormContent').reset();
+            
+            alert('Draftsman service booked successfully! The draftsman will respond to your booking soon.');
+            
+            // Update stats and bookings
+            updateStats();
+            loadBookingsTable();
+            loadUserBookings();
+            
+            // Hide booking form
+            cancelBooking();
+        }
+        
+        // Load providers table for admin
+        function loadProvidersTable() {
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const tableBody = document.getElementById('providersTableBody');
+            tableBody.innerHTML = '';
+            
+            providers.forEach(provider => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${provider.name}</td>
+                    <td>${provider.type === 'doctor' ? 'Doctor' : 'Draftsman'}</td>
+                    <td>${provider.email}</td>
+                    <td>
+                        <span class="status-badge ${provider.status === 'approved' ? 'status-approved' : provider.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
+                            ${provider.status.charAt(0).toUpperCase() + provider.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        ${provider.status === 'pending' ? `
+                            <button class="action-btn approve-btn" onclick="approveProvider(${provider.id})">Approve</button>
+                            <button class="action-btn reject-btn" onclick="rejectProvider(${provider.id})">Reject</button>
+                        ` : ''}
+                        <button class="action-btn view-btn" onclick="viewProvider(${provider.id})">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteProvider(${provider.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Search providers
+        function searchProviders() {
+            const searchText = document.getElementById('providerSearch').value.toLowerCase();
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const tableBody = document.getElementById('providersTableBody');
+            tableBody.innerHTML = '';
+            
+            const filteredProviders = providers.filter(provider => 
+                provider.name.toLowerCase().includes(searchText) || 
+                provider.email.toLowerCase().includes(searchText) ||
+                provider.type.toLowerCase().includes(searchText)
+            );
+            
+            filteredProviders.forEach(provider => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${provider.name}</td>
+                    <td>${provider.type === 'doctor' ? 'Doctor' : 'Draftsman'}</td>
+                    <td>${provider.email}</td>
+                    <td>
+                        <span class="status-badge ${provider.status === 'approved' ? 'status-approved' : provider.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
+                            ${provider.status.charAt(0).toUpperCase() + provider.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        ${provider.status === 'pending' ? `
+                            <button class="action-btn approve-btn" onclick="approveProvider(${provider.id})">Approve</button>
+                            <button class="action-btn reject-btn" onclick="rejectProvider(${provider.id})">Reject</button>
+                        ` : ''}
+                        <button class="action-btn view-btn" onclick="viewProvider(${provider.id})">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteProvider(${provider.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // View provider details
+        function viewProvider(id) {
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const provider = providers.find(p => p.id === id);
+            
+            if (provider) {
+                let details = '';
+                
+                if (provider.type === 'doctor') {
+                    details = `
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Type:</span>
+                            <span class="submission-detail-value">Doctor</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Name:</span>
+                            <span class="submission-detail-value">${provider.name}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Email:</span>
+                            <span class="submission-detail-value">${provider.email}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Phone:</span>
+                            <span class="submission-detail-value">${provider.phone}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Specialization:</span>
+                            <span class="submission-detail-value">${getSpecializationName(provider.specialization)}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Qualification:</span>
+                            <span class="submission-detail-value">${provider.qualification}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Registration No:</span>
+                            <span class="submission-detail-value">${provider.registrationNo}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Experience:</span>
+                            <span class="submission-detail-value">${provider.experience} years</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Hospital:</span>
+                            <span class="submission-detail-value">${provider.hospital}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Consultation Fee:</span>
+                            <span class="submission-detail-value">LKR ${provider.consultationFee}</span>
+                        </div>
+                    `;
+                } else {
+                    details = `
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Type:</span>
+                            <span class="submission-detail-value">Draftsman</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Name:</span>
+                            <span class="submission-detail-value">${provider.name}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Email:</span>
+                            <span class="submission-detail-value">${provider.email}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Phone:</span>
+                            <span class="submission-detail-value">${provider.phone}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Qualification:</span>
+                            <span class="submission-detail-value">${provider.qualification}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Registration No:</span>
+                            <span class="submission-detail-value">${provider.registrationNo}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Experience:</span>
+                            <span class="submission-detail-value">${provider.experience} years</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Services:</span>
+                            <span class="submission-detail-value">${provider.services}</span>
+                        </div>
+                        <div class="submission-detail-item">
+                            <span class="submission-detail-label">Rate:</span>
+                            <span class="submission-detail-value">${provider.rate}</span>
+                        </div>
+                    `;
+                }
+                
+                details += `
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Address:</span>
+                        <span class="submission-detail-value">${provider.address}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">District:</span>
+                        <span class="submission-detail-value">${provider.district}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Pradeshiya Sabha:</span>
+                        <span class="submission-detail-value">${provider.pradeshiyaSabha || 'Not specified'}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Bio:</span>
+                        <span class="submission-detail-value">${provider.bio}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Status:</span>
+                        <span class="submission-detail-value">${provider.status.charAt(0).toUpperCase() + provider.status.slice(1)}</span>
+                    </div>
+                    <div class="submission-detail-item">
+                        <span class="submission-detail-label">Join Date:</span>
+                            <span class="submission-detail-value">${provider.joinDate}</span>
+                    </div>
+                `;
+                
+                document.getElementById('bookingDetailsTitle').textContent = 'Provider Details';
+                document.getElementById('bookingDetailsContent').innerHTML = details;
+                document.getElementById('responseSection').style.display = 'none';
+                document.getElementById('bookingDetailsModal').style.display = 'flex';
+            }
+        }
+        
+        // Approve provider
+        function approveProvider(id) {
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const providerIndex = providers.findIndex(p => p.id === id);
+            
+            if (providerIndex !== -1) {
+                providers[providerIndex].status = 'approved';
+                localStorage.setItem('serviceProviders', JSON.stringify(providers));
+                loadProvidersTable();
+                updateStats();
+                
+                // Send approval notification (simulated)
+                const providerEmail = providers[providerIndex].email;
+                const providerPhone = providers[providerIndex].phone;
+                alert(`Provider approved successfully! Notification sent to ${providerEmail} and ${providerPhone}. They can now login to the system.`);
+            }
+        }
+        
+        // Reject provider
+        function rejectProvider(id) {
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const providerIndex = providers.findIndex(p => p.id === id);
+            
+            if (providerIndex !== -1) {
+                providers[providerIndex].status = 'rejected';
+                localStorage.setItem('serviceProviders', JSON.stringify(providers));
+                loadProvidersTable();
+                updateStats();
+                
+                // Send rejection notification (simulated)
+                const providerEmail = providers[providerIndex].email;
+                alert(`Provider rejected. Notification sent to ${providerEmail}.`);
+            }
+        }
+        
+        // Delete provider
+        function deleteProvider(id) {
+            if (confirm('Are you sure you want to delete this provider? This action cannot be undone.')) {
+                let providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+                providers = providers.filter(p => p.id !== id);
+                localStorage.setItem('serviceProviders', JSON.stringify(providers));
+                loadProvidersTable();
+                updateStats();
+                alert('Provider deleted successfully!');
+            }
+        }
+        
+        // Load bookings table for admin - INCLUDING BUILDINGS.HTML BOOKINGS
+        function loadBookingsTable() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const tableBody = document.getElementById('bookingsTableBody');
+            tableBody.innerHTML = '';
+            
+            // Sort by date (newest first)
+            bookings.sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
+            
+            bookings.forEach(booking => {
+                const serviceType = booking.type === 'doctor' ? 'Doctor Appointment' : 'Draftsman Service';
+                const statusClass = booking.status === 'confirmed' ? 'status-approved' : 
+                                   booking.status === 'pending' ? 'status-pending' : 
+                                   booking.status === 'completed' ? 'status-completed' : 'status-rejected';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${booking.userName}</td>
+                    <td>${booking.providerName}</td>
+                    <td>${serviceType}</td>
+                    <td>${booking.preferredDate || booking.bookingDate}</td>
+                    <td><span class="status-badge ${statusClass}">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span></td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewAdminBooking(${booking.id})">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteAdminBooking(${booking.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // View booking for admin
+        function viewAdminBooking(id) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === id);
+            
+            if (booking) {
+                viewUserBooking(id); // Reuse the same function
+            }
+        }
+        
+        // Delete booking for admin
+        function deleteAdminBooking(id) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                bookings = bookings.filter(b => b.id !== id);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                loadBookingsTable();
+                updateStats();
+                alert('Booking deleted successfully!');
+            }
+        }
+        
+        // Search bookings
+        function searchBookings() {
+            const searchText = document.getElementById('bookingSearch').value.toLowerCase();
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const tableBody = document.getElementById('bookingsTableBody');
+            tableBody.innerHTML = '';
+            
+            const filteredBookings = bookings.filter(booking => 
+                booking.userName.toLowerCase().includes(searchText) || 
+                booking.providerName.toLowerCase().includes(searchText) ||
+                booking.type.toLowerCase().includes(searchText) ||
+                booking.status.toLowerCase().includes(searchText)
+            );
+            
+            filteredBookings.forEach(booking => {
+                const serviceType = booking.type === 'doctor' ? 'Doctor Appointment' : 'Draftsman Service';
+                const statusClass = booking.status === 'confirmed' ? 'status-approved' : 
+                                   booking.status === 'pending' ? 'status-pending' : 
+                                   booking.status === 'completed' ? 'status-completed' : 'status-rejected';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${booking.userName}</td>
+                    <td>${booking.providerName}</td>
+                    <td>${serviceType}</td>
+                    <td>${booking.preferredDate || booking.bookingDate}</td>
+                    <td><span class="status-badge ${statusClass}">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span></td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewAdminBooking(${booking.id})">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteAdminBooking(${booking.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
         
         // News Functions
@@ -2533,379 +5106,6 @@
                 loadNewsTable();
                 updateStats();
                 alert('News item deleted successfully!');
-            }
-        }
-        
-        // Draftsman Bookings Functions
-        function loadBookingsTable() {
-            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
-            const tableBody = document.getElementById('bookingsTableBody');
-            tableBody.innerHTML = '';
-            
-            // Sort bookings by date (newest first)
-            bookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            bookings.forEach(booking => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${booking.name}</td>
-                    <td>${booking.district}</td>
-                    <td>${booking.pradeshiyaSabha}</td>
-                    <td>${booking.draftsman}</td>
-                    <td>${booking.date}</td>
-                    <td>${booking.status}</td>
-                    <td>
-                        <button class="action-btn view-btn" onclick="viewBooking(${booking.id})">View</button>
-                        <button class="action-btn edit-btn" onclick="updateBookingStatus(${booking.id})">Update</button>
-                        <button class="action-btn delete-btn" onclick="deleteBooking(${booking.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-            
-            // Update stats
-            document.getElementById('totalBookings').textContent = bookings.length;
-        }
-        
-        function viewBooking(id) {
-            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
-            const booking = bookings.find(b => b.id === id);
-            
-            if (booking) {
-                const detailsContainer = document.getElementById('submissionDetails');
-                detailsContainer.innerHTML = `
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Name:</span>
-                        <span class="submission-detail-value">${booking.name}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Phone:</span>
-                        <span class="submission-detail-value">${booking.phone}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Email:</span>
-                        <span class="submission-detail-value">${booking.email}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">NIC:</span>
-                        <span class="submission-detail-value">${booking.nic}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">District:</span>
-                        <span class="submission-detail-value">${booking.district}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Pradeshiya Sabha:</span>
-                        <span class="submission-detail-value">${booking.pradeshiyaSabha}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Draftsman:</span>
-                        <span class="submission-detail-value">${booking.draftsman}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Draftsman Email:</span>
-                        <span class="submission-detail-value">${booking.draftsmanEmail}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Project Details:</span>
-                        <span class="submission-detail-value">${booking.projectDetails}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Date:</span>
-                        <span class="submission-detail-value">${booking.date}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Status:</span>
-                        <span class="submission-detail-value">${booking.status}</span>
-                    </div>
-                `;
-                
-                document.getElementById('submissionModal').style.display = 'flex';
-            }
-        }
-        
-        function updateBookingStatus(id) {
-            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
-            const bookingIndex = bookings.findIndex(b => b.id === id);
-            
-            if (bookingIndex !== -1) {
-                const newStatus = prompt('Update Status (Pending/Approved/Rejected/Completed):', bookings[bookingIndex].status);
-                if (newStatus !== null) {
-                    bookings[bookingIndex].status = newStatus;
-                    localStorage.setItem('draftsmanBookings', JSON.stringify(bookings));
-                    loadBookingsTable();
-                    alert('Booking status updated successfully!');
-                }
-            }
-        }
-        
-        function deleteBooking(id) {
-            if (confirm('Are you sure you want to delete this booking?')) {
-                let bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
-                bookings = bookings.filter(b => b.id !== id);
-                localStorage.setItem('draftsmanBookings', JSON.stringify(bookings));
-                loadBookingsTable();
-                alert('Booking deleted successfully!');
-            }
-        }
-        
-        function searchBookings() {
-            const searchText = document.getElementById('bookingSearch').value.toLowerCase();
-            const bookings = JSON.parse(localStorage.getItem('draftsmanBookings') || '[]');
-            const tableBody = document.getElementById('bookingsTableBody');
-            tableBody.innerHTML = '';
-            
-            const filteredBookings = bookings.filter(booking => 
-                booking.name.toLowerCase().includes(searchText) || 
-                booking.district.toLowerCase().includes(searchText) ||
-                booking.pradeshiyaSabha.toLowerCase().includes(searchText) ||
-                booking.draftsman.toLowerCase().includes(searchText) ||
-                booking.status.toLowerCase().includes(searchText)
-            );
-            
-            filteredBookings.forEach(booking => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${booking.name}</td>
-                    <td>${booking.district}</td>
-                    <td>${booking.pradeshiyaSabha}</td>
-                    <td>${booking.draftsman}</td>
-                    <td>${booking.date}</td>
-                    <td>${booking.status}</td>
-                    <td>
-                        <button class="action-btn view-btn" onclick="viewBooking(${booking.id})">View</button>
-                        <button class="action-btn edit-btn" onclick="updateBookingStatus(${booking.id})">Update</button>
-                        <button class="action-btn delete-btn" onclick="deleteBooking(${booking.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-        
-        // Doctor Management Functions
-        function loadDoctorsTable() {
-            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
-            const tableBody = document.getElementById('doctorsTableBody');
-            tableBody.innerHTML = '';
-            
-            const locationNames = {
-                'western': 'Western Province',
-                'central': 'Central Province',
-                'southern': 'Southern Province',
-                'northern': 'Northern Province',
-                'eastern': 'Eastern Province',
-                'north-western': 'North Western Province',
-                'north-central': 'North Central Province',
-                'uva': 'Uva Province',
-                'sabaragamuwa': 'Sabaragamuwa Province'
-            };
-            
-            doctors.forEach(doctor => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${doctor.name}</td>
-                    <td>${doctor.specialization}</td>
-                    <td>${locationNames[doctor.location] || doctor.location}</td>
-                    <td>
-                        <span class="status-badge ${doctor.status === 'approved' ? 'status-approved' : doctor.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
-                            ${doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>
-                        ${doctor.status === 'pending' ? `
-                            <button class="action-btn approve-btn" onclick="approveDoctor(${doctor.id})">Approve</button>
-                            <button class="action-btn reject-btn" onclick="rejectDoctor(${doctor.id})">Reject</button>
-                        ` : ''}
-                        <button class="action-btn view-btn" onclick="viewDoctor(${doctor.id})">View</button>
-                        <button class="action-btn delete-btn" onclick="deleteDoctor(${doctor.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-        
-        function searchDoctors() {
-            const searchText = document.getElementById('doctorSearch').value.toLowerCase();
-            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
-            const tableBody = document.getElementById('doctorsTableBody');
-            tableBody.innerHTML = '';
-            
-            const locationNames = {
-                'western': 'Western Province',
-                'central': 'Central Province',
-                'southern': 'Southern Province',
-                'northern': 'Northern Province',
-                'eastern': 'Eastern Province',
-                'north-western': 'North Western Province',
-                'north-central': 'North Central Province',
-                'uva': 'Uva Province',
-                'sabaragamuwa': 'Sabaragamuwa Province'
-            };
-            
-            const filteredDoctors = doctors.filter(doctor => 
-                doctor.name.toLowerCase().includes(searchText) || 
-                doctor.specialization.toLowerCase().includes(searchText) ||
-                (locationNames[doctor.location] && locationNames[doctor.location].toLowerCase().includes(searchText))
-            );
-            
-            filteredDoctors.forEach(doctor => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${doctor.name}</td>
-                    <td>${doctor.specialization}</td>
-                    <td>${locationNames[doctor.location] || doctor.location}</td>
-                    <td>
-                        <span class="status-badge ${doctor.status === 'approved' ? 'status-approved' : doctor.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
-                            ${doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>
-                        ${doctor.status === 'pending' ? `
-                            <button class="action-btn approve-btn" onclick="approveDoctor(${doctor.id})">Approve</button>
-                            <button class="action-btn reject-btn" onclick="rejectDoctor(${doctor.id})">Reject</button>
-                        ` : ''}
-                        <button class="action-btn view-btn" onclick="viewDoctor(${doctor.id})">View</button>
-                        <button class="action-btn delete-btn" onclick="deleteDoctor(${doctor.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-        
-        function addDoctorItem(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('doctorName').value;
-            const specialization = document.getElementById('doctorSpecialization').value;
-            const qualification = document.getElementById('doctorQualification').value;
-            const experience = document.getElementById('doctorExperience').value;
-            const location = document.getElementById('doctorLocation').value;
-            const phone = document.getElementById('doctorPhone').value;
-            const bio = document.getElementById('doctorBio').value;
-            const availability = document.getElementById('doctorAvailability').value;
-            
-            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
-            const newId = doctors.length > 0 ? Math.max(...doctors.map(d => d.id)) + 1 : 1;
-            
-            doctors.push({
-                id: newId,
-                name,
-                specialization,
-                qualification,
-                experience: parseInt(experience),
-                location,
-                phone,
-                bio,
-                availability,
-                status: 'approved',
-                avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 99)}.jpg`
-            });
-            
-            localStorage.setItem('doctors', JSON.stringify(doctors));
-            
-            // Clear form
-            document.getElementById('doctorForm').reset();
-            
-            // Update doctors table and stats
-            loadDoctorsTable();
-            updateStats();
-            
-            alert('Doctor added successfully!');
-        }
-        
-        function approveDoctor(id) {
-            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
-            const doctorIndex = doctors.findIndex(d => d.id === id);
-            
-            if (doctorIndex !== -1) {
-                doctors[doctorIndex].status = 'approved';
-                localStorage.setItem('doctors', JSON.stringify(doctors));
-                loadDoctorsTable();
-                alert('Doctor approved successfully! They are now visible in the available doctors list.');
-            }
-        }
-        
-        function rejectDoctor(id) {
-            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
-            const doctorIndex = doctors.findIndex(d => d.id === id);
-            
-            if (doctorIndex !== -1) {
-                doctors[doctorIndex].status = 'rejected';
-                localStorage.setItem('doctors', JSON.stringify(doctors));
-                loadDoctorsTable();
-                alert('Doctor rejected successfully!');
-            }
-        }
-        
-        function viewDoctor(id) {
-            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
-            const doctor = doctors.find(d => d.id === id);
-            
-            if (doctor) {
-                const locationNames = {
-                    'western': 'Western Province',
-                    'central': 'Central Province',
-                    'southern': 'Southern Province',
-                    'northern': 'Northern Province',
-                    'eastern': 'Eastern Province',
-                    'north-western': 'North Western Province',
-                    'north-central': 'North Central Province',
-                    'uva': 'Uva Province',
-                    'sabaragamuwa': 'Sabaragamuwa Province'
-                };
-                
-                const detailsContainer = document.getElementById('submissionDetails');
-                detailsContainer.innerHTML = `
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Name:</span>
-                        <span class="submission-detail-value">${doctor.name}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Specialization:</span>
-                        <span class="submission-detail-value">${doctor.specialization}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Qualifications:</span>
-                        <span class="submission-detail-value">${doctor.qualification}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Experience:</span>
-                        <span class="submission-detail-value">${doctor.experience} years</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Location:</span>
-                        <span class="submission-detail-value">${locationNames[doctor.location] || doctor.location}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Phone:</span>
-                        <span class="submission-detail-value">${doctor.phone}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Bio:</span>
-                        <span class="submission-detail-value">${doctor.bio}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Availability:</span>
-                        <span class="submission-detail-value">${doctor.availability}</span>
-                    </div>
-                    <div class="submission-detail-item">
-                        <span class="submission-detail-label">Status:</span>
-                        <span class="submission-detail-value">${doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1)}</span>
-                    </div>
-                `;
-                
-                document.getElementById('submissionModal').style.display = 'flex';
-            }
-        }
-        
-        function deleteDoctor(id) {
-            if (confirm('Are you sure you want to delete this doctor?')) {
-                let doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
-                doctors = doctors.filter(d => d.id !== id);
-                localStorage.setItem('doctors', JSON.stringify(doctors));
-                loadDoctorsTable();
-                updateStats();
-                alert('Doctor deleted successfully!');
             }
         }
         
