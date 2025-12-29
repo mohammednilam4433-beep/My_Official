@@ -101,28 +101,10 @@
         .map-container {
             background: white;
             border-radius: 10px;
-            padding: 25px;
+            padding: 10px;
             box-shadow: 0 3px 15px rgba(0,0,0,0.1);
             margin-bottom: 30px;
-        }
-        
-        .map-placeholder {
-            height: 400px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            color: #6c757d;
-        }
-        
-        .map-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
+            overflow: hidden;
         }
         
         .news-item {
@@ -170,9 +152,32 @@
         .health-topic {
             background: white;
             border-radius: 10px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+
+        .guide-step {
+            display: flex;
+            align-items: start;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-weight: bold;
         }
         
         /* Consultation Form Styles */
@@ -215,67 +220,44 @@
             font-size: 0.8rem;
         }
         
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-approved { background-color: #d1ecf1; color: #0c5460; }
+        .status-rejected { background-color: #f8d7da; color: #721c24; }
         
-        .status-approved {
-            background-color: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        .status-rejected {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        
-        .admin-panel {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .admin-table th, .admin-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .admin-table th {
+        /* Chat Styles */
+        .chat-container {
             background-color: #f8f9fa;
-            font-weight: 600;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e0e0e0;
         }
-        
-        .admin-table tr:hover {
-            background-color: #f5f5f5;
+        .message-box {
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 85%;
+        }
+        .msg-doctor {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary-color);
+            margin-right: auto;
+        }
+        .msg-user {
+            background-color: #fff3cd;
+            border-right: 4px solid var(--accent-color);
+            margin-left: auto;
+            text-align: right;
         }
         
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .hero-tagline {
-                font-size: 1.2rem;
-            }
-            
-            .doctor-avatar {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
+            .hero-title { font-size: 2rem; }
+            .hero-tagline { font-size: 1.2rem; }
+            .doctor-avatar { margin-right: 0; margin-bottom: 10px; }
         }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
             <h1 class="hero-title">Health and Safety</h1>
@@ -283,41 +265,69 @@
         </div>
     </section>
 
-    <!-- Main Content -->
     <div class="container main-content">
-        <!-- Health & Safety Resources -->
+        
         <section class="mb-5">
-            <h2 class="section-title">Health & Safety Resources</h2>
+            <div class="search-box">
+                <h3 class="text-center mb-4">What health issues are you facing?</h3>
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" placeholder="Describe your symptoms (e.g., fever, headache, burns)..." id="health-search">
+                    <button class="btn btn-primary" type="button" id="search-button">
+                        <i class="fas fa-search me-1"></i> Search
+                    </button>
+                </div>
+                <div class="mt-3 text-center">
+                    <p class="text-muted">Popular searches: Fever, Snake bite, Dengue symptoms, Doctor booking</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <div class="resource-card bg-light border-start border-primary border-5" style="text-align: left;">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4><i class="fas fa-history me-2 text-primary"></i> Track Your Doctor Consultations</h4>
+                        <p class="mb-0">Enter your phone number to check doctor replies and chat with them.</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-primary" onclick="showPage('track-requests-page')">Check Status</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="section-title">Health Resources</h2>
             <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="resource-card" onclick="showPage('consult-doctors-page')">
+                        <i class="fas fa-user-md"></i>
+                        <h4>Consult Doctors</h4>
+                        <p>Find and book approved doctors in your area.</p>
+                        <div class="btn btn-outline-primary">Connect Now</div>
+                    </div>
+                </div>
                 <div class="col-md-4 mb-4">
                     <div class="resource-card" onclick="showPage('home-remedies-page')">
                         <i class="fas fa-home"></i>
                         <h4>Home Remedies</h4>
-                        <p>Natural treatments using locally available ingredients for common health issues.</p>
+                        <p>Natural cures for common rural ailments.</p>
                         <div class="btn btn-outline-primary">Explore</div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="resource-card" onclick="showPage('govt-schemes-page')">
                         <i class="fas fa-hand-holding-medical"></i>
-                        <h4>Government Health Schemes</h4>
-                        <p>Information about healthcare programs and benefits available for rural communities.</p>
+                        <h4>Government Schemes</h4>
+                        <p>Suwaseriya, Thriposha, and other benefits.</p>
                         <div class="btn btn-outline-primary">Learn More</div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="resource-card" onclick="showPage('consult-doctors-page')">
-                        <i class="fas fa-user-md"></i>
-                        <h4>Consult Doctors</h4>
-                        <p>Connect with healthcare professionals for advice and consultations.</p>
-                        <div class="btn btn-outline-primary">Connect Now</div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="resource-card" onclick="showPage('visual-guides-page')">
                         <i class="fas fa-images"></i>
-                        <h4>Visual Guides</h4>
-                        <p>Step-by-step illustrated guides for common health procedures and first aid.</p>
+                        <h4>First Aid Guides</h4>
+                        <p>Visual steps for CPR, choking, and burns.</p>
                         <div class="btn btn-outline-primary">View Guides</div>
                     </div>
                 </div>
@@ -325,47 +335,81 @@
                     <div class="resource-card" onclick="showPage('health-awareness-page')">
                         <i class="fas fa-book-medical"></i>
                         <h4>Health Awareness</h4>
-                        <p>Articles and information to increase health awareness in rural communities.</p>
+                        <p>Dengue, Diabetes, and Hygiene info.</p>
                         <div class="btn btn-outline-primary">Read Articles</div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="resource-card" onclick="showPage('emergency-numbers-page')">
                         <i class="fas fa-phone-alt"></i>
-                        <h4>Emergency Helpline Numbers</h4>
-                        <p>Important emergency contact numbers for immediate assistance.</p>
+                        <h4>Emergency Numbers</h4>
+                        <p>Ambulance, Police, and Help lines.</p>
                         <div class="btn btn-outline-primary">View Numbers</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Search Section -->
         <section class="mb-5">
-            <div class="search-box">
-                <h3 class="text-center mb-4">What health issues are you facing?</h3>
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-lg" placeholder="Describe your symptoms or health concern..." id="health-search">
-                    <button class="btn btn-primary" type="button" id="search-button">
-                        <i class="fas fa-search me-1"></i> Search
-                    </button>
-                </div>
-                <div class="mt-3 text-center">
-                    <p class="text-muted">Try searching for: fever, headache, skin issues, etc.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Nearby Health Services -->
-        <section class="mb-5">
-            <h2 class="section-title">Nearby Health Services</h2>
-            
+            <h2 class="section-title">Find Nearby Health Services</h2>
             <div class="location-selectors">
                 <h4 class="mb-4">Find hospitals, clinics, and pharmacies near you</h4>
                 <div class="row">
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-4 mb-3">
                         <label for="province-select" class="form-label">Province</label>
                         <select class="form-select" id="province-select">
+                            <option value="">Select Province</option>
+                            <option value="Western Province">Western Province</option>
+                            <option value="Central Province">Central Province</option>
+                            <option value="Southern Province">Southern Province</option>
+                            <option value="Northern Province">Northern Province</option>
+                            <option value="Eastern Province">Eastern Province</option>
+                            <option value="North Western Province">North Western Province</option>
+                            <option value="North Central Province">North Central Province</option>
+                            <option value="Uva Province">Uva Province</option>
+                            <option value="Sabaragamuwa Province">Sabaragamuwa Province</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="district-select" class="form-label">District</label>
+                        <select class="form-select" id="district-select" disabled>
+                            <option value="">Select District</option>
+                        </select>
+                    </div>
+                    </div>
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" id="find-services-btn">
+                        <i class="fas fa-map-marker-alt me-1"></i> Find Healthcare Facilities
+                    </button>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <iframe id="google-map-frame"
+                    width="100%"
+                    height="450"
+                    style="border:0; border-radius: 8px;"
+                    loading="lazy"
+                    allowfullscreen
+                    src="https://maps.google.com/maps?q=Sri+Lanka&t=&z=7&ie=UTF8&iwloc=&output=embed">
+                </iframe>
+            </div>
+        </section>
+    </div>
+
+    <div id="consult-doctors-page" class="page-section">
+        <div class="container">
+            <button class="btn btn-secondary mb-4" onclick="showMainPage()">
+                <i class="fas fa-arrow-left me-2"></i> Back to Main Page
+            </button>
+            <h2 class="section-title">Consult Doctors</h2>
+            
+            <div class="location-selectors mb-4">
+                <h4 class="mb-3">Find Approved Doctors in Your Area</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="doctor-province-select" class="form-label">Province</label>
+                        <select class="form-select" id="doctor-province-select">
                             <option value="">Select Province</option>
                             <option value="western">Western Province</option>
                             <option value="central">Central Province</option>
@@ -378,989 +422,593 @@
                             <option value="sabaragamuwa">Sabaragamuwa Province</option>
                         </select>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="district-select" class="form-label">District</label>
-                        <select class="form-select" id="district-select" disabled>
+                    <div class="col-md-6 mb-3">
+                        <label for="doctor-district-select" class="form-label">District</label>
+                        <select class="form-select" id="doctor-district-select" disabled>
                             <option value="">Select District</option>
                         </select>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="ds-division-select" class="form-label">DS Division</label>
-                        <select class="form-select" id="ds-division-select" disabled>
-                            <option value="">Select DS Division</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="gn-division-select" class="form-label">GN Division</label>
-                        <select class="form-select" id="gn-division-select" disabled>
-                            <option value="">Select GN Division</option>
-                        </select>
-                    </div>
                 </div>
-                <div class="text-center mt-3">
-                    <button class="btn btn-primary" id="find-services-btn">
-                        <i class="fas fa-map-marker-alt me-1"></i> Find Healthcare Facilities
-                    </button>
+                <div class="alert alert-info small"><i class="fas fa-info-circle me-1"></i> Doctors must be registered and approved by Admin in the main portal to appear here.</div>
+            </div>
+
+            <h4 class="mb-4">Available Doctors</h4>
+            <div class="row" id="doctors-list">
+                <div class="col-12 text-center text-muted">
+                    <p>Please select a province and district to see available doctors.</p>
                 </div>
             </div>
             
-            <div class="map-container">
-                <div class="map-placeholder">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <h4>Map will appear here showing healthcare facilities near your location</h4>
-                    <p class="mt-3">Select your location from the dropdowns above and click "Find Healthcare Facilities"</p>
-                </div>
+            <div class="consultation-form mt-5" id="consultation-form-container" style="display: none;">
+                <h4 class="mb-4 text-primary">Request Consultation</h4>
+                <form id="consultation-form">
+                    <input type="hidden" id="selected-doctor-id">
+                    <div class="mb-3">
+                        <label class="form-label">Selected Doctor</label>
+                        <input type="text" class="form-control" id="form-doctor-name" readonly>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="patient-name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Your Phone Number (Required for Tracking)</label>
+                            <input type="tel" class="form-control" id="patient-phone" placeholder="07XXXXXXXX" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Health Issue Description</label>
+                        <textarea class="form-control" id="health-issue" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Send Booking Request</button>
+                </form>
             </div>
-        </section>
-
-        <!-- Latest Health News -->
-        <section class="mb-5">
-            <h2 class="section-title">Latest Health News & Announcements</h2>
-            <div class="news-item">
-                <h5><i class="fas fa-syringe me-2 text-primary"></i> New Vaccination Program</h5>
-                <p>The government has launched a new vaccination drive for rural areas focusing on preventable diseases. Free vaccination camps will be set up in all rural health centers next month.</p>
-                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-            </div>
-            <div class="news-item">
-                <h5><i class="fas fa-mosquito me-2 text-primary"></i> Dengue Awareness Campaign</h5>
-                <p>Health department initiates awareness program to combat dengue in rural regions during monsoon season. Learn about prevention and early symptoms.</p>
-                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-            </div>
-            <div class="news-item">
-                <h5><i class="fas fa-hand-holding-water me-2 text-primary"></i> Clean Water Initiative</h5>
-                <p>New water purification systems to be installed in 50 remote villages to prevent water-borne diseases. Training programs on water safety to begin next week.</p>
-                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-            </div>
-            <div class="news-item">
-                <h5><i class="fas fa-heartbeat me-2 text-primary"></i> Mobile Health Clinic Launch</h5>
-                <p>New mobile health units will provide medical services to remote villages twice a week. Services include basic checkups, medication, and maternal care.</p>
-                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-            </div>
-        </section>
+        </div>
     </div>
 
-    <!-- Resource Pages -->
-    <!-- Home Remedies Page -->
-    <div id="home-remedies-page" class="page-section">
+    <div id="track-requests-page" class="page-section">
         <div class="container">
             <button class="btn btn-secondary mb-4" onclick="showMainPage()">
-                <i class="fas fa-arrow-left me-2"></i> Back to Main Page
+                <i class="fas fa-arrow-left me-2"></i> Back
             </button>
-            <h2 class="section-title">Home Remedies</h2>
+            <h2 class="section-title">My Consultation History</h2>
+
+            <div class="consultation-form">
+                <label class="form-label">Enter your registered Phone Number to view bookings and replies:</label>
+                <div class="input-group mb-3">
+                    <input type="tel" class="form-control" id="track-phone-input" placeholder="07XXXXXXXX">
+                    <button class="btn btn-primary" onclick="loadUserConsultations()">View History</button>
+                </div>
+            </div>
+
+            <div id="user-history-container"></div>
+        </div>
+    </div>
+
+    <div id="home-remedies-page" class="page-section">
+        <div class="container">
+            <button class="btn btn-secondary mb-4" onclick="showMainPage()"><i class="fas fa-arrow-left me-2"></i> Back to Main Page</button>
+            <h2 class="section-title">Home Remedies for Common Ailments</h2>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4 mb-4">
                     <div class="health-topic">
-                        <h4><i class="fas fa-head-side-headphones me-2"></i> Headache Remedies</h4>
-                        <p>1. Apply a cold or warm compress to your forehead and neck</p>
-                        <p>2. Drink plenty of water to stay hydrated</p>
-                        <p>3. Practice relaxation techniques like deep breathing</p>
-                        <p>4. Gently massage your temples and neck</p>
-                        <p>5. Rest in a quiet, dark room</p>
-                    </div>
-                    <div class="health-topic">
-                        <h4><i class="fas fa-temperature-high me-2"></i> Fever Remedies</h4>
-                        <p>1. Stay hydrated with water, herbal teas, and broth</p>
-                        <p>2. Take a lukewarm bath or use cool compresses</p>
-                        <p>3. Rest and allow your body to recover</p>
-                        <p>4. Wear lightweight clothing</p>
-                        <p>5. Use a fan to keep air circulating</p>
+                        <h4><i class="fas fa-head-side-headphones me-2 text-primary"></i> Headache</h4>
+                        <ul class="small">
+                            <li>Apply ginger paste to the forehead.</li>
+                            <li>Drink plenty of water to hydrate.</li>
+                            <li>Steam inhalation with lime leaves.</li>
+                            <li>Rest in a dark, quiet room.</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4 mb-4">
                     <div class="health-topic">
-                        <h4><i class="fas fa-cough me-2"></i> Cough & Cold Remedies</h4>
-                        <p>1. Drink warm honey and lemon water</p>
-                        <p>2. Inhale steam with a few drops of eucalyptus oil</p>
-                        <p>3. Gargle with warm salt water</p>
-                        <p>4. Drink herbal teas with ginger and turmeric</p>
-                        <p>5. Use a humidifier in your room</p>
+                        <h4><i class="fas fa-temperature-high me-2 text-danger"></i> Fever</h4>
+                        <ul class="small">
+                            <li>Drink coriander (Koththamalli) water.</li>
+                            <li>Wipe body with lukewarm water.</li>
+                            <li>Drink King Coconut water for hydration.</li>
+                            <li>Avoid heavy meals.</li>
+                        </ul>
                     </div>
+                </div>
+                <div class="col-md-4 mb-4">
                     <div class="health-topic">
-                        <h4><i class="fas fa-burn me-2"></i> Minor Burns</h4>
-                        <p>1. Cool the burn under running water for 10-15 minutes</p>
-                        <p>2. Apply aloe vera gel or honey</p>
-                        <p>3. Cover with a sterile bandage</p>
-                        <p>4. Avoid breaking any blisters</p>
-                        <p>5. Take over-the-counter pain relievers if needed</p>
+                        <h4><i class="fas fa-fire-alt me-2 text-warning"></i> Gastritis</h4>
+                        <ul class="small">
+                            <li>Drink fresh coconut water.</li>
+                            <li>Eat small meals frequently.</li>
+                            <li>Avoid spicy and oily foods.</li>
+                            <li>Drink cold milk to soothe burning.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="health-topic">
+                        <h4><i class="fas fa-tooth me-2 text-info"></i> Toothache</h4>
+                        <ul class="small">
+                            <li>Chew on a clove (Karabu Nati).</li>
+                            <li>Rinse mouth with warm salt water.</li>
+                            <li>Apply garlic paste to the affected tooth.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="health-topic">
+                        <h4><i class="fas fa-viruses me-2 text-success"></i> Sore Throat</h4>
+                        <ul class="small">
+                            <li>Gargle with warm salt water.</li>
+                            <li>Drink tea with ginger and honey.</li>
+                            <li>Chew Tulsi (Basil) leaves.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="health-topic">
+                        <h4><i class="fas fa-first-aid me-2 text-danger"></i> Minor Cuts</h4>
+                        <ul class="small">
+                            <li>Clean with clean water and soap.</li>
+                            <li>Apply turmeric powder (antiseptic).</li>
+                            <li>Keep the wound dry and covered.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Government Health Schemes Page -->
     <div id="govt-schemes-page" class="page-section">
         <div class="container">
-            <button class="btn btn-secondary mb-4" onclick="showMainPage()">
-                <i class="fas fa-arrow-left me-2"></i> Back to Main Page
-            </button>
+            <button class="btn btn-secondary mb-4" onclick="showMainPage()"><i class="fas fa-arrow-left me-2"></i> Back to Main Page</button>
             <h2 class="section-title">Government Health Schemes</h2>
             <div class="row">
                 <div class="col-md-6 mb-4">
                     <div class="health-topic">
-                        <h4><i class="fas fa-hospital me-2"></i> Ayushman Bharat Yojana</h4>
-                        <p>Health insurance scheme providing coverage of ₹5 lakh per family per year for secondary and tertiary care hospitalization.</p>
-                        <p><strong>Eligibility:</strong> Families identified as deprived rural households</p>
-                        <p><strong>Benefits:</strong> Covers almost all secondary and tertiary hospitalizations</p>
-                        <button class="btn btn-outline-primary btn-sm">Apply Now</button>
+                        <h4><i class="fas fa-ambulance me-2 text-danger"></i> Suwaseriya (1990)</h4>
+                        <p>Free pre-hospital care ambulance service available across Sri Lanka. Call 1990 toll-free from any network.</p>
                     </div>
                 </div>
                 <div class="col-md-6 mb-4">
                     <div class="health-topic">
-                        <h4><i class="fas fa-stethoscope me-2"></i> National Health Mission</h4>
-                        <p>Strengthening healthcare infrastructure in rural areas through sub-centers, primary health centers, and community health centers.</p>
-                        <p><strong>Eligibility:</strong> All rural residents</p>
-                        <p><strong>Benefits:</strong> Improved access to quality healthcare services</p>
-                        <button class="btn btn-outline-primary btn-sm">Learn More</button>
+                        <h4><i class="fas fa-baby me-2 text-primary"></i> Thriposha Program</h4>
+                        <p>Supplementary food program for pregnant/lactating mothers and under-nourished children. Available at local MOH offices.</p>
                     </div>
                 </div>
                 <div class="col-md-6 mb-4">
                     <div class="health-topic">
-                        <h4><i class="fas fa-baby me-2"></i> Janani Shishu Suraksha Karyakram</h4>
-                        <p>Free delivery, C-section, drugs, diagnostics, diet, and transport for pregnant women and sick newborns.</p>
-                        <p><strong>Eligibility:</strong> All pregnant women</p>
-                        <p><strong>Benefits:</strong> Completely free delivery care</p>
-                        <button class="btn btn-outline-primary btn-sm">Register</button>
+                        <h4><i class="fas fa-procedures me-2 text-info"></i> CKDu Support</h4>
+                        <p>Financial allowance and specialized clinics for kidney patients in rural agricultural districts.</p>
                     </div>
                 </div>
                 <div class="col-md-6 mb-4">
                     <div class="health-topic">
-                        <h4><i class="fas fa-child me-2"></i> Rashtriya Bal Swasthya Karyakram</h4>
-                        <p>Child health screening and early intervention services for defects, diseases, deficiencies, and developmental delays.</p>
-                        <p><strong>Eligibility:</strong> Children aged 0-18 years</p>
-                        <p><strong>Benefits:</strong> Free screening and early intervention</p>
-                        <button class="btn btn-outline-primary btn-sm">Find Center</button>
+                        <h4><i class="fas fa-hands-helping me-2 text-success"></i> Cancer Support</h4>
+                        <p>Financial assistance for low-income cancer patients through the Cancer Control Programme. Contact Apeksha Hospital.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Consult Doctors Page -->
-    <div id="consult-doctors-page" class="page-section">
+    <div id="visual-guides-page" class="page-section">
         <div class="container">
-            <button class="btn btn-secondary mb-4" onclick="showMainPage()">
-                <i class="fas fa-arrow-left me-2"></i> Back to Main Page
-            </button>
-            <h2 class="section-title">Consult Doctors</h2>
+            <button class="btn btn-secondary mb-4" onclick="showMainPage()"><i class="fas fa-arrow-left me-2"></i> Back</button>
+            <h2 class="section-title">First Aid Visual Guides</h2>
             
-            <!-- Consultation Request Form -->
-            <div class="consultation-form">
-                <h4 class="mb-4">Request a Consultation</h4>
-                <form id="consultation-form">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="patient-name" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="patient-name" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="patient-age" class="form-label">Age</label>
-                            <input type="number" class="form-control" id="patient-age" required>
-                        </div>
+            <h4 class="mt-4 mb-3">CPR (Cardiopulmonary Resuscitation)</h4>
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <div class="guide-step">
+                        <div class="step-number">1</div>
+                        <div><strong>Check Responsiveness:</strong> Shake shoulders and ask "Are you okay?". If no response, call 1990.</div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="patient-phone" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="patient-phone" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="patient-location" class="form-label">Location</label>
-                            <select class="form-select" id="patient-location" required>
-                                <option value="">Select Your Location</option>
-                                <option value="western">Western Province</option>
-                                <option value="central">Central Province</option>
-                                <option value="southern">Southern Province</option>
-                                <option value="northern">Northern Province</option>
-                                <option value="eastern">Eastern Province</option>
-                                <option value="north-western">North Western Province</option>
-                                <option value="north-central">North Central Province</option>
-                                <option value="uva">Uva Province</option>
-                                <option value="sabaragamuwa">Sabaragamuwa Province</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="guide-step">
+                        <div class="step-number">2</div>
+                        <div><strong>Push Hard & Fast:</strong> Place hands on center of chest. Push down 2 inches at 100-120 beats per minute.</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="health-issue" class="form-label">Health Issue Description</label>
-                        <textarea class="form-control" id="health-issue" rows="3" required></textarea>
+                </div>
+                <div class="col-md-4">
+                    <div class="guide-step">
+                        <div class="step-number">3</div>
+                        <div><strong>Continue:</strong> Do not stop until help arrives or the person starts breathing.</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="consultation-type" class="form-label">Preferred Consultation Type</label>
-                        <select class="form-select" id="consultation-type" required>
-                            <option value="">Select Consultation Type</option>
-                            <option value="video">Video Consultation</option>
-                            <option value="phone">Phone Consultation</option>
-                            <option value="in-person">In-Person Appointment</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="preferred-doctor" class="form-label">Preferred Doctor (Optional)</label>
-                        <select class="form-select" id="preferred-doctor">
-                            <option value="">Any Available Doctor</option>
-                            <!-- Doctors will be populated dynamically -->
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Consultation Request</button>
-                </form>
+                </div>
             </div>
-            
-            <!-- Available Doctors Section -->
-            <h4 class="mt-5 mb-4">Available Doctors in Your Area</h4>
-            <div class="row" id="doctors-list">
-                <!-- Doctors will be populated dynamically -->
-            </div>
-            
-            <!-- Doctor Registration Form -->
-            <div class="consultation-form mt-5">
-                <h4 class="mb-4">Doctor Registration</h4>
-                <form id="doctor-registration-form">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="doctor-name" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="doctor-name" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="doctor-specialization" class="form-label">Specialization</label>
-                            <select class="form-select" id="doctor-specialization" required>
-                                <option value="">Select Specialization</option>
-                                <option value="general">General Practitioner</option>
-                                <option value="pediatrics">Pediatrics</option>
-                                <option value="gynecology">Gynecology</option>
-                                <option value="cardiology">Cardiology</option>
-                                <option value="dermatology">Dermatology</option>
-                                <option value="orthopedics">Orthopedics</option>
-                                <option value="psychiatry">Psychiatry</option>
-                                <option value="dentistry">Dentistry</option>
-                            </select>
-                        </div>
+
+            <h4 class="mt-4 mb-3">Choking (Heimlich Maneuver)</h4>
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="guide-step">
+                        <div class="step-number">1</div>
+                        <div>Stand behind the person. Wrap arms around waist. Make a fist above the navel.</div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="doctor-qualification" class="form-label">Qualifications</label>
-                            <input type="text" class="form-control" id="doctor-qualification" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="doctor-experience" class="form-label">Years of Experience</label>
-                            <input type="number" class="form-control" id="doctor-experience" required>
-                        </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="guide-step">
+                        <div class="step-number">2</div>
+                        <div>Pull inward and upward sharply. Repeat thrusts until object is expelled.</div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="doctor-phone" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="doctor-phone" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="doctor-location" class="form-label">Practice Location</label>
-                            <select class="form-select" id="doctor-location" required>
-                                <option value="">Select Practice Location</option>
-                                <option value="western">Western Province</option>
-                                <option value="central">Central Province</option>
-                                <option value="southern">Southern Province</option>
-                                <option value="northern">Northern Province</option>
-                                <option value="eastern">Eastern Province</option>
-                                <option value="north-western">North Western Province</option>
-                                <option value="north-central">North Central Province</option>
-                                <option value="uva">Uva Province</option>
-                                <option value="sabaragamuwa">Sabaragamuwa Province</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="doctor-bio" class="form-label">Professional Bio</label>
-                        <textarea class="form-control" id="doctor-bio" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="doctor-availability" class="form-label">Availability</label>
-                        <input type="text" class="form-control" id="doctor-availability" placeholder="e.g., Mon-Fri 9am-5pm" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Register as Doctor</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Admin Panel Page -->
-    <div id="admin-panel-page" class="page-section">
+    <div id="health-awareness-page" class="page-section">
         <div class="container">
-            <button class="btn btn-secondary mb-4" onclick="showMainPage()">
-                <i class="fas fa-arrow-left me-2"></i> Back to Main Page
-            </button>
-            <h2 class="section-title">Admin Panel</h2>
-            
-            <div class="admin-panel">
-                <h4 class="mb-4">Doctor Registration Approvals</h4>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Doctor Name</th>
-                                <th>Specialization</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-doctors-table">
-                            <!-- Doctors pending approval will be populated here -->
-                        </tbody>
-                    </table>
+            <button class="btn btn-secondary mb-4" onclick="showMainPage()"><i class="fas fa-arrow-left me-2"></i> Back</button>
+            <h2 class="section-title">Health Awareness</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="health-topic">
+                        <h4><i class="fas fa-mosquito me-2 text-danger"></i> Dengue Prevention</h4>
+                        <p>Clean surroundings to stop mosquito breeding. Cover water containers. Seek medical help for high fever.</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="admin-panel">
-                <h4 class="mb-4">Consultation Requests</h4>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Patient Name</th>
-                                <th>Health Issue</th>
-                                <th>Location</th>
-                                <th>Request Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-consultations-table">
-                            <!-- Consultation requests will be populated here -->
-                        </tbody>
-                    </table>
+                <div class="col-md-4 mb-4">
+                    <div class="health-topic">
+                        <h4><i class="fas fa-tint me-2 text-primary"></i> Diabetes Control</h4>
+                        <p>Reduce sugar and rice intake. Exercise daily for 30 minutes. Regular blood sugar testing at rural clinics.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="health-topic">
+                        <h4><i class="fas fa-brain me-2 text-info"></i> Mental Health</h4>
+                        <p>Depression is treatable. Talk to family or visit the nearest hospital's mental health unit (Mithuru Piyasa).</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Add other resource pages similarly -->
+    <div id="emergency-numbers-page" class="page-section">
+        <div class="container">
+            <button class="btn btn-secondary mb-4" onclick="showMainPage()"><i class="fas fa-arrow-left me-2"></i> Back</button>
+            <h2 class="section-title">Emergency Helpline Numbers</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-danger shadow-sm">
+                        <h1 class="text-danger">1990</h1>
+                        <p class="fw-bold">Suwaseriya Ambulance</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-primary shadow-sm">
+                        <h1 class="text-primary">119</h1>
+                        <p class="fw-bold">Police Emergency</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-warning shadow-sm">
+                        <h1 class="text-warning">110</h1>
+                        <p class="fw-bold">Fire & Rescue</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-info shadow-sm">
+                        <h1 class="text-info">1919</h1>
+                        <p class="fw-bold">Govt Information Center</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-secondary shadow-sm">
+                        <h3 class="text-secondary">011-2686143</h3>
+                        <p class="fw-bold">National Poisons Info</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-success shadow-sm">
+                        <h3 class="text-success">1938</h3>
+                        <p class="fw-bold">Women & Child Bureau</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-dark shadow-sm">
+                        <h3 class="text-dark">1912</h3>
+                        <p class="fw-bold">Tourist Police</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card text-center p-3 border-danger shadow-sm">
+                        <h3 class="text-danger">1926</h3>
+                        <p class="fw-bold">Mental Health Helpline</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Function to show specific page and hide main content
-        function showPage(pageId) {
-            // Hide main content
-            document.querySelector('.main-content').style.display = 'none';
-            
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show selected page
-            document.getElementById(pageId).style.display = 'block';
-            
-            // If showing doctors page, populate doctors list
-            if (pageId === 'consult-doctors-page') {
-                populateDoctorsList();
-            }
-            
-            // If showing admin panel, populate admin tables
-            if (pageId === 'admin-panel-page') {
-                populateAdminTables();
-            }
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
-
-        // Function to return to main page
-        function showMainPage() {
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show main content
-            document.querySelector('.main-content').style.display = 'block';
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
-
-        // Sample data for Sri Lankan administrative divisions
+        // --- DATA SETUP ---
         const sriLankaDivisions = {
-            western: {
-                name: "Western Province",
-                districts: {
-                    colombo: {
-                        name: "Colombo District",
-                        dsDivisions: {
-                            colombo1: "Colombo 1 DS Division",
-                            colombo2: "Colombo 2 DS Division",
-                            dehiwala: "Dehiwala DS Division"
-                        }
-                    },
-                    gampaha: {
-                        name: "Gampaha District",
-                        dsDivisions: {
-                            gampaha: "Gampaha DS Division",
-                            negombo: "Negombo DS Division",
-                            wattala: "Wattala DS Division"
-                        }
-                    },
-                    kalutara: {
-                        name: "Kalutara District",
-                        dsDivisions: {
-                            kalutara: "Kalutara DS Division",
-                            panadura: "Panadura DS Division",
-                            horana: "Horana DS Division"
-                        }
-                    }
-                }
-            },
-            central: {
-                name: "Central Province",
-                districts: {
-                    kandy: {
-                        name: "Kandy District",
-                        dsDivisions: {
-                            kandy: "Kandy DS Division",
-                            gampola: "Gampola DS Division",
-                            nawalapitiya: "Nawalapitiya DS Division"
-                        }
-                    },
-                    matale: {
-                        name: "Matale District",
-                        dsDivisions: {
-                            matale: "Matale DS Division",
-                            dambulla: "Dambulla DS Division"
-                        }
-                    },
-                    nuwaraEliya: {
-                        name: "Nuwara Eliya District",
-                        dsDivisions: {
-                            nuwaraEliya: "Nuwara Eliya DS Division",
-                            hatton: "Hatton DS Division"
-                        }
-                    }
-                }
-            },
-            southern: {
-                name: "Southern Province",
-                districts: {
-                    galle: {
-                        name: "Galle District",
-                        dsDivisions: {
-                            galle: "Galle DS Division",
-                            hikkaduwa: "Hikkaduwa DS Division"
-                        }
-                    },
-                    matara: {
-                        name: "Matara District",
-                        dsDivisions: {
-                            matara: "Matara DS Division",
-                            weligama: "Weligama DS Division"
-                        }
-                    },
-                    hambantota: {
-                        name: "Hambantota District",
-                        dsDivisions: {
-                            hambantota: "Hambantota DS Division",
-                            tangalle: "Tangalle DS Division"
-                        }
-                    }
-                }
-            }
+            western: { name: "Western Province", districts: ["colombo", "gampaha", "kalutara"] },
+            central: { name: "Central Province", districts: ["kandy", "matale", "nuwara-eliya"] },
+            southern: { name: "Southern Province", districts: ["galle", "matara", "hambantota"] },
+            northern: { name: "Northern Province", districts: ["jaffna", "kilinochchi", "mannar", "vavuniya", "mullaitivu"] },
+            eastern: { name: "Eastern Province", districts: ["batticaloa", "ampara", "trincomalee"] },
+            "north-western": { name: "North Western Province", districts: ["kurunegala", "puttalam"] },
+            "north-central": { name: "North Central Province", districts: ["anuradhapura", "polonnaruwa"] },
+            uva: { name: "Uva Province", districts: ["badulla", "monaragala"] },
+            sabaragamuwa: { name: "Sabaragamuwa Province", districts: ["ratnapura", "kegalle"] }
         };
 
-        // Sample data for doctors (in a real app, this would come from a database)
-        let doctors = [
-            {
-                id: 1,
-                name: "Dr. Priya Fernando",
-                specialization: "General Practitioner",
-                qualification: "MBBS, MD",
-                experience: 12,
-                location: "western",
-                phone: "011-2345678",
-                bio: "Experienced general practitioner with expertise in rural healthcare.",
-                availability: "Mon-Fri 9am-5pm, Sat 9am-1pm",
-                status: "approved",
-                avatar: "https://randomuser.me/api/portraits/women/44.jpg"
-            },
-            {
-                id: 2,
-                name: "Dr. Rajesh Kumar",
-                specialization: "Pediatrics",
-                qualification: "MBBS, DCH",
-                experience: 8,
-                location: "central",
-                phone: "081-2345678",
-                bio: "Specialized in child healthcare with focus on preventive medicine.",
-                availability: "Mon-Sat 8am-4pm",
-                status: "approved",
-                avatar: "https://randomuser.me/api/portraits/men/32.jpg"
-            },
-            {
-                id: 3,
-                name: "Dr. Anjali Silva",
-                specialization: "Gynecology",
-                qualification: "MBBS, MS",
-                experience: 15,
-                location: "southern",
-                phone: "041-2345678",
-                bio: "Women's health specialist with extensive experience in rural communities.",
-                availability: "Mon-Fri 10am-6pm",
-                status: "approved",
-                avatar: "https://randomuser.me/api/portraits/women/68.jpg"
-            },
-            {
-                id: 4,
-                name: "Dr. Suresh Perera",
-                specialization: "Dermatology",
-                qualification: "MBBS, DDVL",
-                experience: 10,
-                location: "western",
-                phone: "011-3456789",
-                bio: "Skin specialist with focus on tropical dermatological conditions.",
-                availability: "Tue-Sat 9am-5pm",
-                status: "pending",
-                avatar: "https://randomuser.me/api/portraits/men/76.jpg"
-            }
-        ];
-
-        // Sample data for consultation requests
-        let consultationRequests = [];
-
-        // DOM elements
-        const provinceSelect = document.getElementById('province-select');
-        const districtSelect = document.getElementById('district-select');
-        const dsDivisionSelect = document.getElementById('ds-division-select');
-        const gnDivisionSelect = document.getElementById('gn-division-select');
-        const findServicesBtn = document.getElementById('find-services-btn');
-        const searchButton = document.getElementById('search-button');
-        const healthSearch = document.getElementById('health-search');
-        const consultationForm = document.getElementById('consultation-form');
-        const doctorRegistrationForm = document.getElementById('doctor-registration-form');
+        // DOM Elements
+        const doctorProvinceSelect = document.getElementById('doctor-province-select');
+        const doctorDistrictSelect = document.getElementById('doctor-district-select');
         const doctorsList = document.getElementById('doctors-list');
-        const preferredDoctorSelect = document.getElementById('preferred-doctor');
-        const adminDoctorsTable = document.getElementById('admin-doctors-table');
-        const adminConsultationsTable = document.getElementById('admin-consultations-table');
+        const consultationFormContainer = document.getElementById('consultation-form-container');
+        const consultationForm = document.getElementById('consultation-form');
 
-        // Populate districts based on province selection
-        provinceSelect.addEventListener('change', function() {
-            const provinceId = this.value;
-            
-            // Reset downstream selects
-            districtSelect.disabled = !provinceId;
-            dsDivisionSelect.disabled = true;
-            gnDivisionSelect.disabled = true;
-            
-            districtSelect.innerHTML = '<option value="">Select District</option>';
-            dsDivisionSelect.innerHTML = '<option value="">Select DS Division</option>';
-            gnDivisionSelect.innerHTML = '<option value="">Select GN Division</option>';
-            
-            if (provinceId && sriLankaDivisions[provinceId]) {
-                const districts = sriLankaDivisions[provinceId].districts;
-                
-                for (const [id, district] of Object.entries(districts)) {
-                    const option = document.createElement('option');
-                    option.value = id;
-                    option.textContent = district.name;
-                    districtSelect.appendChild(option);
-                }
-                
-                districtSelect.disabled = false;
-            }
+        // --- NAVIGATION ---
+        function showPage(pageId) {
+            document.querySelector('.main-content').style.display = 'none';
+            document.querySelectorAll('.page-section').forEach(section => section.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function showMainPage() {
+            document.querySelectorAll('.page-section').forEach(section => section.style.display = 'none');
+            document.querySelector('.main-content').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // --- SEARCH FUNCTIONALITY ---
+        document.getElementById('search-button').addEventListener('click', function() {
+            const query = document.getElementById('health-search').value.toLowerCase();
+            if(query.includes('doctor') || query.includes('consult')) showPage('consult-doctors-page');
+            else if(query.includes('number') || query.includes('ambulance') || query.includes('police')) showPage('emergency-numbers-page');
+            else if(query.includes('cpr') || query.includes('choking') || query.includes('burn')) showPage('visual-guides-page');
+            else if(query.includes('scheme') || query.includes('fund')) showPage('govt-schemes-page');
+            else showPage('home-remedies-page'); 
         });
 
-        // Populate DS divisions based on district selection
-        districtSelect.addEventListener('change', function() {
-            const provinceId = provinceSelect.value;
-            const districtId = this.value;
-            
-            // Reset downstream selects
-            dsDivisionSelect.disabled = !districtId;
-            gnDivisionSelect.disabled = true;
-            
-            dsDivisionSelect.innerHTML = '<option value="">Select DS Division</option>';
-            gnDivisionSelect.innerHTML = '<option value="">Select GN Division</option>';
-            
-            if (provinceId && districtId && sriLankaDivisions[provinceId].districts[districtId]) {
-                const dsDivisions = sriLankaDivisions[provinceId].districts[districtId].dsDivisions;
-                
-                for (const [id, name] of Object.entries(dsDivisions)) {
+        // --- DOCTOR FILTERING (Dynamic from LocalStorage) ---
+        doctorProvinceSelect.addEventListener('change', function() {
+            const provinceKey = this.value;
+            doctorDistrictSelect.innerHTML = '<option value="">Select District</option>';
+            if (provinceKey && sriLankaDivisions[provinceKey]) {
+                sriLankaDivisions[provinceKey].districts.forEach(district => {
+                    const displayName = district.charAt(0).toUpperCase() + district.slice(1);
                     const option = document.createElement('option');
-                    option.value = id;
-                    option.textContent = name;
-                    dsDivisionSelect.appendChild(option);
-                }
-                
-                dsDivisionSelect.disabled = false;
+                    option.value = district; 
+                    option.textContent = displayName;
+                    doctorDistrictSelect.appendChild(option);
+                });
+                doctorDistrictSelect.disabled = false;
+            } else {
+                doctorDistrictSelect.disabled = true;
             }
+            doctorsList.innerHTML = '<div class="col-12 text-center text-muted"><p>Please select a district.</p></div>';
         });
 
-        // Populate GN divisions based on DS division selection
-        dsDivisionSelect.addEventListener('change', function() {
-            const dsDivisionId = this.value;
-            
-            // Reset GN division select
-            gnDivisionSelect.disabled = !dsDivisionId;
-            gnDivisionSelect.innerHTML = '<option value="">Select GN Division</option>';
-            
-            if (dsDivisionId) {
-                // Sample GN divisions
-                const gnDivisions = [
-                    "GN Division 1",
-                    "GN Division 2",
-                    "GN Division 3",
-                    "GN Division 4"
-                ];
-                
-                for (const name of gnDivisions) {
-                    const option = document.createElement('option');
-                    option.value = name.toLowerCase().replace(/\s+/g, '-');
-                    option.textContent = name;
-                    gnDivisionSelect.appendChild(option);
-                }
-                
-                gnDivisionSelect.disabled = false;
-            }
+        doctorDistrictSelect.addEventListener('change', function() {
+            const selectedDistrict = this.value;
+            if (!selectedDistrict) return;
+
+            // FETCH FROM LOCALSTORAGE
+            const allProviders = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const availableDoctors = allProviders.filter(provider => 
+                provider.type === 'doctor' && 
+                provider.status === 'approved' && 
+                provider.district === selectedDistrict
+            );
+
+            renderDoctors(availableDoctors);
         });
 
-        // Find services button handler
-        findServicesBtn.addEventListener('click', function() {
-            const province = provinceSelect.value;
-            const district = districtSelect.value;
-            const dsDivision = dsDivisionSelect.value;
-            const gnDivision = gnDivisionSelect.value;
-            
-            if (!province || !district || !dsDivision) {
-                alert("Please select at least Province, District and DS Division to find healthcare facilities.");
+        function renderDoctors(doctors) {
+            doctorsList.innerHTML = '';
+            if (doctors.length === 0) {
+                doctorsList.innerHTML = `<div class="col-12"><div class="alert alert-warning">No approved doctors found in this district yet.</div></div>`;
                 return;
             }
-            
-            const mapPlaceholder = document.querySelector('.map-placeholder');
-            mapPlaceholder.innerHTML = `
-                <div class="text-center">
-                    <div class="spinner-border text-primary mb-3" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <h4>Finding healthcare facilities near you...</h4>
-                </div>
-            `;
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                mapPlaceholder.innerHTML = `
-                    <h4><i class="fas fa-map-marker-alt me-2"></i>Healthcare Facilities Found</h4>
-                    <div class="mt-4">
-                        <div class="facility-item mb-3 p-3 border rounded">
-                            <h5><i class="fas fa-hospital me-2 text-primary"></i>District General Hospital</h5>
-                            <p><i class="fas fa-map-marker me-2"></i>Main Road, ${districtSelect.options[districtSelect.selectedIndex].text}</p>
-                            <p><i class="fas fa-phone me-2"></i>011-2345678</p>
-                            <p><i class="fas fa-clock me-2"></i>Open 24 hours</p>
+            doctors.forEach(doctor => {
+                const specMap = { 'general': 'General Practitioner', 'pediatrics': 'Pediatrics', 'cardiology': 'Cardiology' };
+                const specName = specMap[doctor.specialization] || doctor.specialization;
+                
+                const card = document.createElement('div');
+                card.className = 'col-md-6 mb-4';
+                card.innerHTML = `
+                    <div class="doctor-card">
+                        <div class="d-flex align-items-center">
+                            <img src="${doctor.profilePicture || 'https://ui-avatars.com/api/?name=' + doctor.name}" class="doctor-avatar">
+                            <div>
+                                <h5>${doctor.name}</h5>
+                                <p class="mb-1 text-success"><strong>${specName}</strong></p>
+                                <p class="mb-1 small">${doctor.hospital}</p>
+                                <p class="mb-1"><strong>Fee:</strong> LKR ${doctor.consultationFee}</p>
+                            </div>
                         </div>
-                        <div class="facility-item mb-3 p-3 border rounded">
-                            <h5><i class="fas fa-clinic-medical me-2 text-primary"></i>Community Health Center</h5>
-                            <p><i class="fas fa-map-marker me-2"></i>Center Street, ${dsDivisionSelect.options[dsDivisionSelect.selectedIndex].text}</p>
-                            <p><i class="fas fa-phone me-2"></i>011-3456789</p>
-                            <p><i class="fas fa-clock me-2"></i>8:00 AM - 6:00 PM</p>
-                        </div>
-                        <div class="facility-item mb-3 p-3 border rounded">
-                            <h5><i class="fas fa-pills me-2 text-primary"></i>Green Cross Pharmacy</h5>
-                            <p><i class="fas fa-map-marker me-2"></i>Market Area, ${dsDivisionSelect.options[dsDivisionSelect.selectedIndex].text}</p>
-                            <p><i class="fas fa-phone me-2"></i>011-4567890</p>
-                            <p><i class="fas fa-clock me-2"></i>8:00 AM - 8:00 PM</p>
-                        </div>
+                        <p class="mt-2 small text-muted">${doctor.bio}</p>
+                        <button class="btn btn-primary w-100" onclick="selectDoctor(${doctor.id}, '${doctor.name}')">Consult Now</button>
                     </div>
                 `;
-            }, 2000);
-        });
+                doctorsList.appendChild(card);
+            });
+        }
 
-        // Search button handler
-        searchButton.addEventListener('click', function() {
-            const searchQuery = healthSearch.value.toLowerCase();
-            
-            if (searchQuery.trim() === '') {
-                alert("Please describe your health concern in the search box.");
-                return;
-            }
-            
-            // Define search terms and corresponding actions
-            const searchTerms = {
-                'fever': {page: 'home-remedies-page', section: 'Fever Remedies'},
-                'headache': {page: 'home-remedies-page', section: 'Headache Remedies'},
-                'cough': {page: 'home-remedies-page', section: 'Cough & Cold Remedies'},
-                'cold': {page: 'home-remedies-page', section: 'Cough & Cold Remedies'},
-                'burn': {page: 'home-remedies-page', section: 'Minor Burns'},
-                'doctor': {page: 'consult-doctors-page'},
-                'consult': {page: 'consult-doctors-page'},
-                'scheme': {page: 'govt-schemes-page'},
-                'government': {page: 'govt-schemes-page'}
-            };
-            
-            // Find matching term
-            let matchedTerm = null;
-            for (const term in searchTerms) {
-                if (searchQuery.includes(term)) {
-                    matchedTerm = searchTerms[term];
-                    break;
-                }
-            }
-            
-            if (matchedTerm) {
-                showPage(matchedTerm.page);
-            } else {
-                alert("We've found some general health information that might help. Please check our Home Remedies section or consider consulting with a doctor for more specific advice.");
-                showPage('home-remedies-page');
-            }
-        });
+        function selectDoctor(id, name) {
+            document.getElementById('selected-doctor-id').value = id;
+            document.getElementById('form-doctor-name').value = name;
+            consultationFormContainer.style.display = 'block';
+            consultationFormContainer.scrollIntoView({ behavior: 'smooth' });
+        }
 
-        // Allow pressing Enter to search
-        healthSearch.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchButton.click();
-            }
-        });
-
-        // Consultation form submission
+        // --- SUBMIT CONSULTATION REQUEST ---
         consultationForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const doctorId = parseInt(document.getElementById('selected-doctor-id').value);
+            const doctorName = document.getElementById('form-doctor-name').value;
             const patientName = document.getElementById('patient-name').value;
-            const patientAge = document.getElementById('patient-age').value;
             const patientPhone = document.getElementById('patient-phone').value;
-            const patientLocation = document.getElementById('patient-location').value;
-            const healthIssue = document.getElementById('health-issue').value;
-            const consultationType = document.getElementById('consultation-type').value;
-            const preferredDoctor = document.getElementById('preferred-doctor').value;
-            
-            // Create consultation request object
-            const consultationRequest = {
-                id: consultationRequests.length + 1,
-                patientName,
-                patientAge,
-                patientPhone,
-                patientLocation,
-                healthIssue,
-                consultationType,
-                preferredDoctor: preferredDoctor || 'Any Available Doctor',
-                requestDate: new Date().toLocaleDateString(),
-                status: 'pending'
-            };
-            
-            // Add to consultation requests
-            consultationRequests.push(consultationRequest);
-            
-            // Show success message
-            alert('Your consultation request has been submitted successfully. A healthcare professional will contact you soon.');
-            
-            // Reset form
-            consultationForm.reset();
-        });
+            const issue = document.getElementById('health-issue').value;
 
-        // Doctor registration form submission
-        doctorRegistrationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const doctorName = document.getElementById('doctor-name').value;
-            const doctorSpecialization = document.getElementById('doctor-specialization').value;
-            const doctorQualification = document.getElementById('doctor-qualification').value;
-            const doctorExperience = document.getElementById('doctor-experience').value;
-            const doctorPhone = document.getElementById('doctor-phone').value;
-            const doctorLocation = document.getElementById('doctor-location').value;
-            const doctorBio = document.getElementById('doctor-bio').value;
-            const doctorAvailability = document.getElementById('doctor-availability').value;
-            
-            // Create doctor object
-            const newDoctor = {
-                id: doctors.length + 1,
-                name: doctorName,
-                specialization: doctorSpecialization,
-                qualification: doctorQualification,
-                experience: parseInt(doctorExperience),
-                location: doctorLocation,
-                phone: doctorPhone,
-                bio: doctorBio,
-                availability: doctorAvailability,
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const newId = bookings.length > 0 ? Math.max(...bookings.map(b => b.id)) + 1 : 1;
+
+            const newBooking = {
+                id: newId,
+                type: 'doctor',
+                providerId: doctorId,
+                providerName: doctorName,
+                userId: 'guest_phone_' + patientPhone,
+                userName: patientName,
+                userEmail: 'phone_' + patientPhone,
+                contact: patientPhone,
+                patientName: patientName,
+                patientAge: 'N/A',
+                patientGender: 'N/A',
+                medicalIssue: issue,
                 status: 'pending',
-                avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 99)}.jpg`
+                bookingDate: new Date().toISOString().split('T')[0],
+                preferredDate: new Date().toISOString().split('T')[0],
+                preferredTime: 'Anytime',
+                providerResponse: '',
+                userReply: ''
             };
-            
-            // Add to doctors array
-            doctors.push(newDoctor);
-            
-            // Show success message
-            alert('Your registration has been submitted for approval. You will be notified once approved.');
-            
-            // Reset form
-            doctorRegistrationForm.reset();
+
+            bookings.push(newBooking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+
+            alert('Request Sent Successfully! \nTo see the doctor\'s reply, go to "Track Your Consultations" and enter your Phone Number: ' + patientPhone);
+            this.reset();
+            consultationFormContainer.style.display = 'none';
         });
 
-        // Function to populate doctors list
-        function populateDoctorsList() {
-            // Clear existing content
-            doctorsList.innerHTML = '';
-            preferredDoctorSelect.innerHTML = '<option value="">Any Available Doctor</option>';
+        // --- TRACK REQUESTS & USER REPLY LOGIC ---
+        function loadUserConsultations() {
+            const phone = document.getElementById('track-phone-input').value.trim();
+            if (!phone) { alert("Please enter your phone number"); return; }
+
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const myBookings = bookings.filter(b => b.contact === phone && b.type === 'doctor');
             
-            // Filter approved doctors
-            const approvedDoctors = doctors.filter(doctor => doctor.status === 'approved');
-            
-            if (approvedDoctors.length === 0) {
-                doctorsList.innerHTML = '<div class="col-12"><div class="alert alert-info">No doctors available in your area at the moment. Please check back later.</div></div>';
+            const container = document.getElementById('user-history-container');
+            container.innerHTML = '';
+
+            if (myBookings.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No consultations found for this number. Check if you entered the same number used during booking.</div>';
                 return;
             }
-            
-            // Populate doctors list
-            approvedDoctors.forEach(doctor => {
-                const doctorCard = document.createElement('div');
-                doctorCard.className = 'col-md-6 mb-4';
-                doctorCard.innerHTML = `
-                    <div class="doctor-card position-relative">
-                        <div class="d-flex align-items-center">
-                            <img src="${doctor.avatar}" alt="${doctor.name}" class="doctor-avatar">
-                            <div>
-                                <h5>${doctor.name}</h5>
-                                <p class="mb-1"><strong>Specialization:</strong> ${doctor.specialization}</p>
-                                <p class="mb-1"><strong>Experience:</strong> ${doctor.experience} years</p>
-                                <p class="mb-1"><strong>Availability:</strong> ${doctor.availability}</p>
-                            </div>
+
+            myBookings.sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
+
+            myBookings.forEach(booking => {
+                const hasDoctorReply = booking.providerResponse && booking.providerResponse !== "";
+                const hasUserReplied = booking.userReply && booking.userReply !== "";
+
+                let html = `
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-header d-flex justify-content-between bg-light">
+                            <strong>Dr. ${booking.providerName}</strong>
+                            <span class="badge ${booking.status === 'confirmed' || booking.status === 'completed' ? 'bg-success' : 'bg-warning text-dark'}">${booking.status.toUpperCase()}</span>
                         </div>
-                        <p class="mt-3">${doctor.bio}</p>
-                        <button class="btn btn-primary btn-sm" onclick="selectDoctor(${doctor.id})">Select This Doctor</button>
-                    </div>
+                        <div class="card-body">
+                            <p class="mb-1"><strong>Your Issue:</strong> ${booking.medicalIssue}</p>
+                            <p class="small text-muted mb-3">Requested on: ${booking.bookingDate}</p>
+                            <hr>
                 `;
-                doctorsList.appendChild(doctorCard);
-                
-                // Add to preferred doctor dropdown
-                const option = document.createElement('option');
-                option.value = doctor.id;
-                option.textContent = `${doctor.name} - ${doctor.specialization}`;
-                preferredDoctorSelect.appendChild(option);
+
+                if (hasDoctorReply) {
+                    html += `
+                        <div class="chat-container">
+                            <div class="message-box msg-doctor">
+                                <strong><i class="fas fa-user-md"></i> Doctor:</strong><br>
+                                ${booking.providerResponse}
+                            </div>
+                    `;
+                    
+                    if (hasUserReplied) {
+                        html += `
+                            <div class="message-box msg-user">
+                                <strong>You:</strong><br>
+                                ${booking.userReply}
+                            </div>
+                        </div>`;
+                    } else {
+                        html += `
+                            <div class="mt-3 pt-2 border-top">
+                                <label class="small text-muted">Reply to Doctor:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="reply-input-${booking.id}" placeholder="Type your message...">
+                                    <button class="btn btn-primary" onclick="submitUserReply(${booking.id})"><i class="fas fa-paper-plane"></i> Send</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                } else {
+                    html += `<div class="alert alert-light border"><i class="fas fa-hourglass-half me-2"></i> Waiting for doctor's response...</div>`;
+                }
+
+                html += `</div></div>`;
+                container.innerHTML += html;
             });
         }
 
-        // Function to select a doctor for consultation
-        function selectDoctor(doctorId) {
-            const doctor = doctors.find(d => d.id === doctorId);
-            if (doctor) {
-                document.getElementById('preferred-doctor').value = doctorId;
-                document.getElementById('consultation-form').scrollIntoView({ behavior: 'smooth' });
+        function submitUserReply(bookingId) {
+            const replyText = document.getElementById(`reply-input-${bookingId}`).value;
+            if (!replyText) return;
+
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const index = bookings.findIndex(b => b.id === bookingId);
+
+            if (index !== -1) {
+                bookings[index].userReply = replyText;
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                alert("Reply sent successfully!");
+                loadUserConsultations();
             }
         }
 
-        // Function to populate admin tables
-        function populateAdminTables() {
-            // Clear existing content
-            adminDoctorsTable.innerHTML = '';
-            adminConsultationsTable.innerHTML = '';
-            
-            // Populate doctors table
-            const pendingDoctors = doctors.filter(doctor => doctor.status === 'pending');
-            
-            if (pendingDoctors.length === 0) {
-                adminDoctorsTable.innerHTML = '<tr><td colspan="5" class="text-center">No pending doctor registrations</td></tr>';
-            } else {
-                pendingDoctors.forEach(doctor => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${doctor.name}</td>
-                        <td>${doctor.specialization}</td>
-                        <td>${sriLankaDivisions[doctor.location]?.name || doctor.location}</td>
-                        <td><span class="status-badge status-pending">Pending</span></td>
-                        <td>
-                            <button class="btn btn-success btn-sm me-1" onclick="approveDoctor(${doctor.id})">Approve</button>
-                            <button class="btn btn-danger btn-sm" onclick="rejectDoctor(${doctor.id})">Reject</button>
-                        </td>
-                    `;
-                    adminDoctorsTable.appendChild(row);
-                });
-            }
-            
-            // Populate consultations table
-            if (consultationRequests.length === 0) {
-                adminConsultationsTable.innerHTML = '<tr><td colspan="6" class="text-center">No consultation requests</td></tr>';
-            } else {
-                consultationRequests.forEach(request => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${request.patientName}</td>
-                        <td>${request.healthIssue.substring(0, 50)}${request.healthIssue.length > 50 ? '...' : ''}</td>
-                        <td>${sriLankaDivisions[request.patientLocation]?.name || request.patientLocation}</td>
-                        <td>${request.requestDate}</td>
-                        <td><span class="status-badge status-pending">Pending</span></td>
-                        <td>
-                            <button class="btn btn-info btn-sm me-1" onclick="viewConsultation(${request.id})">View</button>
-                            <button class="btn btn-success btn-sm me-1" onclick="assignDoctor(${request.id})">Assign Doctor</button>
-                            <button class="btn btn-danger btn-sm" onclick="cancelConsultation(${request.id})">Cancel</button>
-                        </td>
-                    `;
-                    adminConsultationsTable.appendChild(row);
-                });
-            }
-        }
+        // --- MAP LOGIC (FIND HOSPITALS SECTION) ---
+        const provinceSelect = document.getElementById('province-select');
+        const districtSelect = document.getElementById('district-select');
+        const findServicesBtn = document.getElementById('find-services-btn');
 
-        // Admin functions
-        function approveDoctor(doctorId) {
-            const doctor = doctors.find(d => d.id === doctorId);
-            if (doctor) {
-                doctor.status = 'approved';
-                alert(`Doctor ${doctor.name} has been approved.`);
-                populateAdminTables();
-            }
-        }
+        provinceSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            districtSelect.disabled = !selectedValue;
+            districtSelect.innerHTML = '<option value="">Select District</option>';
 
-        function rejectDoctor(doctorId) {
-            const doctor = doctors.find(d => d.id === doctorId);
-            if (doctor) {
-                doctor.status = 'rejected';
-                alert(`Doctor ${doctor.name} has been rejected.`);
-                populateAdminTables();
-            }
-        }
-
-        function viewConsultation(requestId) {
-            const request = consultationRequests.find(r => r.id === requestId);
-            if (request) {
-                alert(`Consultation Details:\n\nPatient: ${request.patientName}\nAge: ${request.patientAge}\nPhone: ${request.patientPhone}\nLocation: ${request.patientLocation}\nHealth Issue: ${request.healthIssue}\nConsultation Type: ${request.consultationType}\nPreferred Doctor: ${request.preferredDoctor}`);
-            }
-        }
-
-        function assignDoctor(requestId) {
-            const request = consultationRequests.find(r => r.id === requestId);
-            if (request) {
-                const availableDoctors = doctors.filter(d => d.status === 'approved' && d.location === request.patientLocation);
+            if (selectedValue) {
+                // Determine the correct key for the sriLankaDivisions object
+                // The dropdown values are like "Western Province", but object keys are "western"
+                let key = selectedValue.toLowerCase().replace(' province', '').replace(' ', '-');
                 
-                if (availableDoctors.length === 0) {
-                    alert('No doctors available in the patient\'s location.');
-                    return;
-                }
-                
-                let doctorOptions = 'Select a doctor to assign:\n\n';
-                availableDoctors.forEach((doctor, index) => {
-                    doctorOptions += `${index + 1}. ${doctor.name} - ${doctor.specialization}\n`;
-                });
-                
-                const choice = prompt(doctorOptions);
-                if (choice && !isNaN(choice) && choice > 0 && choice <= availableDoctors.length) {
-                    const selectedDoctor = availableDoctors[choice - 1];
-                    request.assignedDoctor = selectedDoctor.id;
-                    request.status = 'assigned';
-                    alert(`Doctor ${selectedDoctor.name} has been assigned to this consultation.`);
-                    populateAdminTables();
+                // Safety check if key exists (North Western might need handling if keys differ)
+                // Assuming keys match the dropdown structure roughly
+                if (sriLankaDivisions[key]) {
+                    sriLankaDivisions[key].districts.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district; // e.g. "colombo"
+                        option.textContent = district.charAt(0).toUpperCase() + district.slice(1);
+                        districtSelect.appendChild(option);
+                    });
                 }
             }
-        }
+        });
 
-        function cancelConsultation(requestId) {
-            if (confirm('Are you sure you want to cancel this consultation request?')) {
-                const requestIndex = consultationRequests.findIndex(r => r.id === requestId);
-                if (requestIndex !== -1) {
-                    consultationRequests.splice(requestIndex, 1);
-                    alert('Consultation request has been cancelled.');
-                    populateAdminTables();
-                }
-            }
-        }
+        // Update Google Map Iframe based on selection
+        findServicesBtn.addEventListener('click', function() {
+            // Get text values for better search query
+            const province = provinceSelect.options[provinceSelect.selectedIndex].text;
+            const district = districtSelect.value ? districtSelect.options[districtSelect.selectedIndex].text : '';
+            
+            let query = "hospitals clinics pharmacies in Sri Lanka"; // Default
 
-        // Add admin panel link to main page (hidden by default, can be accessed via URL parameter)
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin') === 'true') {
-                // Create admin link in main content
-                const adminLink = document.createElement('div');
-                adminLink.className = 'text-center mt-5';
-                adminLink.innerHTML = '<button class="btn btn-warning" onclick="showPage(\'admin-panel-page\')"><i class="fas fa-cog me-2"></i>Admin Panel</button>';
-                document.querySelector('.main-content').appendChild(adminLink);
+            if (district && district !== "Select District") {
+                query = `hospitals clinics pharmacies in ${district}, Sri Lanka`;
+            } else if (province && province !== "Select Province") {
+                query = `hospitals clinics pharmacies in ${province}, Sri Lanka`;
             }
+            
+            const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+            document.getElementById('google-map-frame').src = mapUrl;
         });
     </script>
 </body>
