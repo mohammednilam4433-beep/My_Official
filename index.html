@@ -3294,29 +3294,35 @@
             document.getElementById('providerPradeshiyaSabha').innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
         }
         
-        // Load Pradeshiya Sabhas for provider registration
-        function loadPradeshiyaSabhasForProvider() {
-            const district = document.getElementById('providerDistrict').value;
-            const pradeshiyaSabhaSelect = document.getElementById('providerPradeshiyaSabha');
-            
-            // Clear previous options
-            pradeshiyaSabhaSelect.innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
-            
-            if (district && pradeshiyaSabhasData[district]) {
-                pradeshiyaSabhasData[district].forEach(sabha => {
-                    const option = document.createElement("option");
-                    option.value = sabha;
-                    option.textContent = sabha;
-                    pradeshiyaSabhaSelect.appendChild(option);
-                });
-            } else {
-                // If district not in our data, allow manual entry
-                const option = document.createElement("option");
-                option.value = "other";
-                option.textContent = "Other (Please specify)";
-                pradeshiyaSabhaSelect.appendChild(option);
-            }
-        }
+        // index.html - இந்த function ஐ மட்டும் மாற்றவும்
+
+function loadPradeshiyaSabhasForProvider() {
+    const districtSelect = document.getElementById('providerDistrict');
+    // மாவட்டத்தின் முதல் எழுத்தை மட்டும் பெரிய எழுத்தாக மாற்றுகிறோம் (எ.கா: "jaffna" -> "Jaffna")
+    // இது pradeshiyaSabhasData வில் உள்ள பெயரோடு பொருந்தும்.
+    const districtRaw = districtSelect.value;
+    const district = districtRaw.charAt(0).toUpperCase() + districtRaw.slice(1);
+    
+    const pradeshiyaSabhaSelect = document.getElementById('providerPradeshiyaSabha');
+    
+    // Clear previous options
+    pradeshiyaSabhaSelect.innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
+    
+    if (district && pradeshiyaSabhasData[district]) {
+        pradeshiyaSabhasData[district].forEach(sabha => {
+            const option = document.createElement("option");
+            option.value = sabha;
+            option.textContent = sabha;
+            pradeshiyaSabhaSelect.appendChild(option);
+        });
+    } else {
+        // If district not in our data (or strictly for "Other")
+        const option = document.createElement("option");
+        option.value = "Other";
+        option.textContent = "Other (Please specify)";
+        pradeshiyaSabhaSelect.appendChild(option);
+    }
+}
         
         // Close auth modal
         function closeAuthModal() {
