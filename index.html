@@ -3788,10 +3788,59 @@ function initializeData() {
         
         // Load submissions table
         function loadSubmissionsTable() {
-            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
-            const tableBody = document.getElementById('submissionsTableBody');
-            tableBody.innerHTML = '';
+    const tableBody = document.getElementById('submissionsTableBody');
+    
+    // Firebase-லிருந்து டேட்டாவை Real-time ஆக எடுத்தல்
+    db.ref('submissions').on('value', (snapshot) => {
+        tableBody.innerHTML = ''; // பழைய டேட்டாவை அழித்தல்
+        const data = snapshot.val();
+
+        if (data) {
+            // Firebase Object-ஐ Array-ஆக மாற்றுதல்
+            const submissions = Object.values(data);
+
+            const categoryNames = {
+                'government': 'Government Schemes',
+                'regulations': 'Regulations',
+                'health': 'Health & Safety',
+                'agriculture': 'Agriculture',
+                'welfare': 'Social Welfare'
+            };
+
+            submissions.forEach(submission => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${submission.userName}</td>
+                    <td>${categoryNames[submission.category]}</td>
+                    <td>${submission.date}</td>
+                    <td>${submission.status}</td>
+                    <td>
+                        <button class="action-btn view-btn" onclick="viewSubmission('${submission.id}')">View</button>
+                        <button class="action-btn delete-btn" onclick="deleteSubmission('${submission.id}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            tableBody.innerHTML = '<tr><td colspan="5">No submissions found</td></tr>';
+        }
+    });
+}
             
+function deleteSubmission(id) {
+    if (confirm('Are you sure you want to delete this submission?')) {
+        // Firebase-ல் இருந்து அழித்தல்
+        db.ref('submissions/' + id).remove()
+        .then(() => {
+            alert('Submission deleted successfully!');
+            // Table தானாகவே அப்டேட் ஆகும் (.on('value') இருப்பதால்)
+        })
+        .catch((error) => {
+            alert('Error deleting: ' + error.message);
+        });
+    }
+}
+
             const categoryNames = {
                 'government': 'Government Schemes',
                 'regulations': 'Government Regulations',
@@ -3935,21 +3984,47 @@ emailjs.send("service_704wqwt", "template_58tn5v9", emailParams, "Lz97Kzo78hViJY
     const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
     const newId = submissions.length > 0 ? Math.max(...submissions.map(s => s.id)) + 1 : 1;
 
-    submissions.push({
-        id: newId,
+    function submitProblemForm(event) {
+    event.preventDefault();
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!currentUser) { alert('Please login'); return; }
+
+    // தரவுகளைப் பெறுதல்
+    const category = document.getElementById('problemCategory').value;
+    const title = document.getElementById('problemTitle').value;
+    const description = document.getElementById('problemDescription').value;
+    const location = document.getElementById('problemLocation').value;
+    const contact = document.getElementById('problemContact').value;
+
+    // புதிய Submission ID-ஐ உருவாக்குதல்
+    const newSubmissionRef = db.ref('submissions').push(); // தானாக ஒரு ID-ஐ உருவாக்கும்
+
+    // டேட்டாபேஸில் சேமித்தல்
+    newSubmissionRef.set({
+        id: newSubmissionRef.key, // Firebase தரும் தனித்துவமான ID
         userId: currentUser.id,
         userName: currentUser.name,
         userEmail: currentUser.email,
-        category,
-        title,
-        description,
-        location,
-        contact,
+        category: category,
+        title: title,
+        description: description,
+        location: location,
+        contact: contact,
         date: new Date().toISOString().split('T')[0],
         status: 'Pending'
+    })
+    .then(() => {
+        alert('Your problem has been submitted successfully to Firebase!');
+        document.getElementById('problemForm').reset();
+        
+        // Email அனுப்புவதற்குக் குறியீடு (விருப்பமிருந்தால் மட்டும்)
+        // emailjs.send(...) 
+    })
+    .catch((error) => {
+        alert('Error: ' + error.message);
     });
-
-    localStorage.setItem('submissions', JSON.stringify(submissions));
+}
 
     // 5. படிவத்தை அழித்தல் மற்றும் வெற்றிச் செய்தி
     document.getElementById('problemForm').reset();
@@ -6016,5 +6091,27 @@ function updateStats() {
             initializeData();
         };
     </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+  // உங்கள் Firebase Config தகவல்களை இங்கே இடவும்
+const firebaseConfig = {
+  apiKey: "AIzaSyAouvKkXNexWsTpPJq4q_HbNrrMHjAeIQE",
+  authDomain: "lifebridge-rural-6c88b.firebaseapp.com",
+  databaseURL: "https://lifebridge-rural-6c88b-default-rtdb.firebaseio.com",
+  projectId: "lifebridge-rural-6c88b",
+  storageBucket: "lifebridge-rural-6c88b.firebasestorage.app",
+  messagingSenderId: "905121861724",
+  appId: "1:905121861724:web:50a9efd0ec780b977b9699",
+  measurementId: "G-VD8557NGFL"
+};
+
+  // Firebase-ஐ ஆரம்பிக்கவும்
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+</script>
+
 </body>
 </html>
