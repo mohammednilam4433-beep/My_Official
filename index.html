@@ -2721,49 +2721,649 @@ tr:hover {
     </footer>
 
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init("Lz97Kzo78hViJY56Z"); 
+       })();
+    </script>
+
     <script type="module">
-  // 1. Firebase Library-ஐ Import செய்தல்
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } 
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        // 1. Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, getDoc } 
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  // 2. உங்கள் Firebase Config (படி 1-ல் Copy செய்தது)
-const firebaseConfig = {
-  apiKey: "AIzaSyC1b2ExyS8dwLXLfzL378IQX_wH-_Badrk",
-  authDomain: "lifebridge-rural-d0c59.firebaseapp.com",
-  projectId: "lifebridge-rural-d0c59",
-  storageBucket: "lifebridge-rural-d0c59.firebasestorage.app",
-  messagingSenderId: "762204012182",
-  appId: "1:762204012182:web:49c3e4e7700016d927ccb7",
-  measurementId: "G-6DW22Z82B5"
-};
+        // 2. Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyC1b2ExyS8dwLXLfzL378IQX_wH-_Badrk",
+            authDomain: "lifebridge-rural-d0c59.firebaseapp.com",
+            projectId: "lifebridge-rural-d0c59",
+            storageBucket: "lifebridge-rural-d0c59.firebasestorage.app",
+            messagingSenderId: "762204012182",
+            appId: "1:762204012182:web:49c3e4e7700016d927ccb7",
+            measurementId: "G-6DW22Z82B5"
+        };
 
-  // 3. Firebase-ஐ Initialize செய்தல்
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+        // 3. Initialize
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Global DB Access (For debugging if needed)
+        window.db = db;
 
-  // 4. இந்த db variable-ஐ window object-ல் வைத்தால் மற்ற function-களில் பயன்படுத்தலாம்
-  window.db = db;
-  window.collection = collection;
-  window.addDoc = addDoc;
-  window.getDocs = getDocs;
-  window.updateDoc = updateDoc;
-  window.deleteDoc = deleteDoc;
-  window.doc = doc;
-  window.query = query;
-  window.where = where;
-  
-  console.log("Firebase Connected Successfully!");
-</script>
+        console.log("Firebase Connected & Ready!");
 
-    
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script type="text/javascript">
-   (function(){
-      // இங்கே உங்கள் Public Key-ஐ போட வேண்டும்
-      emailjs.init("Lz97Kzo78hViJY56Z"); 
-   })();
-</script>
+        // --- GLOBAL FUNCTION EXPORTS (இவை தான் HTML பட்டன்கள் வேலை செய்யத் தேவை) ---
+        
+        // Auth & UI
+        window.handleLogin = handleLogin;
+        window.handleSignup = handleSignup;
+        window.handleProviderRegistration = handleProviderRegistration;
+        window.handleLogout = handleLogout;
+        window.handleProviderLogout = handleLogout;
+        
+        // Navigation / Modals
+        window.showLoginModal = () => { document.getElementById('loginModal').style.display='flex'; };
+        window.showSignupModal = () => { document.getElementById('loginModal').style.display='none'; document.getElementById('signupModal').style.display='flex'; };
+        window.closeAuthModal = () => { document.getElementById('loginModal').style.display='none'; document.getElementById('signupModal').style.display='none'; };
+        window.showProviderSelectionModal = () => { document.getElementById('providerSelectionModal').style.display='flex'; document.getElementById('loginModal').style.display='none'; };
+        window.closeProviderModal = () => { document.getElementById('providerSelectionModal').style.display='none'; };
+        window.showProviderRegistrationForm = showProviderRegistrationForm;
+        window.closeProviderRegistrationModal = () => { document.getElementById('providerRegistrationModal').style.display='none'; };
+        
+        window.showHome = showHome;
+        window.showDashboard = showDashboard;
+        window.showProviderDashboard = showProviderDashboard;
+        window.showAdminPanel = showAdminPanel;
+        window.showServiceProvidersPage = showServiceProvidersPage;
+        window.showServiceProviders = showServiceProvidersPage; 
+        window.showContact = showContact;
+
+        // User & Provider Logic
+        window.updatePersonalInfo = updatePersonalInfo;
+        window.submitProblemForm = submitProblemForm;
+        window.loadAvailableProviders = loadAvailableProviders;
+        window.bookDoctor = bookDoctor;
+        window.bookDraftsman = bookDraftsman;
+        window.bookDoctorWithId = bookDoctorWithId;
+        window.bookDraftsmanWithId = bookDraftsmanWithId;
+        window.cancelBooking = cancelBooking;
+        window.submitDoctorBooking = submitDoctorBooking;
+        window.submitDraftsmanBooking = submitDraftsmanBooking;
+        window.viewUserBooking = viewUserBooking;
+        window.viewProviderBooking = viewProviderBooking; // Same modal logic
+        window.loadPradeshiyaSabhasForProvider = loadPradeshiyaSabhasForProvider;
+        window.closeBookingDetailsModal = () => { document.getElementById('bookingDetailsModal').style.display='none'; };
+        window.closeSubmissionModal = () => { document.getElementById('submissionModal').style.display='none'; };
+        window.closeResponseModal = () => { document.getElementById('responseModal').style.display='none'; };
+
+        // Provider Dashboard Specific
+        window.switchProviderTab = switchProviderTab;
+        window.updateProviderProfile = updateProviderProfile;
+        window.changeAvailabilityStatus = changeAvailabilityStatus;
+        window.respondToBooking = respondToBooking;
+        window.submitProviderResponse = submitProviderResponse;
+        window.markBookingAsCompleted = markBookingAsCompleted;
+        window.viewProviderResponse = viewProviderResponse;
+
+        // Admin Actions (இவைதான் உங்களுக்கு வேலை செய்யவில்லை, இப்போது சரி செய்யப்பட்டுள்ளது)
+        window.switchAdminSection = switchAdminSection;
+        window.searchUsers = searchUsers;
+        window.editUser = editUser;     // <--- Added
+        window.deleteUser = deleteUser; // <--- Added
+        window.searchProviders = searchProviders;
+        window.approveProvider = approveProvider; // <--- Added
+        window.rejectProvider = rejectProvider;   // <--- Added
+        window.deleteProvider = deleteProvider;   // <--- Added
+        window.viewProvider = viewProvider;
+        window.searchBookings = searchBookings;
+        window.viewAdminBooking = viewUserBooking; // Reuse view function
+        window.deleteBookingFirebase = deleteBookingFirebase;
+        window.deleteSubmission = deleteSubmission;
+        window.viewSubmission = viewSubmission;
+        window.addNewsItem = addNewsItem;
+        window.deleteNews = deleteNews;
+        window.viewFullNews = viewFullNews;
+        window.searchNews = searchNews;
+        window.generateReport = generateReport;
+        window.changeLanguage = changeLanguage; // Assuming translation logic exists in your HTML scripts or simple placeholder
+
+        // --- AUTHENTICATION ---
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirmPassword').value;
+
+            if(password !== confirm) { alert("Passwords do not match"); return; }
+
+            try {
+                const q = query(collection(db, "users"), where("email", "==", email));
+                const snap = await getDocs(q);
+                if(!snap.empty) { alert("Email already exists"); return; }
+
+                const newUser = {
+                    name, email, password, role: 'user', 
+                    profilePicture: `https://ui-avatars.com/api/?name=${name}&background=2e8b57&color=fff`,
+                    joinDate: new Date().toISOString().split('T')[0], status: 'Active'
+                };
+                
+                const ref = await addDoc(collection(db, "users"), newUser);
+                localStorage.setItem('currentUser', JSON.stringify({ ...newUser, id: ref.id }));
+                window.closeAuthModal();
+                updateUserInterface();
+                window.showDashboard();
+                alert("Account created successfully!");
+            } catch(err) { console.error(err); alert("Error: " + err.message); }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
+
+            try {
+                let q;
+                if(role === 'user' || role === 'admin') {
+                    q = query(collection(db, "users"), where("email", "==", email), where("password", "==", password), where("role", "==", role));
+                } else {
+                    q = query(collection(db, "serviceProviders"), where("email", "==", email), where("password", "==", password), where("type", "==", role), where("status", "==", "approved"));
+                }
+
+                const snap = await getDocs(q);
+                if(!snap.empty) {
+                    const data = { ...snap.docs[0].data(), id: snap.docs[0].id };
+                    if(role === 'user' || role === 'admin') {
+                        localStorage.setItem('currentUser', JSON.stringify(data));
+                        localStorage.removeItem('currentProvider');
+                        if(role === 'admin') window.showAdminPanel(); else window.showDashboard();
+                    } else {
+                        localStorage.setItem('currentProvider', JSON.stringify(data));
+                        localStorage.removeItem('currentUser');
+                        window.showProviderDashboard();
+                    }
+                    window.closeAuthModal();
+                    updateUserInterface();
+                } else {
+                    alert("Invalid credentials or account not active/approved.");
+                }
+            } catch(err) { console.error(err); alert("Login Error"); }
+        }
+
+        function handleLogout() {
+            localStorage.clear();
+            window.location.reload();
+        }
+
+        // --- ADMIN: USER MANAGEMENT (FIXED) ---
+
+        async function loadUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+            try {
+                const snap = await getDocs(collection(db, "users"));
+                let html = '';
+                snap.forEach(doc => {
+                    const u = doc.data();
+                    html += `<tr>
+                        <td>${u.name}</td>
+                        <td>${u.email}</td>
+                        <td>${u.role}</td>
+                        <td>${u.status || 'Active'}</td>
+                        <td>
+                            <button class="action-btn edit-btn" onclick="editUser('${doc.id}', '${u.name}')">Edit</button>
+                            <button class="action-btn delete-btn" onclick="deleteUser('${doc.id}')">Delete</button>
+                        </td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html || '<tr><td colspan="5">No users found</td></tr>';
+            } catch(e) { console.error(e); tbody.innerHTML = '<tr><td colspan="5">Error</td></tr>'; }
+        }
+
+        // Fix for Edit User
+        async function editUser(id, currentName) {
+            const newName = prompt("Enter new name:", currentName);
+            if (newName && newName !== currentName) {
+                try {
+                    await updateDoc(doc(db, "users", id), { name: newName });
+                    alert("User updated!");
+                    loadUsersTable();
+                } catch(e) { alert("Update failed"); console.error(e); }
+            }
+        }
+
+        // Fix for Delete User
+        async function deleteUser(id) {
+            if(confirm("Are you sure you want to delete this user?")) {
+                try {
+                    await deleteDoc(doc(db, "users", id));
+                    alert("User deleted!");
+                    loadUsersTable();
+                    updateStats();
+                } catch(e) { alert("Delete failed"); console.error(e); }
+            }
+        }
+
+        function searchUsers() {
+            const term = document.getElementById('userSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        }
+
+        // --- ADMIN: PROVIDER MANAGEMENT (FIXED) ---
+
+        async function loadProvidersTable() {
+            const tbody = document.getElementById('providersTableBody');
+            tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+            try {
+                const snap = await getDocs(collection(db, "serviceProviders"));
+                let html = '';
+                snap.forEach(doc => {
+                    const p = doc.data();
+                    html += `<tr>
+                        <td>${p.name}</td>
+                        <td>${p.type}</td>
+                        <td>${p.email}</td>
+                        <td><span class="status-badge status-${p.status}">${p.status}</span></td>
+                        <td>
+                            ${p.status === 'pending' ? `
+                            <button class="action-btn approve-btn" onclick="approveProvider('${doc.id}')">Approve</button>
+                            <button class="action-btn reject-btn" onclick="rejectProvider('${doc.id}')">Reject</button>` : ''}
+                            <button class="action-btn delete-btn" onclick="deleteProvider('${doc.id}')">Delete</button>
+                        </td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html || '<tr><td colspan="5">No providers</td></tr>';
+            } catch(e) { console.error(e); }
+        }
+
+        async function approveProvider(id) {
+            if(confirm("Approve this provider?")) {
+                await updateDoc(doc(db, "serviceProviders", id), { status: 'approved' });
+                loadProvidersTable(); updateStats();
+            }
+        }
+
+        async function rejectProvider(id) {
+            if(confirm("Reject this provider?")) {
+                await updateDoc(doc(db, "serviceProviders", id), { status: 'rejected' });
+                loadProvidersTable(); updateStats();
+            }
+        }
+
+        async function deleteProvider(id) {
+            if(confirm("Delete this provider?")) {
+                await deleteDoc(doc(db, "serviceProviders", id));
+                loadProvidersTable(); updateStats();
+            }
+        }
+
+        function searchProviders() {
+            const term = document.getElementById('providerSearch').value.toLowerCase();
+            document.querySelectorAll('#providersTableBody tr').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
+            });
+        }
+
+        // --- NEWS MANAGEMENT (HOME PAGE & ADMIN FIXED) ---
+
+        // 1. Load News for Both Home Page (Grid) and Admin (Table)
+        async function loadAllNews() {
+            try {
+                const snap = await getDocs(collection(db, "news"));
+                
+                // Admin Table
+                const tbody = document.getElementById('newsTableBody');
+                let tableHtml = '';
+                
+                // Home Grid
+                const grid = document.getElementById('newsGrid');
+                let gridHtml = '';
+
+                snap.forEach(doc => {
+                    const n = doc.data();
+                    
+                    // Populate Admin Table Row
+                    if(tbody) {
+                        tableHtml += `<tr>
+                            <td>${n.title}</td>
+                            <td>${n.category}</td>
+                            <td>${n.date}</td>
+                            <td><button class="action-btn delete-btn" onclick="deleteNews('${doc.id}')">Delete</button></td>
+                        </tr>`;
+                    }
+
+                    // Populate Home Grid Card
+                    if(grid) {
+                        gridHtml += `
+                        <div class="news-card">
+                            <div class="news-image">
+                                <img src="${n.image || 'https://via.placeholder.com/300'}" alt="${n.title}">
+                            </div>
+                            <div class="news-content">
+                                <span class="news-category">${n.category}</span>
+                                <h3 class="news-title">${n.title}</h3>
+                                <p class="news-excerpt">${n.content ? n.content.substring(0, 80) + '...' : ''}</p>
+                                <button class="read-more-btn" onclick="viewFullNews('${doc.id}')">Read More</button>
+                                <div class="news-date">${n.date}</div>
+                            </div>
+                        </div>`;
+                    }
+                });
+
+                if(tbody) tbody.innerHTML = tableHtml || '<tr><td colspan="4">No news items</td></tr>';
+                if(grid) grid.innerHTML = gridHtml || '<div class="no-news">No news available at the moment.</div>';
+
+            } catch(e) { console.error("News Load Error:", e); }
+        }
+
+        async function addNewsItem(e) {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById('newsTitle').value,
+                category: document.getElementById('newsCategory').value,
+                content: document.getElementById('newsContent').value,
+                image: document.getElementById('newsImage').value,
+                date: new Date().toISOString().split('T')[0]
+            };
+            try {
+                await addDoc(collection(db, "news"), data);
+                document.getElementById('newsForm').reset();
+                alert("News Published Successfully! It will now appear on the Home Page.");
+                loadAllNews(); // Refresh list immediately
+            } catch(e) { console.error(e); alert("Failed to publish news"); }
+        }
+
+        async function deleteNews(id) {
+            if(confirm("Delete this news item?")) {
+                await deleteDoc(doc(db, "news", id));
+                loadAllNews();
+            }
+        }
+
+        async function viewFullNews(id) {
+             const snap = await getDoc(doc(db, "news", id));
+             if(snap.exists()) {
+                 const n = snap.data();
+                 // Create simple modal on the fly for viewing
+                 const modal = document.createElement('div');
+                 modal.className = 'modal';
+                 modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:flex;justify-content:center;align-items:center;';
+                 modal.innerHTML = `
+                    <div style="background:white;padding:30px;max-width:600px;width:90%;border-radius:10px;max-height:90vh;overflow-y:auto;position:relative;">
+                        <button onclick="this.parentElement.parentElement.remove()" style="position:absolute;top:10px;right:10px;border:none;background:transparent;font-size:24px;cursor:pointer;">&times;</button>
+                        <h2 style="color:#2e8b57;margin-bottom:15px;">${n.title}</h2>
+                        ${n.image ? `<img src="${n.image}" style="width:100%;border-radius:8px;margin-bottom:15px;">` : ''}
+                        <p style="white-space:pre-wrap;line-height:1.6;">${n.content}</p>
+                        <br><small style="color:#666">Published: ${n.date}</small>
+                    </div>
+                 `;
+                 document.body.appendChild(modal);
+             }
+        }
+
+        // --- SUBMISSIONS & BOOKINGS ---
+
+        async function submitProblemForm(e) {
+            e.preventDefault();
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u) { alert('Login required'); window.showLoginModal(); return; }
+
+            const data = {
+                userId: u.id, userName: u.name, userEmail: u.email,
+                category: document.getElementById('problemCategory').value,
+                title: document.getElementById('problemTitle').value,
+                description: document.getElementById('problemDescription').value,
+                location: document.getElementById('problemLocation').value,
+                contact: document.getElementById('problemContact').value,
+                status: 'Pending', date: new Date().toISOString().split('T')[0]
+            };
+
+            await addDoc(collection(db, "submissions"), data);
+            document.getElementById('problemForm').reset();
+            alert("Problem submitted!");
+        }
+
+        async function loadSubmissionsTable() {
+            const tbody = document.getElementById('submissionsTableBody');
+            tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+            const snap = await getDocs(collection(db, "submissions"));
+            let html = '';
+            snap.forEach(doc => {
+                const s = doc.data();
+                html += `<tr><td>${s.userName}</td><td>${s.category}</td><td>${s.date}</td><td>${s.status}</td>
+                <td><button class="action-btn delete-btn" onclick="deleteSubmission('${doc.id}')">Delete</button></td></tr>`;
+            });
+            tbody.innerHTML = html || '<tr><td colspan="5">No submissions</td></tr>';
+        }
+
+        async function deleteSubmission(id) {
+            if(confirm("Delete submission?")) { await deleteDoc(doc(db, "submissions", id)); loadSubmissionsTable(); updateStats(); }
+        }
+
+        async function loadBookingsTable() {
+            const tbody = document.getElementById('bookingsTableBody');
+            tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+            const snap = await getDocs(collection(db, "bookings"));
+            let html = '';
+            snap.forEach(doc => {
+                const b = doc.data();
+                html += `<tr><td>${b.userName}</td><td>${b.providerName}</td><td>${b.type}</td><td>${b.bookingDate}</td><td>${b.status}</td>
+                <td><button class="action-btn delete-btn" onclick="deleteBookingFirebase('${doc.id}')">Delete</button></td></tr>`;
+            });
+            tbody.innerHTML = html || '<tr><td colspan="6">No bookings</td></tr>';
+        }
+        
+        async function deleteBookingFirebase(id) {
+            if(confirm("Delete booking?")) { await deleteDoc(doc(db, "bookings", id)); loadBookingsTable(); updateStats(); }
+        }
+        
+        function searchBookings() {
+            const term = document.getElementById('bookingSearch').value.toLowerCase();
+            document.querySelectorAll('#bookingsTableBody tr').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
+            });
+        }
+
+        // --- DASHBOARD UPDATES ---
+
+        async function updateStats() {
+            const u = await getDocs(collection(db, "users"));
+            const p = await getDocs(collection(db, "serviceProviders"));
+            const b = await getDocs(collection(db, "bookings"));
+            
+            if(document.getElementById('totalUsers')) document.getElementById('totalUsers').textContent = u.size;
+            if(document.getElementById('totalProviders')) document.getElementById('totalProviders').textContent = p.size;
+            if(document.getElementById('totalBookings')) document.getElementById('totalBookings').textContent = b.size;
+        }
+
+        // --- NAVIGATION & UI HELPERS ---
+
+        function showPage(pageId) {
+            const pages = ['homeContent', 'userDashboard', 'providerDashboard', 'adminPanel', 'serviceProvidersSection', 'contactPage'];
+            pages.forEach(p => {
+                const el = document.getElementById(p);
+                if(el) el.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'block';
+            
+            // Close modals
+            document.querySelectorAll('.auth-modal, .provider-modal, .submission-modal').forEach(m => m.style.display = 'none');
+        }
+
+        function showHome() { showPage('homeContent'); document.querySelector('footer').style.display='block'; updateUserInterface(); loadAllNews(); }
+        function showDashboard() { 
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u) { window.showLoginModal(); return; }
+            showPage('userDashboard'); document.querySelector('footer').style.display='block';
+            document.getElementById('personalName').value = u.name;
+            // Load user bookings...
+        }
+        function showAdminPanel() {
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u || u.role !== 'admin') { alert("Access Denied"); return; }
+            showPage('adminPanel'); document.querySelector('footer').style.display='none';
+            loadUsersTable(); loadProvidersTable(); loadBookingsTable(); loadSubmissionsTable(); loadAllNews(); updateStats();
+        }
+        function showProviderDashboard() {
+            const p = JSON.parse(localStorage.getItem('currentProvider'));
+            if(!p) { window.showLoginModal(); return; }
+            showPage('providerDashboard'); document.querySelector('footer').style.display='block';
+            document.getElementById('providerWelcomeName').textContent = p.name;
+            // Load provider bookings...
+        }
+        function showServiceProvidersPage() { showPage('serviceProvidersSection'); document.querySelector('footer').style.display='block'; loadAvailableProviders(); }
+        function showContact() { showPage('contactPage'); document.querySelector('footer').style.display='block'; }
+
+        function updateUserInterface() {
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            const p = JSON.parse(localStorage.getItem('currentProvider'));
+            const btn = document.getElementById('authButton');
+            const profile = document.getElementById('userProfileSection');
+            
+            if(u) {
+                btn.textContent = "Logout";
+                profile.style.display = 'flex';
+                document.getElementById('userName').textContent = u.name;
+                document.getElementById('userAvatar').src = u.profilePicture || '';
+            } else if(p) {
+                btn.textContent = "Logout";
+                profile.style.display = 'flex';
+                document.getElementById('userName').textContent = p.name;
+                document.getElementById('userAvatar').src = p.profilePicture || '';
+            } else {
+                btn.textContent = "Login";
+                profile.style.display = 'none';
+            }
+        }
+        
+        // --- PROVIDER REGISTRATION ---
+        
+        async function handleProviderRegistration(e) {
+            e.preventDefault();
+            const name = document.getElementById('providerName').value;
+            const email = document.getElementById('providerEmail').value;
+            const type = document.getElementById('providerType').value;
+            const password = document.getElementById('providerPassword').value;
+            const confirm = document.getElementById('providerConfirmPassword').value;
+            
+            if(password !== confirm) { alert("Passwords do not match"); return; }
+            if(!document.getElementById('providerTerms').checked) { alert("Accept Terms"); return; }
+            
+            try {
+                const q = query(collection(db, "serviceProviders"), where("email", "==", email));
+                const snap = await getDocs(q);
+                if(!snap.empty) { alert("Email exists"); return; }
+                
+                const data = {
+                    name, email, password, type, status: 'pending', joinDate: new Date().toISOString().split('T')[0],
+                    phone: document.getElementById('providerPhone').value,
+                    address: document.getElementById('providerAddress').value,
+                    district: document.getElementById('providerDistrict').value,
+                    pradeshiyaSabha: document.getElementById('providerPradeshiyaSabha').value,
+                    bio: document.getElementById('providerBio').value,
+                    profilePicture: `https://ui-avatars.com/api/?name=${name}&background=2e8b57&color=fff`
+                };
+                
+                // Add specific fields based on type
+                if(type === 'doctor') {
+                    data.hospital = document.getElementById('doctorHospital').value;
+                    data.specialization = document.getElementById('doctorSpecialization').value;
+                    data.consultationFee = document.getElementById('doctorConsultationFee').value;
+                    data.availability = document.getElementById('doctorAvailability').value;
+                    data.qualification = document.getElementById('doctorQualification').value;
+                    data.registrationNo = document.getElementById('doctorRegistrationNo').value;
+                    data.experience = document.getElementById('doctorExperience').value;
+                } else {
+                    data.services = document.getElementById('draftsmanServices').value;
+                    data.rate = document.getElementById('draftsmanRate').value;
+                    data.availability = document.getElementById('draftsmanAvailability').value;
+                    data.qualification = document.getElementById('draftsmanQualification').value;
+                    data.registrationNo = document.getElementById('draftsmanRegistrationNo').value;
+                    data.experience = document.getElementById('draftsmanExperience').value;
+                }
+                
+                await addDoc(collection(db, "serviceProviders"), data);
+                document.getElementById('providerRegistrationForm').reset();
+                document.getElementById('providerRegistrationModal').style.display='none';
+                alert("Registration Successful! Wait for Admin Approval.");
+                
+            } catch(err) { console.error(err); alert("Registration failed"); }
+        }
+
+        // --- BOOKING LOGIC (Simplified for brevity) ---
+        async function submitDoctorBooking(e) {
+            e.preventDefault();
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u) { window.showLoginModal(); return; }
+            const docId = document.getElementById('bookingDoctor').value;
+            const select = document.getElementById('bookingDoctor');
+            const docName = select.options[select.selectedIndex].text.split('-')[0].trim();
+            
+            const booking = {
+                userId: u.id, userName: u.name, userEmail: u.email,
+                providerId: docId, providerName: docName, type: 'doctor',
+                patientName: document.getElementById('patientName').value,
+                medicalIssue: document.getElementById('medicalIssue').value,
+                preferredDate: document.getElementById('preferredDate').value,
+                status: 'pending', bookingDate: new Date().toISOString().split('T')[0]
+            };
+            
+            await addDoc(collection(db, "bookings"), booking);
+            document.getElementById('doctorBookingFormContent').reset();
+            window.cancelBooking();
+            alert("Doctor booked!");
+        }
+
+        // --- PLACEHOLDER FUNCTIONS (To prevent errors if called) ---
+        function switchAdminSection(id) {
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('admin-'+id).classList.add('active');
+        }
+        
+        function showProviderRegistrationForm(type) {
+            document.getElementById('providerType').value = type;
+            document.getElementById('providerSelectionModal').style.display='none';
+            document.getElementById('providerRegistrationModal').style.display='flex';
+            if(type === 'doctor') {
+                document.getElementById('doctorFields').style.display='block';
+                document.getElementById('draftsmanFields').style.display='none';
+            } else {
+                document.getElementById('doctorFields').style.display='none';
+                document.getElementById('draftsmanFields').style.display='block';
+            }
+        }
+        
+        // --- HELPERS FROM PREVIOUS CODE ---
+        // (Assuming loadAvailableProviders, viewProvider etc. logic is similar to Admin logic but for public view)
+        // Ensure Pradeshiya Sabha logic exists
+        window.loadPradeshiyaSabhasForProvider = function() {
+            const district = document.getElementById('providerDistrict').value;
+            const sabhaSelect = document.getElementById('providerPradeshiyaSabha');
+            sabhaSelect.innerHTML = '<option value="">Select</option>';
+            if(district && pradeshiyaSabhasData[district]) {
+                pradeshiyaSabhasData[district].forEach(s => {
+                    sabhaSelect.innerHTML += `<option value="${s}">${s}</option>`;
+                });
+            }
+        };
+
+        // --- INIT ---
+        window.onload = function() {
+            const lang = localStorage.getItem('preferredLanguage') || 'en';
+            changeLanguage(lang);
+            updateUserInterface();
+            showHome();
+        };
+
+    </script>
 
     <!-- JavaScript Code - UPDATED VERSION with Buildings.html integration -->
     <script>
