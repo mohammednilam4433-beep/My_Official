@@ -2723,9 +2723,7 @@ tr:hover {
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
-       (function(){
-          emailjs.init("Lz97Kzo78hViJY56Z"); 
-       })();
+       (function(){ emailjs.init("Lz97Kzo78hViJY56Z"); })();
     </script>
 
     <script type="module">
@@ -2748,22 +2746,46 @@ tr:hover {
         // 3. Initialize
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
-        // Global DB Access (For debugging if needed)
-        window.db = db;
+        window.db = db; // Global access
 
-        console.log("Firebase Connected & Ready!");
-
-        // --- GLOBAL FUNCTION EXPORTS (இவை தான் HTML பட்டன்கள் வேலை செய்யத் தேவை) ---
+        // --- GLOBAL VARIABLES & HELPERS ---
         
-        // Auth & UI
+        // Pradeshiya Sabha Data
+        const pradeshiyaSabhasData = {
+            "Ampara": ["Akkaraipattu", "Ampara", "Dehiattakandiya", "Kalmunai", "Mahaoya", "Padiyatalawa", "Sammanthurai", "Uhana"],
+            "Anuradhapura": ["Anuradhapura", "Galenbindunuwewa", "Horowpathana", "Kahatagasdigiliya", "Kekirawa", "Medawachchiya", "Mihintale", "Nochchiyagama", "Padaviya", "Palagala", "Talawa"],
+            "Badulla": ["Badulla", "Bandarawela", "Ella", "Haldummulla", "Hali-Ela", "Haputale", "Mahiyanganaya", "Meegahakiula", "Passara", "Welimada"],
+            "Batticaloa": ["Eravur Pattu", "Koralai Pattu", "Manmunai", "Porativu Pattu"],
+            "Colombo": ["Colombo", "Dehiwala-Mount Lavinia", "Homagama", "Kaduwela", "Kesbewa", "Kolonnawa", "Kotte", "Maharagama", "Moratuwa", "Ratmalana", "Seethawaka"],
+            "Galle": ["Akmeemana", "Ambalangoda", "Baddegama", "Bentota", "Bope-Poddala", "Elpitiya", "Galle", "Habaraduwa", "Imaduwa", "Karandeniya", "Nagoda", "Neluwa", "Niyagama", "Thawalama"],
+            "Gampaha": ["Attanagalla", "Biyagama", "Divulapitiya", "Dompe", "Gampaha", "Ja-Ela", "Katana", "Kelaniya", "Mahara", "Minuwangoda", "Mirigama", "Negombo", "Wattala"],
+            "Hambantota": ["Ambalantota", "Angunakolapelessa", "Beliatta", "Hambantota", "Lunugamvehera", "Sooriyawewa", "Tangalle", "Tissamaharama", "Weeraketiya"],
+            "Jaffna": ["Chavakachcheri", "Delft", "Jaffna", "Karainagar", "Kayts", "Nallur", "Point Pedro", "Valikamam", "Velanai"],
+            "Kalutara": ["Agalawatta", "Bandaragama", "Beruwala", "Bulathsinhala", "Dodangoda", "Horana", "Kalutara", "Madurawela", "Matugama", "Panadura", "Walallawita"],
+            "Kandy": ["Akurana", "Gangawata Korale", "Harispattuwa", "Kandy", "Kundasale", "Meda Dumbara", "Minipe", "Panvila", "Pasbage Korale", "Pathadumbara", "Poojapitiya", "Thumpane", "Uda Palatha", "Udunuwara", "Yatinuwara"],
+            "Kegalle": ["Aranayake", "Bulathkohupitiya", "Dehiowita", "Deraniyagala", "Galigamuwa", "Kegalle", "Mawanella", "Rambukkana", "Ruwanwella", "Warakapola", "Yatiyantota"],
+            "Kilinochchi": ["Karachchi", "Pachchilaipalli", "Poonakary"],
+            "Kurunegala": ["Alawwa", "Bingiriya", "Galgamuwa", "Giribawa", "Ibbagamuwa", "Kobeigane", "Kuliyapitiya", "Kurunegala", "Mawathagama", "Narammala", "Nikaweratiya", "Panduwasnuwara", "Polgahawela", "Polpithigama", "Wariyapola"],
+            "Mannar": ["Mannar", "Manthai West", "Musali", "Nanaddan"],
+            "Matale": ["Ambanganga Korale", "Dambulla", "Galewela", "Laggala-Pallegama", "Matale", "Naula", "Pallepola", "Rattota", "Ukuwela", "Wilgamuwa", "Yatawatta"],
+            "Matara": ["Akuressa", "Athuraliya", "Devinuwara", "Dickwella", "Hakmana", "Kamburupitiya", "Kirinda Puhulwella", "Kotapola", "Malimbada", "Matara", "Mulatiyana", "Pasgoda", "Pitabeddara", "Thihagoda", "Weligama"],
+            "Monaragala": ["Badalkumbura", "Bibile", "Buttala", "Kataragama", "Madulla", "Medagama", "Moneragala", "Siyambalanduwa", "Thanamalvila", "Wellawaya"],
+            "Mullaitivu": ["Manthai East", "Maritimepattu", "Puthukudiyiruppu", "Thunukkai"],
+            "Nuwara Eliya": ["Ambagamuwa", "Hanguranketha", "Kothmale", "Nuwara Eliya", "Walapane"],
+            "Polonnaruwa": ["Dimbulagala", "Elahera", "Hingurakgoda", "Lankapura", "Medirigiriya", "Polonnaruwa", "Welikanda"],
+            "Puttalam": ["Anamaduwa", "Arachchikattuwa", "Chilaw", "Kalpitiya", "Karuwalagaswewa", "Nattandiya", "Nawagattegama", "Puttalam", "Wennappuwa"],
+            "Ratnapura": ["Ayagama", "Balangoda", "Eheliyagoda", "Elapattha", "Embilipitiya", "Godakawela", "Imbulpe", "Kahawatta", "Kalawana", "Kolonna", "Kuruwita", "Nivithigala", "Opanayaka", "Pelmadulla", "Ratnapura", "Weligepola"],
+            "Trincomalee": ["Gomarankadawala", "Kantalai", "Kinniya", "Kuchchaveli", "Morawewa", "Muttur", "Padavi Sri Pura", "Seruwila", "Thambalagamuwa", "Trincomalee"],
+            "Vavuniya": ["Vavuniya", "Vavuniya North", "Vavuniya South", "Vengalacheddikulam"]
+        };
+
+        // --- GLOBAL FUNCTIONS EXPORT ---
         window.handleLogin = handleLogin;
         window.handleSignup = handleSignup;
         window.handleProviderRegistration = handleProviderRegistration;
         window.handleLogout = handleLogout;
-        window.handleProviderLogout = handleLogout;
         
-        // Navigation / Modals
+        // Modals
         window.showLoginModal = () => { document.getElementById('loginModal').style.display='flex'; };
         window.showSignupModal = () => { document.getElementById('loginModal').style.display='none'; document.getElementById('signupModal').style.display='flex'; };
         window.closeAuthModal = () => { document.getElementById('loginModal').style.display='none'; document.getElementById('signupModal').style.display='none'; };
@@ -2771,63 +2793,43 @@ tr:hover {
         window.closeProviderModal = () => { document.getElementById('providerSelectionModal').style.display='none'; };
         window.showProviderRegistrationForm = showProviderRegistrationForm;
         window.closeProviderRegistrationModal = () => { document.getElementById('providerRegistrationModal').style.display='none'; };
-        
+        window.closeBookingDetailsModal = () => { document.getElementById('bookingDetailsModal').style.display='none'; };
+        window.closeSubmissionModal = () => { document.getElementById('submissionModal').style.display='none'; };
+        window.closeResponseModal = () => { document.getElementById('responseModal').style.display='none'; };
+
+        // Navigation
         window.showHome = showHome;
         window.showDashboard = showDashboard;
         window.showProviderDashboard = showProviderDashboard;
         window.showAdminPanel = showAdminPanel;
         window.showServiceProvidersPage = showServiceProvidersPage;
-        window.showServiceProviders = showServiceProvidersPage; 
         window.showContact = showContact;
 
-        // User & Provider Logic
-        window.updatePersonalInfo = updatePersonalInfo;
+        // Features
         window.submitProblemForm = submitProblemForm;
-        window.loadAvailableProviders = loadAvailableProviders;
+        window.loadPradeshiyaSabhasForProvider = loadPradeshiyaSabhasForProvider;
+        window.switchAdminSection = switchAdminSection;
         window.bookDoctor = bookDoctor;
         window.bookDraftsman = bookDraftsman;
+        window.cancelBooking = cancelBooking;
         window.bookDoctorWithId = bookDoctorWithId;
         window.bookDraftsmanWithId = bookDraftsmanWithId;
-        window.cancelBooking = cancelBooking;
         window.submitDoctorBooking = submitDoctorBooking;
         window.submitDraftsmanBooking = submitDraftsmanBooking;
-        window.viewUserBooking = viewUserBooking;
-        window.viewProviderBooking = viewProviderBooking; // Same modal logic
-        window.loadPradeshiyaSabhasForProvider = loadPradeshiyaSabhasForProvider;
-        window.closeBookingDetailsModal = () => { document.getElementById('bookingDetailsModal').style.display='none'; };
-        window.closeSubmissionModal = () => { document.getElementById('submissionModal').style.display='none'; };
-        window.closeResponseModal = () => { document.getElementById('responseModal').style.display='none'; };
-
-        // Provider Dashboard Specific
-        window.switchProviderTab = switchProviderTab;
-        window.updateProviderProfile = updateProviderProfile;
-        window.changeAvailabilityStatus = changeAvailabilityStatus;
-        window.respondToBooking = respondToBooking;
-        window.submitProviderResponse = submitProviderResponse;
-        window.markBookingAsCompleted = markBookingAsCompleted;
-        window.viewProviderResponse = viewProviderResponse;
-
-        // Admin Actions (இவைதான் உங்களுக்கு வேலை செய்யவில்லை, இப்போது சரி செய்யப்பட்டுள்ளது)
-        window.switchAdminSection = switchAdminSection;
-        window.searchUsers = searchUsers;
-        window.editUser = editUser;     // <--- Added
-        window.deleteUser = deleteUser; // <--- Added
-        window.searchProviders = searchProviders;
-        window.approveProvider = approveProvider; // <--- Added
-        window.rejectProvider = rejectProvider;   // <--- Added
-        window.deleteProvider = deleteProvider;   // <--- Added
-        window.viewProvider = viewProvider;
-        window.searchBookings = searchBookings;
-        window.viewAdminBooking = viewUserBooking; // Reuse view function
-        window.deleteBookingFirebase = deleteBookingFirebase;
+        
+        // Admin & Provider Actions (Firebase Connected)
+        window.deleteUser = deleteUser;
+        window.approveProvider = approveProvider;
+        window.rejectProvider = rejectProvider;
+        window.deleteProvider = deleteProvider;
+        window.deleteBooking = deleteBooking; 
         window.deleteSubmission = deleteSubmission;
-        window.viewSubmission = viewSubmission;
-        window.addNewsItem = addNewsItem;
         window.deleteNews = deleteNews;
+        window.addNewsItem = addNewsItem;
         window.viewFullNews = viewFullNews;
-        window.searchNews = searchNews;
-        window.generateReport = generateReport;
-        window.changeLanguage = changeLanguage; // Assuming translation logic exists in your HTML scripts or simple placeholder
+        window.loadAvailableProviders = loadAvailableProviders;
+        window.showAvailableDoctors = showAvailableDoctors;
+        window.showAvailableDraftsmen = showAvailableDraftsmen;
 
         // --- AUTHENTICATION ---
 
@@ -2899,7 +2901,142 @@ tr:hover {
             window.location.reload();
         }
 
-        // --- ADMIN: USER MANAGEMENT (FIXED) ---
+        function updateUserInterface() {
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            const p = JSON.parse(localStorage.getItem('currentProvider'));
+            const btn = document.getElementById('authButton');
+            const profile = document.getElementById('userProfileSection');
+            
+            if(u) {
+                btn.textContent = "Logout";
+                btn.onclick = handleLogout; // FIXED LOGOUT
+                profile.style.display = 'flex';
+                document.getElementById('userName').textContent = u.name;
+                document.getElementById('userAvatar').src = u.profilePicture || '';
+            } else if(p) {
+                btn.textContent = "Logout";
+                btn.onclick = handleLogout; // FIXED LOGOUT
+                profile.style.display = 'flex';
+                document.getElementById('userName').textContent = p.name;
+                document.getElementById('userAvatar').src = p.profilePicture || '';
+            } else {
+                btn.textContent = "Login";
+                btn.onclick = showLoginModal;
+                profile.style.display = 'none';
+            }
+        }
+
+        // --- NAVIGATION LOGIC ---
+
+        function hideAllPages() {
+            ['homeContent', 'userDashboard', 'providerDashboard', 'adminPanel', 'serviceProvidersSection', 'contactPage'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.display = 'none';
+            });
+            document.querySelector('footer').style.display = 'none';
+        }
+
+        function showHome() { 
+            hideAllPages(); 
+            document.getElementById('homeContent').style.display = 'block'; 
+            document.querySelector('footer').style.display = 'block';
+            loadAllNews(); 
+        }
+
+        function showServiceProvidersPage() {
+            hideAllPages();
+            document.getElementById('serviceProvidersSection').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+            loadAvailableProviders();
+        }
+
+        function showContact() {
+            hideAllPages();
+            document.getElementById('contactPage').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+        }
+
+        function showDashboard() { 
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u) { showLoginModal(); return; }
+            hideAllPages(); 
+            document.getElementById('userDashboard').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+            document.getElementById('personalName').value = u.name;
+            document.getElementById('personalEmail').value = u.email;
+            loadUserBookings(u.id); // Load from Firebase
+        }
+
+        function showProviderDashboard() {
+            const p = JSON.parse(localStorage.getItem('currentProvider'));
+            if(!p) { showLoginModal(); return; }
+            hideAllPages();
+            document.getElementById('providerDashboard').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+            document.getElementById('providerWelcomeName').textContent = p.name;
+            loadProviderBookings(p.id); // Load from Firebase
+        }
+
+        function showAdminPanel() {
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u || u.role !== 'admin') { alert("Access Denied"); return; }
+            hideAllPages();
+            document.getElementById('adminPanel').style.display = 'block';
+            // Load Firebase Data for Admin
+            loadUsersTable();
+            loadProvidersTable();
+            loadBookingsTable();
+            loadSubmissionsTable();
+            loadNewsTable();
+            updateStats();
+        }
+
+        function switchAdminSection(id) {
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('admin-'+id).classList.add('active');
+        }
+
+        // --- PRADESHIYA SABHA LOGIC (FIXED) ---
+        function loadPradeshiyaSabhasForProvider() {
+            const districtSelect = document.getElementById('providerDistrict');
+            const sabhaSelect = document.getElementById('providerPradeshiyaSabha');
+            const selectedText = districtSelect.options[districtSelect.selectedIndex].text; // Using TEXT
+            
+            sabhaSelect.innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
+            
+            if (selectedText && pradeshiyaSabhasData[selectedText]) {
+                pradeshiyaSabhasData[selectedText].forEach(sabha => {
+                    const option = document.createElement("option");
+                    option.value = sabha;
+                    option.textContent = sabha;
+                    sabhaSelect.appendChild(option);
+                });
+            } else {
+                const option = document.createElement("option");
+                option.value = "Other";
+                option.textContent = "Other";
+                sabhaSelect.appendChild(option);
+            }
+        }
+
+        function showProviderRegistrationForm(type) {
+            document.getElementById('providerType').value = type;
+            document.getElementById('providerSelectionModal').style.display='none';
+            document.getElementById('providerRegistrationModal').style.display='flex';
+            
+            const docFields = document.getElementById('doctorFields');
+            const draftFields = document.getElementById('draftsmanFields');
+            
+            if(type === 'doctor') {
+                docFields.style.display = 'block';
+                draftFields.style.display = 'none';
+            } else {
+                docFields.style.display = 'none';
+                draftFields.style.display = 'block';
+            }
+        }
+
+        // --- ADMIN READ FUNCTIONS (CONVERTED TO FIREBASE) ---
 
         async function loadUsersTable() {
             const tbody = document.getElementById('usersTableBody');
@@ -2907,57 +3044,19 @@ tr:hover {
             try {
                 const snap = await getDocs(collection(db, "users"));
                 let html = '';
-                snap.forEach(doc => {
-                    const u = doc.data();
+                snap.forEach(docSnap => {
+                    const u = docSnap.data();
                     html += `<tr>
                         <td>${u.name}</td>
                         <td>${u.email}</td>
                         <td>${u.role}</td>
                         <td>${u.status || 'Active'}</td>
-                        <td>
-                            <button class="action-btn edit-btn" onclick="editUser('${doc.id}', '${u.name}')">Edit</button>
-                            <button class="action-btn delete-btn" onclick="deleteUser('${doc.id}')">Delete</button>
-                        </td>
+                        <td><button class="action-btn delete-btn" onclick="deleteUser('${docSnap.id}')">Delete</button></td>
                     </tr>`;
                 });
                 tbody.innerHTML = html || '<tr><td colspan="5">No users found</td></tr>';
             } catch(e) { console.error(e); tbody.innerHTML = '<tr><td colspan="5">Error</td></tr>'; }
         }
-
-        // Fix for Edit User
-        async function editUser(id, currentName) {
-            const newName = prompt("Enter new name:", currentName);
-            if (newName && newName !== currentName) {
-                try {
-                    await updateDoc(doc(db, "users", id), { name: newName });
-                    alert("User updated!");
-                    loadUsersTable();
-                } catch(e) { alert("Update failed"); console.error(e); }
-            }
-        }
-
-        // Fix for Delete User
-        async function deleteUser(id) {
-            if(confirm("Are you sure you want to delete this user?")) {
-                try {
-                    await deleteDoc(doc(db, "users", id));
-                    alert("User deleted!");
-                    loadUsersTable();
-                    updateStats();
-                } catch(e) { alert("Delete failed"); console.error(e); }
-            }
-        }
-
-        function searchUsers() {
-            const term = document.getElementById('userSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#usersTableBody tr');
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(term) ? '' : 'none';
-            });
-        }
-
-        // --- ADMIN: PROVIDER MANAGEMENT (FIXED) ---
 
         async function loadProvidersTable() {
             const tbody = document.getElementById('providersTableBody');
@@ -2965,8 +3064,8 @@ tr:hover {
             try {
                 const snap = await getDocs(collection(db, "serviceProviders"));
                 let html = '';
-                snap.forEach(doc => {
-                    const p = doc.data();
+                snap.forEach(docSnap => {
+                    const p = docSnap.data();
                     html += `<tr>
                         <td>${p.name}</td>
                         <td>${p.type}</td>
@@ -2974,9 +3073,9 @@ tr:hover {
                         <td><span class="status-badge status-${p.status}">${p.status}</span></td>
                         <td>
                             ${p.status === 'pending' ? `
-                            <button class="action-btn approve-btn" onclick="approveProvider('${doc.id}')">Approve</button>
-                            <button class="action-btn reject-btn" onclick="rejectProvider('${doc.id}')">Reject</button>` : ''}
-                            <button class="action-btn delete-btn" onclick="deleteProvider('${doc.id}')">Delete</button>
+                            <button class="action-btn approve-btn" onclick="approveProvider('${docSnap.id}')">Approve</button>
+                            <button class="action-btn reject-btn" onclick="rejectProvider('${docSnap.id}')">Reject</button>` : ''}
+                            <button class="action-btn delete-btn" onclick="deleteProvider('${docSnap.id}')">Delete</button>
                         </td>
                     </tr>`;
                 });
@@ -2984,84 +3083,164 @@ tr:hover {
             } catch(e) { console.error(e); }
         }
 
-        async function approveProvider(id) {
-            if(confirm("Approve this provider?")) {
-                await updateDoc(doc(db, "serviceProviders", id), { status: 'approved' });
-                loadProvidersTable(); updateStats();
-            }
+        async function loadBookingsTable() {
+            const tbody = document.getElementById('bookingsTableBody');
+            tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+            try {
+                const snap = await getDocs(collection(db, "bookings"));
+                let html = '';
+                snap.forEach(docSnap => {
+                    const b = docSnap.data();
+                    html += `<tr>
+                        <td>${b.userName}</td>
+                        <td>${b.providerName}</td>
+                        <td>${b.type}</td>
+                        <td>${b.bookingDate}</td>
+                        <td>${b.status}</td>
+                        <td><button class="action-btn delete-btn" onclick="deleteBooking('${docSnap.id}')">Delete</button></td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html || '<tr><td colspan="6">No bookings</td></tr>';
+            } catch(e) { console.error(e); }
         }
 
-        async function rejectProvider(id) {
-            if(confirm("Reject this provider?")) {
-                await updateDoc(doc(db, "serviceProviders", id), { status: 'rejected' });
-                loadProvidersTable(); updateStats();
-            }
+        async function loadSubmissionsTable() {
+            const tbody = document.getElementById('submissionsTableBody');
+            tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+            try {
+                const snap = await getDocs(collection(db, "submissions"));
+                let html = '';
+                snap.forEach(docSnap => {
+                    const s = docSnap.data();
+                    html += `<tr><td>${s.userName}</td><td>${s.category}</td><td>${s.date}</td><td>${s.status}</td>
+                    <td><button class="action-btn delete-btn" onclick="deleteSubmission('${docSnap.id}')">Delete</button></td></tr>`;
+                });
+                tbody.innerHTML = html || '<tr><td colspan="5">No submissions</td></tr>';
+            } catch(e) { console.error(e); }
         }
 
-        async function deleteProvider(id) {
-            if(confirm("Delete this provider?")) {
-                await deleteDoc(doc(db, "serviceProviders", id));
-                loadProvidersTable(); updateStats();
-            }
-        }
-
-        function searchProviders() {
-            const term = document.getElementById('providerSearch').value.toLowerCase();
-            document.querySelectorAll('#providersTableBody tr').forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
-            });
-        }
-
-        // --- NEWS MANAGEMENT (HOME PAGE & ADMIN FIXED) ---
-
-        // 1. Load News for Both Home Page (Grid) and Admin (Table)
-        async function loadAllNews() {
+        async function loadNewsTable() {
+            const tbody = document.getElementById('newsTableBody');
+            if(!tbody) return;
+            tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
             try {
                 const snap = await getDocs(collection(db, "news"));
-                
-                // Admin Table
-                const tbody = document.getElementById('newsTableBody');
-                let tableHtml = '';
-                
-                // Home Grid
-                const grid = document.getElementById('newsGrid');
-                let gridHtml = '';
+                let html = '';
+                snap.forEach(docSnap => {
+                    const n = docSnap.data();
+                    html += `<tr><td>${n.title}</td><td>${n.category}</td><td>${n.date}</td>
+                    <td><button class="action-btn delete-btn" onclick="deleteNews('${docSnap.id}')">Delete</button></td></tr>`;
+                });
+                tbody.innerHTML = html || '<tr><td colspan="4">No news items</td></tr>';
+            } catch(e) { console.error(e); }
+        }
 
-                snap.forEach(doc => {
-                    const n = doc.data();
-                    
-                    // Populate Admin Table Row
-                    if(tbody) {
-                        tableHtml += `<tr>
-                            <td>${n.title}</td>
-                            <td>${n.category}</td>
-                            <td>${n.date}</td>
-                            <td><button class="action-btn delete-btn" onclick="deleteNews('${doc.id}')">Delete</button></td>
-                        </tr>`;
-                    }
-
-                    // Populate Home Grid Card
-                    if(grid) {
-                        gridHtml += `
+        async function loadAllNews() {
+            const grid = document.getElementById('newsGrid');
+            if(!grid) return;
+            try {
+                const snap = await getDocs(collection(db, "news"));
+                let html = '';
+                snap.forEach(docSnap => {
+                    const n = { ...docSnap.data(), id: docSnap.id };
+                    html += `
                         <div class="news-card">
-                            <div class="news-image">
-                                <img src="${n.image || 'https://via.placeholder.com/300'}" alt="${n.title}">
-                            </div>
+                            <div class="news-image"><img src="${n.image || 'https://via.placeholder.com/300'}" alt="${n.title}"></div>
                             <div class="news-content">
                                 <span class="news-category">${n.category}</span>
                                 <h3 class="news-title">${n.title}</h3>
-                                <p class="news-excerpt">${n.content ? n.content.substring(0, 80) + '...' : ''}</p>
-                                <button class="read-more-btn" onclick="viewFullNews('${doc.id}')">Read More</button>
+                                <p class="news-excerpt">${n.content ? n.content.substring(0, 100) : ''}...</p>
+                                <button class="read-more-btn" onclick="viewFullNews('${n.id}')">Read More</button>
                                 <div class="news-date">${n.date}</div>
                             </div>
                         </div>`;
-                    }
                 });
+                grid.innerHTML = html || '<div class="no-news">No news available.</div>';
+            } catch(e) { console.error(e); }
+        }
 
-                if(tbody) tbody.innerHTML = tableHtml || '<tr><td colspan="4">No news items</td></tr>';
-                if(grid) grid.innerHTML = gridHtml || '<div class="no-news">No news available at the moment.</div>';
+        async function updateStats() {
+            // Simplified stats (for real apps, use aggregation or counters)
+            const u = await getDocs(collection(db, "users"));
+            const p = await getDocs(collection(db, "serviceProviders"));
+            const b = await getDocs(collection(db, "bookings"));
+            
+            if(document.getElementById('totalUsers')) document.getElementById('totalUsers').textContent = u.size;
+            if(document.getElementById('totalProviders')) document.getElementById('totalProviders').textContent = p.size;
+            if(document.getElementById('totalBookings')) document.getElementById('totalBookings').textContent = b.size;
+        }
 
-            } catch(e) { console.error("News Load Error:", e); }
+        // --- DASHBOARD READ FUNCTIONS (CONVERTED TO FIREBASE) ---
+
+        async function loadUserBookings(userId) {
+            const list = document.getElementById('userBookingsList');
+            list.innerHTML = 'Loading...';
+            try {
+                const q = query(collection(db, "bookings"), where("userId", "==", userId));
+                const snap = await getDocs(q);
+                if(snap.empty) { list.innerHTML = '<p>No bookings yet.</p>'; return; }
+                
+                let html = '<table class="provider-bookings-table"><thead><tr><th>Service</th><th>Provider</th><th>Date</th><th>Status</th></tr></thead><tbody>';
+                snap.forEach(docSnap => {
+                    const b = docSnap.data();
+                    html += `<tr><td>${b.type}</td><td>${b.providerName}</td><td>${b.bookingDate}</td>
+                    <td><span class="status-badge ${b.status === 'confirmed' ? 'status-approved' : 'status-pending'}">${b.status}</span></td></tr>`;
+                });
+                list.innerHTML = html + '</tbody></table>';
+            } catch(e) { console.error(e); }
+        }
+
+        async function loadProviderBookings(providerId) {
+            const tableBody = document.getElementById('providerBookingsTableBody');
+            tableBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+            try {
+                const q = query(collection(db, "bookings"), where("providerId", "==", providerId));
+                const snap = await getDocs(q);
+                if(snap.empty) { tableBody.innerHTML = '<tr><td colspan="5">No bookings.</td></tr>'; return; }
+                
+                let html = '';
+                snap.forEach(docSnap => {
+                    const b = docSnap.data();
+                    html += `<tr><td>${b.userName}</td><td>${b.type}</td><td>${b.bookingDate}</td>
+                    <td><span class="status-badge ${b.status === 'confirmed' ? 'status-approved' : 'status-pending'}">${b.status}</span></td>
+                    <td><button class="action-btn view-btn">View</button></td></tr>`;
+                });
+                tableBody.innerHTML = html;
+            } catch(e) { console.error(e); }
+        }
+
+        // --- WRITE/UPDATE/DELETE ACTIONS ---
+
+        async function deleteUser(id) { if(confirm("Delete?")) { await deleteDoc(doc(db, "users", id)); loadUsersTable(); } }
+        async function deleteProvider(id) { if(confirm("Delete?")) { await deleteDoc(doc(db, "serviceProviders", id)); loadProvidersTable(); } }
+        async function deleteBooking(id) { if(confirm("Delete?")) { await deleteDoc(doc(db, "bookings", id)); loadBookingsTable(); } }
+        async function deleteSubmission(id) { if(confirm("Delete?")) { await deleteDoc(doc(db, "submissions", id)); loadSubmissionsTable(); } }
+        async function deleteNews(id) { if(confirm("Delete?")) { await deleteDoc(doc(db, "news", id)); loadNewsTable(); } }
+
+        async function approveProvider(id) {
+            if(confirm("Approve?")) { await updateDoc(doc(db, "serviceProviders", id), { status: 'approved' }); loadProvidersTable(); }
+        }
+        async function rejectProvider(id) {
+            if(confirm("Reject?")) { await updateDoc(doc(db, "serviceProviders", id), { status: 'rejected' }); loadProvidersTable(); }
+        }
+
+        async function submitProblemForm(e) {
+            e.preventDefault();
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u) { alert('Login required'); return; }
+            
+            const data = {
+                userId: u.id, userName: u.name, userEmail: u.email,
+                category: document.getElementById('problemCategory').value,
+                title: document.getElementById('problemTitle').value,
+                description: document.getElementById('problemDescription').value,
+                location: document.getElementById('problemLocation').value,
+                contact: document.getElementById('problemContact').value,
+                status: 'Pending', date: new Date().toISOString().split('T')[0]
+            };
+            await addDoc(collection(db, "submissions"), data);
+            document.getElementById('problemForm').reset();
+            alert("Problem submitted!");
         }
 
         async function addNewsItem(e) {
@@ -3073,297 +3252,242 @@ tr:hover {
                 image: document.getElementById('newsImage').value,
                 date: new Date().toISOString().split('T')[0]
             };
-            try {
-                await addDoc(collection(db, "news"), data);
-                document.getElementById('newsForm').reset();
-                alert("News Published Successfully! It will now appear on the Home Page.");
-                loadAllNews(); // Refresh list immediately
-            } catch(e) { console.error(e); alert("Failed to publish news"); }
+            await addDoc(collection(db, "news"), data);
+            document.getElementById('newsForm').reset();
+            alert("News added!");
+            loadNewsTable();
         }
 
-        async function deleteNews(id) {
-            if(confirm("Delete this news item?")) {
-                await deleteDoc(doc(db, "news", id));
-                loadAllNews();
-            }
+        // --- PUBLIC LISTINGS (Doctors/Draftsmen) ---
+
+        async function loadAvailableProviders() {
+            // Simplified logic to just setup dropdowns for booking based on Firebase
+            const q = query(collection(db, "serviceProviders"), where("status", "==", "approved"));
+            const snap = await getDocs(q);
+            
+            const docSelect = document.getElementById('bookingDoctor');
+            const draftSelect = document.getElementById('bookingDraftsman');
+            docSelect.innerHTML = '<option value="">Select Doctor</option>';
+            draftSelect.innerHTML = '<option value="">Select Draftsman</option>';
+            
+            snap.forEach(docSnap => {
+                const p = { ...docSnap.data(), id: docSnap.id };
+                if(p.type === 'doctor') {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = `${p.name} - ${p.hospital}`;
+                    docSelect.appendChild(opt);
+                } else {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = `${p.name}`;
+                    draftSelect.appendChild(opt);
+                }
+            });
+        }
+
+        async function showAvailableDoctors() {
+            document.getElementById('availableDoctors').style.display = 'block';
+            document.getElementById('availableDraftsmen').style.display = 'none';
+            document.getElementById('doctorBookingForm').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'none';
+            
+            const list = document.getElementById('doctorsList');
+            list.innerHTML = 'Loading...';
+            
+            const q = query(collection(db, "serviceProviders"), where("type", "==", "doctor"), where("status", "==", "approved"));
+            const snap = await getDocs(q);
+            
+            if(snap.empty) { list.innerHTML = '<p>No doctors found.</p>'; return; }
+            
+            let html = '';
+            snap.forEach(docSnap => {
+                const p = { ...docSnap.data(), id: docSnap.id };
+                html += `
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-user-md"></i></div>
+                    <div class="category-content">
+                        <h3>${p.name}</h3>
+                        <p>${p.specialization} | ${p.hospital}</p>
+                        <p>Fee: ${p.consultationFee}</p>
+                        <button class="read-more-btn" onclick="bookDoctorWithId('${p.id}')">Book Now</button>
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        async function showAvailableDraftsmen() {
+            document.getElementById('availableDoctors').style.display = 'none';
+            document.getElementById('availableDraftsmen').style.display = 'block';
+            document.getElementById('doctorBookingForm').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'none';
+
+            const list = document.getElementById('draftsmenList');
+            list.innerHTML = 'Loading...';
+            
+            const q = query(collection(db, "serviceProviders"), where("type", "==", "draftsman"), where("status", "==", "approved"));
+            const snap = await getDocs(q);
+            
+            if(snap.empty) { list.innerHTML = '<p>No draftsmen found.</p>'; return; }
+            
+            let html = '';
+            snap.forEach(docSnap => {
+                const p = { ...docSnap.data(), id: docSnap.id };
+                html += `
+                <div class="category-card">
+                    <div class="category-icon"><i class="fas fa-ruler-combined"></i></div>
+                    <div class="category-content">
+                        <h3>${p.name}</h3>
+                        <p>${p.services}</p>
+                        <p>Rate: ${p.rate}</p>
+                        <button class="read-more-btn" onclick="bookDraftsmanWithId('${p.id}')">Book Now</button>
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        // --- BOOKING ACTIONS ---
+
+        function bookDoctor() {
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u) { showLoginModal(); return; }
+            document.getElementById('availableDoctors').style.display = 'none';
+            document.getElementById('doctorBookingForm').style.display = 'block';
+            document.getElementById('patientName').value = u.name;
+            document.getElementById('bookingContact').value = u.phone || '';
+        }
+
+        function bookDraftsman() {
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            if(!u) { showLoginModal(); return; }
+            document.getElementById('availableDraftsmen').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'block';
+            document.getElementById('clientName').value = u.name;
+            document.getElementById('draftsmanContact').value = u.phone || '';
+        }
+
+        function cancelBooking() {
+            document.getElementById('availableDoctors').style.display = 'none';
+            document.getElementById('availableDraftsmen').style.display = 'none';
+            document.getElementById('doctorBookingForm').style.display = 'none';
+            document.getElementById('draftsmanBookingForm').style.display = 'none';
+        }
+
+        function bookDoctorWithId(id) {
+            document.getElementById('bookingDoctor').value = id;
+            bookDoctor();
+        }
+
+        function bookDraftsmanWithId(id) {
+            document.getElementById('bookingDraftsman').value = id;
+            bookDraftsman();
+        }
+
+        async function submitDoctorBooking(e) {
+            e.preventDefault();
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            const docSelect = document.getElementById('bookingDoctor');
+            const docName = docSelect.options[docSelect.selectedIndex].text.split(' - ')[0];
+
+            const data = {
+                type: 'doctor',
+                providerId: docSelect.value,
+                providerName: docName,
+                userId: u.id,
+                userName: u.name,
+                userEmail: u.email,
+                patientName: document.getElementById('patientName').value,
+                medicalIssue: document.getElementById('medicalIssue').value,
+                bookingDate: new Date().toISOString().split('T')[0],
+                status: 'pending'
+            };
+            await addDoc(collection(db, "bookings"), data);
+            alert("Booking Submitted!");
+            cancelBooking();
+        }
+
+        async function submitDraftsmanBooking(e) {
+            e.preventDefault();
+            const u = JSON.parse(localStorage.getItem('currentUser'));
+            const draftSelect = document.getElementById('bookingDraftsman');
+            const draftName = draftSelect.options[draftSelect.selectedIndex].text;
+
+            const data = {
+                type: 'draftsman',
+                providerId: draftSelect.value,
+                providerName: draftName,
+                userId: u.id,
+                userName: u.name,
+                userEmail: u.email,
+                projectType: document.getElementById('projectType').value,
+                projectDetails: document.getElementById('projectDetails').value,
+                bookingDate: new Date().toISOString().split('T')[0],
+                status: 'pending'
+            };
+            await addDoc(collection(db, "bookings"), data);
+            alert("Booking Submitted!");
+            cancelBooking();
         }
 
         async function viewFullNews(id) {
-             const snap = await getDoc(doc(db, "news", id));
-             if(snap.exists()) {
-                 const n = snap.data();
-                 // Create simple modal on the fly for viewing
-                 const modal = document.createElement('div');
-                 modal.className = 'modal';
-                 modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:flex;justify-content:center;align-items:center;';
-                 modal.innerHTML = `
-                    <div style="background:white;padding:30px;max-width:600px;width:90%;border-radius:10px;max-height:90vh;overflow-y:auto;position:relative;">
-                        <button onclick="this.parentElement.parentElement.remove()" style="position:absolute;top:10px;right:10px;border:none;background:transparent;font-size:24px;cursor:pointer;">&times;</button>
-                        <h2 style="color:#2e8b57;margin-bottom:15px;">${n.title}</h2>
-                        ${n.image ? `<img src="${n.image}" style="width:100%;border-radius:8px;margin-bottom:15px;">` : ''}
-                        <p style="white-space:pre-wrap;line-height:1.6;">${n.content}</p>
-                        <br><small style="color:#666">Published: ${n.date}</small>
-                    </div>
-                 `;
-                 document.body.appendChild(modal);
-             }
-        }
-
-        // --- SUBMISSIONS & BOOKINGS ---
-
-        async function submitProblemForm(e) {
-            e.preventDefault();
-            const u = JSON.parse(localStorage.getItem('currentUser'));
-            if(!u) { alert('Login required'); window.showLoginModal(); return; }
-
-            const data = {
-                userId: u.id, userName: u.name, userEmail: u.email,
-                category: document.getElementById('problemCategory').value,
-                title: document.getElementById('problemTitle').value,
-                description: document.getElementById('problemDescription').value,
-                location: document.getElementById('problemLocation').value,
-                contact: document.getElementById('problemContact').value,
-                status: 'Pending', date: new Date().toISOString().split('T')[0]
-            };
-
-            await addDoc(collection(db, "submissions"), data);
-            document.getElementById('problemForm').reset();
-            alert("Problem submitted!");
-        }
-
-        async function loadSubmissionsTable() {
-            const tbody = document.getElementById('submissionsTableBody');
-            tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
-            const snap = await getDocs(collection(db, "submissions"));
-            let html = '';
-            snap.forEach(doc => {
-                const s = doc.data();
-                html += `<tr><td>${s.userName}</td><td>${s.category}</td><td>${s.date}</td><td>${s.status}</td>
-                <td><button class="action-btn delete-btn" onclick="deleteSubmission('${doc.id}')">Delete</button></td></tr>`;
-            });
-            tbody.innerHTML = html || '<tr><td colspan="5">No submissions</td></tr>';
-        }
-
-        async function deleteSubmission(id) {
-            if(confirm("Delete submission?")) { await deleteDoc(doc(db, "submissions", id)); loadSubmissionsTable(); updateStats(); }
-        }
-
-        async function loadBookingsTable() {
-            const tbody = document.getElementById('bookingsTableBody');
-            tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
-            const snap = await getDocs(collection(db, "bookings"));
-            let html = '';
-            snap.forEach(doc => {
-                const b = doc.data();
-                html += `<tr><td>${b.userName}</td><td>${b.providerName}</td><td>${b.type}</td><td>${b.bookingDate}</td><td>${b.status}</td>
-                <td><button class="action-btn delete-btn" onclick="deleteBookingFirebase('${doc.id}')">Delete</button></td></tr>`;
-            });
-            tbody.innerHTML = html || '<tr><td colspan="6">No bookings</td></tr>';
-        }
-        
-        async function deleteBookingFirebase(id) {
-            if(confirm("Delete booking?")) { await deleteDoc(doc(db, "bookings", id)); loadBookingsTable(); updateStats(); }
-        }
-        
-        function searchBookings() {
-            const term = document.getElementById('bookingSearch').value.toLowerCase();
-            document.querySelectorAll('#bookingsTableBody tr').forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
-            });
-        }
-
-        // --- DASHBOARD UPDATES ---
-
-        async function updateStats() {
-            const u = await getDocs(collection(db, "users"));
-            const p = await getDocs(collection(db, "serviceProviders"));
-            const b = await getDocs(collection(db, "bookings"));
-            
-            if(document.getElementById('totalUsers')) document.getElementById('totalUsers').textContent = u.size;
-            if(document.getElementById('totalProviders')) document.getElementById('totalProviders').textContent = p.size;
-            if(document.getElementById('totalBookings')) document.getElementById('totalBookings').textContent = b.size;
-        }
-
-        // --- NAVIGATION & UI HELPERS ---
-
-        function showPage(pageId) {
-            const pages = ['homeContent', 'userDashboard', 'providerDashboard', 'adminPanel', 'serviceProvidersSection', 'contactPage'];
-            pages.forEach(p => {
-                const el = document.getElementById(p);
-                if(el) el.style.display = 'none';
-            });
-            document.getElementById(pageId).style.display = 'block';
-            
-            // Close modals
-            document.querySelectorAll('.auth-modal, .provider-modal, .submission-modal').forEach(m => m.style.display = 'none');
-        }
-
-        function showHome() { showPage('homeContent'); document.querySelector('footer').style.display='block'; updateUserInterface(); loadAllNews(); }
-        function showDashboard() { 
-            const u = JSON.parse(localStorage.getItem('currentUser'));
-            if(!u) { window.showLoginModal(); return; }
-            showPage('userDashboard'); document.querySelector('footer').style.display='block';
-            document.getElementById('personalName').value = u.name;
-            // Load user bookings...
-        }
-        function showAdminPanel() {
-            const u = JSON.parse(localStorage.getItem('currentUser'));
-            if(!u || u.role !== 'admin') { alert("Access Denied"); return; }
-            showPage('adminPanel'); document.querySelector('footer').style.display='none';
-            loadUsersTable(); loadProvidersTable(); loadBookingsTable(); loadSubmissionsTable(); loadAllNews(); updateStats();
-        }
-        function showProviderDashboard() {
-            const p = JSON.parse(localStorage.getItem('currentProvider'));
-            if(!p) { window.showLoginModal(); return; }
-            showPage('providerDashboard'); document.querySelector('footer').style.display='block';
-            document.getElementById('providerWelcomeName').textContent = p.name;
-            // Load provider bookings...
-        }
-        function showServiceProvidersPage() { showPage('serviceProvidersSection'); document.querySelector('footer').style.display='block'; loadAvailableProviders(); }
-        function showContact() { showPage('contactPage'); document.querySelector('footer').style.display='block'; }
-
-        function updateUserInterface() {
-            const u = JSON.parse(localStorage.getItem('currentUser'));
-            const p = JSON.parse(localStorage.getItem('currentProvider'));
-            const btn = document.getElementById('authButton');
-            const profile = document.getElementById('userProfileSection');
-            
-            if(u) {
-                btn.textContent = "Logout";
-                profile.style.display = 'flex';
-                document.getElementById('userName').textContent = u.name;
-                document.getElementById('userAvatar').src = u.profilePicture || '';
-            } else if(p) {
-                btn.textContent = "Logout";
-                profile.style.display = 'flex';
-                document.getElementById('userName').textContent = p.name;
-                document.getElementById('userAvatar').src = p.profilePicture || '';
-            } else {
-                btn.textContent = "Login";
-                profile.style.display = 'none';
+            const snap = await getDoc(doc(db, "news", id));
+            if(snap.exists()) {
+                const n = snap.data();
+                alert(n.title + "\n\n" + n.content); // Simple alert for now, consistent with rest
             }
         }
         
-        // --- PROVIDER REGISTRATION ---
-        
+        // --- PROVIDER REGISTRATION HANDLER ---
         async function handleProviderRegistration(e) {
             e.preventDefault();
             const name = document.getElementById('providerName').value;
             const email = document.getElementById('providerEmail').value;
             const type = document.getElementById('providerType').value;
             const password = document.getElementById('providerPassword').value;
-            const confirm = document.getElementById('providerConfirmPassword').value;
-            
-            if(password !== confirm) { alert("Passwords do not match"); return; }
-            if(!document.getElementById('providerTerms').checked) { alert("Accept Terms"); return; }
-            
-            try {
-                const q = query(collection(db, "serviceProviders"), where("email", "==", email));
-                const snap = await getDocs(q);
-                if(!snap.empty) { alert("Email exists"); return; }
-                
-                const data = {
-                    name, email, password, type, status: 'pending', joinDate: new Date().toISOString().split('T')[0],
-                    phone: document.getElementById('providerPhone').value,
-                    address: document.getElementById('providerAddress').value,
-                    district: document.getElementById('providerDistrict').value,
-                    pradeshiyaSabha: document.getElementById('providerPradeshiyaSabha').value,
-                    bio: document.getElementById('providerBio').value,
-                    profilePicture: `https://ui-avatars.com/api/?name=${name}&background=2e8b57&color=fff`
-                };
-                
-                // Add specific fields based on type
-                if(type === 'doctor') {
-                    data.hospital = document.getElementById('doctorHospital').value;
-                    data.specialization = document.getElementById('doctorSpecialization').value;
-                    data.consultationFee = document.getElementById('doctorConsultationFee').value;
-                    data.availability = document.getElementById('doctorAvailability').value;
-                    data.qualification = document.getElementById('doctorQualification').value;
-                    data.registrationNo = document.getElementById('doctorRegistrationNo').value;
-                    data.experience = document.getElementById('doctorExperience').value;
-                } else {
-                    data.services = document.getElementById('draftsmanServices').value;
-                    data.rate = document.getElementById('draftsmanRate').value;
-                    data.availability = document.getElementById('draftsmanAvailability').value;
-                    data.qualification = document.getElementById('draftsmanQualification').value;
-                    data.registrationNo = document.getElementById('draftsmanRegistrationNo').value;
-                    data.experience = document.getElementById('draftsmanExperience').value;
-                }
-                
-                await addDoc(collection(db, "serviceProviders"), data);
-                document.getElementById('providerRegistrationForm').reset();
-                document.getElementById('providerRegistrationModal').style.display='none';
-                alert("Registration Successful! Wait for Admin Approval.");
-                
-            } catch(err) { console.error(err); alert("Registration failed"); }
-        }
-
-        // --- BOOKING LOGIC (Simplified for brevity) ---
-        async function submitDoctorBooking(e) {
-            e.preventDefault();
-            const u = JSON.parse(localStorage.getItem('currentUser'));
-            if(!u) { window.showLoginModal(); return; }
-            const docId = document.getElementById('bookingDoctor').value;
-            const select = document.getElementById('bookingDoctor');
-            const docName = select.options[select.selectedIndex].text.split('-')[0].trim();
-            
-            const booking = {
-                userId: u.id, userName: u.name, userEmail: u.email,
-                providerId: docId, providerName: docName, type: 'doctor',
-                patientName: document.getElementById('patientName').value,
-                medicalIssue: document.getElementById('medicalIssue').value,
-                preferredDate: document.getElementById('preferredDate').value,
-                status: 'pending', bookingDate: new Date().toISOString().split('T')[0]
-            };
-            
-            await addDoc(collection(db, "bookings"), booking);
-            document.getElementById('doctorBookingFormContent').reset();
-            window.cancelBooking();
-            alert("Doctor booked!");
-        }
-
-        // --- PLACEHOLDER FUNCTIONS (To prevent errors if called) ---
-        function switchAdminSection(id) {
-            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('admin-'+id).classList.add('active');
-        }
-        
-        function showProviderRegistrationForm(type) {
-            document.getElementById('providerType').value = type;
-            document.getElementById('providerSelectionModal').style.display='none';
-            document.getElementById('providerRegistrationModal').style.display='flex';
-            if(type === 'doctor') {
-                document.getElementById('doctorFields').style.display='block';
-                document.getElementById('draftsmanFields').style.display='none';
-            } else {
-                document.getElementById('doctorFields').style.display='none';
-                document.getElementById('draftsmanFields').style.display='block';
-            }
-        }
-        
-        // --- HELPERS FROM PREVIOUS CODE ---
-        // (Assuming loadAvailableProviders, viewProvider etc. logic is similar to Admin logic but for public view)
-        // Ensure Pradeshiya Sabha logic exists
-        window.loadPradeshiyaSabhasForProvider = function() {
+            const phone = document.getElementById('providerPhone').value;
+            const address = document.getElementById('providerAddress').value;
             const district = document.getElementById('providerDistrict').value;
-            const sabhaSelect = document.getElementById('providerPradeshiyaSabha');
-            sabhaSelect.innerHTML = '<option value="">Select</option>';
-            if(district && pradeshiyaSabhasData[district]) {
-                pradeshiyaSabhasData[district].forEach(s => {
-                    sabhaSelect.innerHTML += `<option value="${s}">${s}</option>`;
-                });
-            }
-        };
+            const pradeshiyaSabha = document.getElementById('providerPradeshiyaSabha').value;
+            const bio = document.getElementById('providerBio').value;
 
-        // --- INIT ---
+            // Optional fields logic handled simply here
+            const data = {
+                name, email, password, type, phone, address, district, pradeshiyaSabha, bio,
+                status: 'pending', availabilityStatus: 'available',
+                profilePicture: `https://ui-avatars.com/api/?name=${name}&background=2e8b57&color=fff`,
+                joinDate: new Date().toISOString().split('T')[0]
+            };
+
+            if(type === 'doctor') {
+                data.specialization = document.getElementById('doctorSpecialization').value;
+                data.hospital = document.getElementById('doctorHospital').value;
+                data.consultationFee = document.getElementById('doctorConsultationFee').value;
+                data.qualification = document.getElementById('doctorQualification').value;
+                data.experience = document.getElementById('doctorExperience').value;
+                data.registrationNo = document.getElementById('doctorRegistrationNo').value;
+            } else {
+                data.services = document.getElementById('draftsmanServices').value;
+                data.rate = document.getElementById('draftsmanRate').value;
+                data.qualification = document.getElementById('draftsmanQualification').value;
+            }
+
+            try {
+                await addDoc(collection(db, "serviceProviders"), data);
+                document.getElementById('providerRegistrationModal').style.display='none';
+                alert("Registration successful! Wait for Admin approval.");
+            } catch(e) { console.error(e); alert("Registration failed"); }
+        }
+
+        // Init
         window.onload = function() {
-            const lang = localStorage.getItem('preferredLanguage') || 'en';
-            changeLanguage(lang);
             updateUserInterface();
             showHome();
         };
 
     </script>
+
 
     <!-- JavaScript Code - UPDATED VERSION with Buildings.html integration -->
     <script>
@@ -4703,33 +4827,38 @@ async function deleteUser(id) {
         
         // index.html - இந்த function ஐ மட்டும் மாற்றவும்
 
+// மாவட்டத்தை மாற்றும்போது பிரதேச சபைகளை ஏற்றும் Function
 function loadPradeshiyaSabhasForProvider() {
     const districtSelect = document.getElementById('providerDistrict');
-    // மாவட்டத்தின் முதல் எழுத்தை மட்டும் பெரிய எழுத்தாக மாற்றுகிறோம் (எ.கா: "jaffna" -> "Jaffna")
-    // இது pradeshiyaSabhasData வில் உள்ள பெயரோடு பொருந்தும்.
-    const districtRaw = districtSelect.value;
-    const district = districtRaw.charAt(0).toUpperCase() + districtRaw.slice(1);
+    const sabhaSelect = document.getElementById('providerPradeshiyaSabha');
     
-    const pradeshiyaSabhaSelect = document.getElementById('providerPradeshiyaSabha');
+    // 1. தேர்ந்தெடுக்கப்பட்ட Option-ன் TEXT-ஐ எடுக்கிறோம் (Value-ஐ அல்ல)
+    // இது "ampara" என்பதற்கு பதில் "Ampara" என்றும், "nuwara-eliya" என்பதற்கு பதில் "Nuwara Eliya" என்றும் சரியாக எடுக்கும்.
+    const selectedText = districtSelect.options[districtSelect.selectedIndex].text;
     
-    // Clear previous options
-    pradeshiyaSabhaSelect.innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
+    // பழைய ஆப்ஷன்களை அழித்தல்
+    sabhaSelect.innerHTML = '<option value="">Select Pradeshiya Sabha</option>';
     
-    if (district && pradeshiyaSabhasData[district]) {
-        pradeshiyaSabhasData[district].forEach(sabha => {
+    // 2. டேட்டாவில் அந்தப் பெயர் உள்ளதா எனப் பார்த்தல்
+    if (selectedText && pradeshiyaSabhasData[selectedText]) {
+        // இருந்தால், அதை Loop செய்து ஆப்ஷன்களை உருவாக்குதல்
+        pradeshiyaSabhasData[selectedText].forEach(sabha => {
             const option = document.createElement("option");
             option.value = sabha;
             option.textContent = sabha;
-            pradeshiyaSabhaSelect.appendChild(option);
+            sabhaSelect.appendChild(option);
         });
     } else {
-        // If district not in our data (or strictly for "Other")
+        // இல்லையெனில் Other என்பதைக் காட்டு
         const option = document.createElement("option");
         option.value = "Other";
-        option.textContent = "Other (Please specify)";
-        pradeshiyaSabhaSelect.appendChild(option);
+        option.textContent = "Other";
+        sabhaSelect.appendChild(option);
     }
 }
+
+// 3. மிக முக்கியம்: HTML-ல் இருந்து அழைக்க இந்த வரியைச் சேர்க்கவும்
+window.loadPradeshiyaSabhasForProvider = loadPradeshiyaSabhasForProvider;
         
         // Close auth modal
         function closeAuthModal() {
@@ -5793,75 +5922,124 @@ async function loadAvailableProviders() {
         }
         
         // Show available doctors
-        function showAvailableDoctors() {
-            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-            const approvedDoctors = providers.filter(p => p.type === 'doctor' && p.status === 'approved');
-            
-            const doctorsList = document.getElementById('doctorsList');
-            doctorsList.innerHTML = '';
-            
-            if (approvedDoctors.length === 0) {
-                doctorsList.innerHTML = '<p>No doctors available at the moment.</p>';
-            } else {
-                approvedDoctors.forEach(doctor => {
-                    const doctorCard = document.createElement('div');
-                    doctorCard.className = 'category-card';
-                    doctorCard.innerHTML = `
-                        <div class="category-icon"><i class="fas fa-user-md"></i></div>
-                        <div class="category-content">
-                            <h3>${doctor.name}</h3>
-                            <p><strong>Specialization:</strong> ${getSpecializationName(doctor.specialization)}</p>
-                            <p><strong>Hospital:</strong> ${doctor.hospital}</p>
-                            <p><strong>Experience:</strong> ${doctor.experience} years</p>
-                            <p><strong>Fee:</strong> LKR ${doctor.consultationFee}</p>
-                            <p><strong>Availability:</strong> ${doctor.availability}</p>
-                            <button class="read-more-btn" onclick="bookDoctorWithId(${doctor.id})" style="margin-top: 10px;">Book Now</button>
-                        </div>
-                    `;
-                    doctorsList.appendChild(doctorCard);
-                });
-            }
-            
-            document.getElementById('availableDoctors').style.display = 'block';
-            document.getElementById('availableDraftsmen').style.display = 'none';
-            document.getElementById('doctorBookingForm').style.display = 'none';
-            document.getElementById('draftsmanBookingForm').style.display = 'none';
+
+// Doctors-ஐ மட்டும் காட்டுவதற்கான Function
+async function showAvailableDoctors() {
+    // 1. UI-ஐ தயார்படுத்துதல் (மற்ற பகுதிகளை மறைத்து Doctors பகுதியை காட்டுதல்)
+    document.getElementById('availableDoctors').style.display = 'block';
+    document.getElementById('availableDraftsmen').style.display = 'none';
+    document.getElementById('doctorBookingForm').style.display = 'none';
+    document.getElementById('draftsmanBookingForm').style.display = 'none';
+
+    const listDiv = document.getElementById('doctorsList');
+    listDiv.innerHTML = '<p>Loading approved doctors...</p>'; // Loading text
+
+    try {
+        // 2. Firebase Query (Approved & Doctor மட்டும்)
+        const q = window.query(
+            window.collection(window.db, "serviceProviders"), 
+            window.where("type", "==", "doctor"),
+            window.where("status", "==", "approved") // <--- இதுதான் முக்கியம் (Only Approved)
+        );
+
+        const querySnapshot = await window.getDocs(q);
+
+        listDiv.innerHTML = ''; // Loading text-ஐ நீக்குதல்
+
+        if (querySnapshot.empty) {
+            listDiv.innerHTML = '<p>No approved doctors available at the moment.</p>';
+            return;
         }
-        
+
+        // 3. கார்டுகளை (Cards) உருவாக்குதல்
+        querySnapshot.forEach((doc) => {
+            const provider = { ...doc.data(), id: doc.id };
+
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.innerHTML = `
+                <div class="category-icon"><i class="fas fa-user-md"></i></div>
+                <div class="category-content">
+                    <h3>${provider.name}</h3>
+                    <p><strong>Specialization:</strong> ${provider.specialization}</p>
+                    <p><strong>Hospital:</strong> ${provider.hospital}</p>
+                    <p><strong>Experience:</strong> ${provider.experience} years</p>
+                    <p><strong>Fee:</strong> LKR ${provider.consultationFee}</p>
+                    <p><strong>Location:</strong> ${provider.district}</p>
+                    <p><strong>Status:</strong> <span style="color:green; font-weight:bold">Verified</span></p>
+                    <button class="read-more-btn" onclick="bookDoctorWithId('${provider.id}')" style="margin-top: 10px;">Book Now</button>
+                </div>
+            `;
+            listDiv.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error("Error loading doctors:", error);
+        listDiv.innerHTML = '<p>Error loading data. Please try again.</p>';
+    }
+}
+
+// இந்த Function-ஐ HTML-ல் இருந்து அழைக்க Global ஆக மாற்றவும்
+window.showAvailableDoctors = showAvailableDoctors;
+
         // Show available draftsmen
-        function showAvailableDraftsmen() {
-            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-            const approvedDraftsmen = providers.filter(p => p.type === 'draftsman' && p.status === 'approved');
-            
-            const draftsmenList = document.getElementById('draftsmenList');
-            draftsmenList.innerHTML = '';
-            
-            if (approvedDraftsmen.length === 0) {
-                draftsmenList.innerHTML = '<p>No draftsmen available at the moment.</p>';
-            } else {
-                approvedDraftsmen.forEach(draftsman => {
-                    const draftsmanCard = document.createElement('div');
-                    draftsmanCard.className = 'category-card';
-                    draftsmanCard.innerHTML = `
-                        <div class="category-icon"><i class="fas fa-ruler-combined"></i></div>
-                        <div class="category-content">
-                            <h3>${draftsman.name}</h3>
-                            <p><strong>Experience:</strong> ${draftsman.experience} years</p>
-                            <p><strong>Services:</strong> ${draftsman.services ? draftsman.services.substring(0, 100) + '...' : 'General Drafting'}</p>
-                            <p><strong>Rate:</strong> ${draftsman.rate}</p>
-                            <p><strong>Availability:</strong> ${draftsman.availability}</p>
-                            <button class="read-more-btn" onclick="bookDraftsmanWithId(${draftsman.id})" style="margin-top: 10px;">Book Now</button>
-                        </div>
-                    `;
-                    draftsmenList.appendChild(draftsmanCard);
-                });
-            }
-            
-            document.getElementById('availableDoctors').style.display = 'none';
-            document.getElementById('availableDraftsmen').style.display = 'block';
-            document.getElementById('doctorBookingForm').style.display = 'none';
-            document.getElementById('draftsmanBookingForm').style.display = 'none';
+// Draftsmen-ஐ மட்டும் காட்டுவதற்கான Function
+async function showAvailableDraftsmen() {
+    // 1. UI-ஐ தயார்படுத்துதல்
+    document.getElementById('availableDoctors').style.display = 'none';
+    document.getElementById('availableDraftsmen').style.display = 'block';
+    document.getElementById('doctorBookingForm').style.display = 'none';
+    document.getElementById('draftsmanBookingForm').style.display = 'none';
+
+    const listDiv = document.getElementById('draftsmenList');
+    listDiv.innerHTML = '<p>Loading approved draftsmen...</p>';
+
+    try {
+        // 2. Firebase Query (Approved & Draftsman மட்டும்)
+        const q = window.query(
+            window.collection(window.db, "serviceProviders"), 
+            window.where("type", "==", "draftsman"),
+            window.where("status", "==", "approved") // <--- Only Approved
+        );
+
+        const querySnapshot = await window.getDocs(q);
+
+        listDiv.innerHTML = '';
+
+        if (querySnapshot.empty) {
+            listDiv.innerHTML = '<p>No approved draftsmen available at the moment.</p>';
+            return;
         }
+
+        // 3. கார்டுகளை உருவாக்குதல்
+        querySnapshot.forEach((doc) => {
+            const provider = { ...doc.data(), id: doc.id };
+
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.innerHTML = `
+                <div class="category-icon"><i class="fas fa-ruler-combined"></i></div>
+                <div class="category-content">
+                    <h3>${provider.name}</h3>
+                    <p><strong>Qualification:</strong> ${provider.qualification}</p>
+                    <p><strong>Services:</strong> ${provider.services}</p>
+                    <p><strong>Rate:</strong> ${provider.rate}</p>
+                    <p><strong>Location:</strong> ${provider.district}</p>
+                    <p><strong>Status:</strong> <span style="color:green; font-weight:bold">Verified</span></p>
+                    <button class="read-more-btn" onclick="bookDraftsmanWithId('${provider.id}')" style="margin-top: 10px;">Book Now</button>
+                </div>
+            `;
+            listDiv.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error("Error loading draftsmen:", error);
+        listDiv.innerHTML = '<p>Error loading data. Please try again.</p>';
+    }
+}
+
+// Global ஆக மாற்றவும்
+window.showAvailableDraftsmen = showAvailableDraftsmen;
         
         // Book doctor
         function bookDoctor() {
