@@ -4060,6 +4060,7 @@ function initializeData() {
         
         // Update user interface based on login status
 // --- UPDATE UI FUNCTION (திருத்தப்பட்டது) ---
+// --- 2. UPDATE UI FUNCTION (திருத்தப்பட்டது) ---
 window.updateUserInterface = function() {
     const u = JSON.parse(localStorage.getItem('currentUser'));
     const p = JSON.parse(localStorage.getItem('currentProvider'));
@@ -4069,26 +4070,28 @@ window.updateUserInterface = function() {
     const userNameDisplay = document.getElementById('userName');
     const userAvatarDisplay = document.getElementById('userAvatar');
 
+    // பட்டனை Reset செய்தல் (பழைய onclick-ஐ நீக்க)
+    authBtn.onclick = null; 
+
     if (u) {
-        // User Login செய்திருந்தால்
+        // --- USER LOGGED IN ---
         authBtn.innerText = "Logout";
-        // பட்டனை கிளிக் செய்தால் Logout function வேலை செய்ய வேண்டும்
-        authBtn.setAttribute("onclick", "window.handleLogout()"); 
+        authBtn.onclick = function() { window.handleLogout(); }; // நேரடி இணைப்பு
         
         profile.style.display = 'flex';
         userNameDisplay.innerText = u.name;
         userAvatarDisplay.src = u.profilePicture || '';
 
-        // Dashboard காட்டப்பட்டிருந்தால் தரவை ஏற்றவும்
+        // Dashboard காட்டப்பட்டிருந்தால் மட்டும்
         if (document.getElementById('userDashboard').style.display === 'block') {
             loadPersonalInfoForm(u);
             loadUserBookings();
         }
     } 
     else if (p) {
-        // Provider Login செய்திருந்தால்
+        // --- PROVIDER LOGGED IN ---
         authBtn.innerText = "Logout";
-        authBtn.setAttribute("onclick", "window.handleLogout()");
+        authBtn.onclick = function() { window.handleLogout(); }; // நேரடி இணைப்பு
         
         profile.style.display = 'flex';
         userNameDisplay.innerText = p.name;
@@ -4099,10 +4102,9 @@ window.updateUserInterface = function() {
         }
     } 
     else {
-        // யாரும் Login செய்யவில்லை என்றால்
+        // --- NOT LOGGED IN ---
         authBtn.innerText = "Login";
-        // பட்டனை கிளிக் செய்தால் Login Modal வர வேண்டும்
-        authBtn.setAttribute("onclick", "window.showLoginModal()");
+        authBtn.onclick = function() { window.showLoginModal(); }; // நேரடி இணைப்பு
         
         profile.style.display = 'none';
     }
@@ -5675,19 +5677,19 @@ async function handleProviderRegistration(event) {
         
         // Handle logout
 // --- LOGOUT FUNCTION (திருத்தப்பட்டது) ---
+// --- 1. LOGOUT FUNCTION (திருத்தப்பட்டது) ---
 window.handleLogout = function() {
-    // 1. பயனரின் தகவல்களை நீக்குதல்
+    console.log("Logout clicked!"); // சோதனைக்காக
+
+    // எல்லா தரவுகளையும் அழிக்கவும்
     localStorage.removeItem('currentUser');
     localStorage.removeItem('currentProvider');
-
-    // 2. உறுதிப்படுத்தல் செய்தி (விருப்பமெனில்)
-    alert("You have logged out successfully!");
-
-    // 3. பக்கத்தை புதுப்பித்தல் (Refresh)
-    window.location.href = window.location.href; // Force Reload
+    
+    // பக்கம் தானாகவே Refresh ஆகி Login நிலைக்கு வரும்
+    window.location.reload(); 
 };
 
-// Provider-க்கும் இதே function-ஐ பயன்படுத்துதல்
+// Provider-க்கும் இதே function
 window.handleProviderLogout = window.handleLogout;
         
         // Navigate to category page
@@ -6694,4 +6696,3 @@ window.onload = function() {
     </script>
 </body>
 </html>
-
