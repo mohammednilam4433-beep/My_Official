@@ -4059,54 +4059,54 @@ function initializeData() {
         }
         
         // Update user interface based on login status
-        function updateUserInterface() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-            const currentProvider = JSON.parse(localStorage.getItem('currentProvider') || 'null');
-            const authButton = document.getElementById('authButton');
-            const userProfileSection = document.getElementById('userProfileSection');
-            const userName = document.getElementById('userName');
-            const userAvatar = document.getElementById('userAvatar');
-            
-            if (currentUser) {
-                // Regular user is logged in
-                authButton.textContent = 'Logout';
-                authButton.onclick = handleLogout;
-                
-                // Show user profile
-                userProfileSection.style.display = 'flex';
-                userName.textContent = currentUser.name;
-                
-                // Set user avatar
-                userAvatar.src = currentUser.profilePicture || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.name) + '&background=2e8b57&color=fff';
-                
-                // Update profile section if on dashboard
-                if (document.getElementById('userDashboard').style.display === 'block') {
-                    loadPersonalInfoForm(currentUser);
-                    loadUserBookings();
-                }
-            } else if (currentProvider) {
-                // Service provider is logged in
-                authButton.textContent = 'Logout';
-                authButton.onclick = handleProviderLogout;
-                
-                // Show provider profile
-                userProfileSection.style.display = 'flex';
-                userName.textContent = currentProvider.name;
-                
-                // Set provider avatar
-                userAvatar.src = currentProvider.profilePicture || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentProvider.name) + '&background=2e8b57&color=fff';
-                
-                // Update provider dashboard if visible
-                if (document.getElementById('providerDashboard').style.display === 'block') {
-                    loadProviderDashboard(currentProvider);
-                }
-            } else {
-                // No one is logged in
-                authButton.textContent = 'Login';
-                authButton.onclick = showLoginModal;
-                userProfileSection.style.display = 'none';
-            }
+// --- UPDATE UI FUNCTION (திருத்தப்பட்டது) ---
+window.updateUserInterface = function() {
+    const u = JSON.parse(localStorage.getItem('currentUser'));
+    const p = JSON.parse(localStorage.getItem('currentProvider'));
+    
+    const authBtn = document.getElementById('authButton');
+    const profile = document.getElementById('userProfileSection');
+    const userNameDisplay = document.getElementById('userName');
+    const userAvatarDisplay = document.getElementById('userAvatar');
+
+    if (u) {
+        // User Login செய்திருந்தால்
+        authBtn.innerText = "Logout";
+        // பட்டனை கிளிக் செய்தால் Logout function வேலை செய்ய வேண்டும்
+        authBtn.setAttribute("onclick", "window.handleLogout()"); 
+        
+        profile.style.display = 'flex';
+        userNameDisplay.innerText = u.name;
+        userAvatarDisplay.src = u.profilePicture || '';
+
+        // Dashboard காட்டப்பட்டிருந்தால் தரவை ஏற்றவும்
+        if (document.getElementById('userDashboard').style.display === 'block') {
+            loadPersonalInfoForm(u);
+            loadUserBookings();
         }
+    } 
+    else if (p) {
+        // Provider Login செய்திருந்தால்
+        authBtn.innerText = "Logout";
+        authBtn.setAttribute("onclick", "window.handleLogout()");
+        
+        profile.style.display = 'flex';
+        userNameDisplay.innerText = p.name;
+        userAvatarDisplay.src = p.profilePicture || '';
+
+        if (document.getElementById('providerDashboard').style.display === 'block') {
+            loadProviderDashboard(p);
+        }
+    } 
+    else {
+        // யாரும் Login செய்யவில்லை என்றால்
+        authBtn.innerText = "Login";
+        // பட்டனை கிளிக் செய்தால் Login Modal வர வேண்டும்
+        authBtn.setAttribute("onclick", "window.showLoginModal()");
+        
+        profile.style.display = 'none';
+    }
+};
         
         // Load personal info form with user data
         function loadPersonalInfoForm(user) {
@@ -5674,20 +5674,21 @@ async function handleProviderRegistration(event) {
         }
         
         // Handle logout
-        function handleLogout() {
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('currentProvider');
-            updateUserInterface();
-            showHome();
-        }
-        
-        // Handle provider logout
-        function handleProviderLogout() {
-            localStorage.removeItem('currentProvider');
-            localStorage.removeItem('currentUser');
-            updateUserInterface();
-            showHome();
-        }
+// --- LOGOUT FUNCTION (திருத்தப்பட்டது) ---
+window.handleLogout = function() {
+    // 1. பயனரின் தகவல்களை நீக்குதல்
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentProvider');
+
+    // 2. உறுதிப்படுத்தல் செய்தி (விருப்பமெனில்)
+    alert("You have logged out successfully!");
+
+    // 3. பக்கத்தை புதுப்பித்தல் (Refresh)
+    window.location.href = window.location.href; // Force Reload
+};
+
+// Provider-க்கும் இதே function-ஐ பயன்படுத்துதல்
+window.handleProviderLogout = window.handleLogout;
         
         // Navigate to category page
         function navigateToCategory(category) {
@@ -6693,4 +6694,3 @@ window.onload = function() {
     </script>
 </body>
 </html>
-
