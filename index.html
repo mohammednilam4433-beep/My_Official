@@ -2720,6 +2720,44 @@ tr:hover {
         </div>
     </footer>
 
+
+    <script type="module">
+  // 1. Firebase Library-ஐ Import செய்தல்
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // 2. உங்கள் Firebase Config (படி 1-ல் Copy செய்தது)
+const firebaseConfig = {
+  apiKey: "AIzaSyAouvKkXNexWsTpPJq4q_HbNrrMHjAeIQE",
+  authDomain: "lifebridge-rural-6c88b.firebaseapp.com",
+  databaseURL: "https://lifebridge-rural-6c88b-default-rtdb.firebaseio.com",
+  projectId: "lifebridge-rural-6c88b",
+  storageBucket: "lifebridge-rural-6c88b.firebasestorage.app",
+  messagingSenderId: "905121861724",
+  appId: "1:905121861724:web:50a9efd0ec780b977b9699",
+  measurementId: "G-VD8557NGFL"
+};
+
+  // 3. Firebase-ஐ Initialize செய்தல்
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 4. இந்த db variable-ஐ window object-ல் வைத்தால் மற்ற function-களில் பயன்படுத்தலாம்
+  window.db = db;
+  window.collection = collection;
+  window.addDoc = addDoc;
+  window.getDocs = getDocs;
+  window.updateDoc = updateDoc;
+  window.deleteDoc = deleteDoc;
+  window.doc = doc;
+  window.query = query;
+  window.where = where;
+  
+  console.log("Firebase Connected Successfully!");
+</script>
+
+    
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script type="text/javascript">
    (function(){
@@ -3893,10 +3931,9 @@ function initializeData() {
         
 // இந்த முழு function-ஐயும் காப்பி செய்து பழைய submitProblemForm இருந்த இடத்தில் போடவும்
 
-function submitProblemForm(event) {
+async function submitProblemForm(event) {
     event.preventDefault();
 
-    // 1. பயனர் உள்நுழைந்துள்ளாரா எனச் சோதித்தல்
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     if (!currentUser) {
         alert('Please login to submit a problem');
@@ -3904,61 +3941,48 @@ function submitProblemForm(event) {
         return;
     }
 
-    // 2. படிவத்தில் உள்ள தரவுகளை எடுத்தல் (ஒரே முறை மட்டும்)
     const category = document.getElementById('problemCategory').value;
     const title = document.getElementById('problemTitle').value;
     const description = document.getElementById('problemDescription').value;
     const location = document.getElementById('problemLocation').value;
     const contact = document.getElementById('problemContact').value;
 
-    // 3. EmailJS மூலம் மின்னஞ்சல் அனுப்புதல்
+    // Email அனுப்புதல் (EmailJS) - இது அப்படியே இருக்கட்டும்
     const emailParams = {
-        to_name: "Admin",  // இது EmailJS இல் உள்ள Template இல் {{to_name}} என இருக்க வேண்டும்
+        to_name: "Admin",
         from_name: currentUser.name,
         from_email: currentUser.email,
         category: category,
         message: `Title: ${title}\nDescription: ${description}\nLocation: ${location}\nContact: ${contact}`
     };
 
-    // Service ID, Template ID, Parameters, மற்றும் கடைசியாக Public Key
-emailjs.send("service_704wqwt", "template_58tn5v9", emailParams, "Lz97Kzo78hViJY56Z")
-    .then(function(res) {
-        console.log("Email Sent!", res.status);
-        alert("Email sent successfully!");
-    
-        }, function(error) {
-            console.error("Email Error:", error);
-            // Email செல்லவில்லை என்றாலும், கீழே உள்ள குறியீடு தொடர்ந்து தரவைச் சேமிக்கும்
-        });
+    emailjs.send("service_704wqwt", "template_58tn5v9", emailParams, "Lz97Kzo78hViJY56Z")
+        .then(res => console.log("Email Sent!", res.status))
+        .catch(err => console.error("Email Error:", err));
 
-    // 4. தரவுத்தளத்தில் (LocalStorage) சேமித்தல்
-    const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
-    const newId = submissions.length > 0 ? Math.max(...submissions.map(s => s.id)) + 1 : 1;
+    // --- Firebase மாற்றம் ---
+    try {
+        const submissionData = {
+            userId: currentUser.id, // Firebase ID
+            userName: currentUser.name,
+            userEmail: currentUser.email,
+            category,
+            title,
+            description,
+            location,
+            contact,
+            date: new Date().toISOString().split('T')[0],
+            status: 'Pending'
+        };
 
-    submissions.push({
-        id: newId,
-        userId: currentUser.id,
-        userName: currentUser.name,
-        userEmail: currentUser.email,
-        category,
-        title,
-        description,
-        location,
-        contact,
-        date: new Date().toISOString().split('T')[0],
-        status: 'Pending'
-    });
-
-    localStorage.setItem('submissions', JSON.stringify(submissions));
-
-    // 5. படிவத்தை அழித்தல் மற்றும் வெற்றிச் செய்தி
-    document.getElementById('problemForm').reset();
-    alert('Your problem has been submitted successfully! Email notification sent to Admin.');
-
-    // Admin Panel திறந்திருந்தால் அதை அப்டேட் செய்யவும்
-    if (document.getElementById('adminPanel').style.display === 'block') {
-        loadSubmissionsTable();
-        updateStats();
+        await window.addDoc(window.collection(window.db, "submissions"), submissionData);
+        
+        document.getElementById('problemForm').reset();
+        alert('Your problem has been submitted successfully via Firebase!');
+        
+    } catch (e) {
+        console.error("Error submitting problem: ", e);
+        alert("Error: " + e.message);
     }
 }
         // Edit user
@@ -3978,17 +4002,19 @@ emailjs.send("service_704wqwt", "template_58tn5v9", emailParams, "Lz97Kzo78hViJY
         }
         
         // Delete user
-        function deleteUser(id) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                let users = JSON.parse(localStorage.getItem('users') || '[]');
-                users = users.filter(u => u.id !== id);
-                localStorage.setItem('users', JSON.stringify(users));
-                loadUsersTable();
-                updateStats();
-                alert('User deleted successfully!');
-            }
+async function deleteUser(id) {
+    if (confirm('Are you sure you want to delete this user from Firebase?')) {
+        try {
+            await window.deleteDoc(window.doc(window.db, "users", id));
+            alert('User deleted successfully!');
+            loadUsersTable(); // Refresh table
+            updateStats();
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            alert("Failed to delete user.");
         }
-        
+    }
+}
         // Show login modal
         function showLoginModal() {
             document.getElementById('loginModal').style.display = 'flex';
@@ -4762,112 +4788,156 @@ function updateStats() {
     if(document.getElementById('pendingApprovals')) document.getElementById('pendingApprovals').textContent = pendingProviders;
 }
         // Handle login form submission
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const role = document.getElementById('loginRole').value;
-            
-            if (role === 'user' || role === 'admin') {
-                // Login as regular user or admin
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                const user = users.find(u => u.email === email && u.password === password && u.role === role);
+async function handleLogin(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const role = document.getElementById('loginRole').value;
+
+    try {
+        if (role === 'user' || role === 'admin') {
+            // Users Collection-ல் தேடுதல்
+            const q = window.query(
+                window.collection(window.db, "users"), 
+                window.where("email", "==", email),
+                window.where("password", "==", password),
+                window.where("role", "==", role)
+            );
+            const querySnapshot = await window.getDocs(q);
+
+            if (!querySnapshot.empty) {
+                // Login Success
+                const userDoc = querySnapshot.docs[0];
+                const userData = { ...userDoc.data(), id: userDoc.id }; // Firebase ID-ஐயும் எடுக்கிறோம்
+
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                localStorage.removeItem('currentProvider');
                 
-                if (user) {
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    localStorage.removeItem('currentProvider');
-                    closeAuthModal();
-                    updateUserInterface();
-                    
-                    if (role === 'admin') {
-                        showAdminPanel();
-                    } else {
-                        showDashboard();
-                    }
-                    
-                    // Clear form fields
-                    document.getElementById('loginEmail').value = '';
-                    document.getElementById('loginPassword').value = '';
-                } else {
-                    alert('Invalid email or password for the selected role. Please try again.');
-                }
-            } else if (role === 'doctor' || role === 'draftsman') {
-                // Login as service provider
-                const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-                const provider = providers.find(p => p.email === email && p.password === password && p.type === role && p.status === 'approved');
-                
-                if (provider) {
-                    localStorage.setItem('currentProvider', JSON.stringify(provider));
-                    localStorage.removeItem('currentUser');
-                    closeAuthModal();
-                    updateUserInterface();
-                    showProviderDashboard();
-                    
-                    // Clear form fields
-                    document.getElementById('loginEmail').value = '';
-                    document.getElementById('loginPassword').value = '';
-                } else {
-                    alert('Invalid credentials or your account is not approved yet. Please contact admin if you have already registered.');
-                }
+                closeAuthModal();
+                updateUserInterface();
+
+                if (role === 'admin') showAdminPanel();
+                else showDashboard();
+
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
             } else {
-                alert('Please select a role to login.');
+                alert('Invalid email or password for User/Admin.');
             }
+
+        } else if (role === 'doctor' || role === 'draftsman') {
+            // Providers Collection-ல் தேடுதல்
+            const q = window.query(
+                window.collection(window.db, "serviceProviders"), 
+                window.where("email", "==", email),
+                window.where("password", "==", password),
+                window.where("type", "==", role),
+                window.where("status", "==", "approved")
+            );
+            const querySnapshot = await window.getDocs(q);
+
+            if (!querySnapshot.empty) {
+                const providerDoc = querySnapshot.docs[0];
+                const providerData = { ...providerDoc.data(), id: providerDoc.id };
+
+                localStorage.setItem('currentProvider', JSON.stringify(providerData));
+                localStorage.removeItem('currentUser');
+
+                closeAuthModal();
+                updateUserInterface();
+                showProviderDashboard();
+
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+            } else {
+                alert('Invalid credentials or Account not approved yet.');
+            }
+        } else {
+            alert('Please select a role.');
         }
+    } catch (error) {
+        console.error("Login Error:", error);
+        alert("Login failed due to network error.");
+    }
+}
         
         // Handle signup form submission
-        function handleSignup(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('signupConfirmPassword').value;
-            const profilePictureInput = document.getElementById('profilePicture');
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match. Please try again.');
-                return;
-            }
-            
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            
-            // Check if user already exists
-            if (users.some(u => u.email === email)) {
-                alert('User with this email already exists. Please login instead.');
-                return;
-            }
-            
-            // Create new user
-            const newUser = {
-                id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
-                name,
-                email,
-                password,
-                role: 'user',
-                profilePicture: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=2e8b57&color=fff',
-                joinDate: new Date().toISOString().split('T')[0],
-                status: 'Active',
-                phone: '',
-                address: '',
-                district: '',
-                pradeshiyaSabha: ''
-            };
-            
-            // Handle profile picture if selected
-            if (profilePictureInput.files.length > 0) {
-                const file = profilePictureInput.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    newUser.profilePicture = e.target.result;
-                    completeSignup(newUser, users);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                completeSignup(newUser, users);
-            }
+async function handleSignup(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('signupConfirmPassword').value;
+    const profilePictureInput = document.getElementById('profilePicture');
+
+    if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+    }
+
+    try {
+        // 1. இந்த Email ஏற்கனவே உள்ளதா என Firebase-ல் சோதித்தல்
+        const q = window.query(window.collection(window.db, "users"), window.where("email", "==", email));
+        const querySnapshot = await window.getDocs(q);
+
+        if (!querySnapshot.empty) {
+            alert('User with this email already exists. Please login instead.');
+            return;
         }
+
+        // 2. புதிய பயனரை உருவாக்குதல்
+        let profilePicUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=2e8b57&color=fff';
         
+        // படம் இருந்தால் அதை Base64 ஆக மாற்றுவது (சிறிய மாற்றத்திற்காக)
+        // குறிப்பு: Firebase Storage பயன்படுத்துவது சிறந்தது, ஆனால் எளிமைக்காக இதை அப்படியே வைப்போம்.
+        if (profilePictureInput.files.length > 0) {
+            const file = profilePictureInput.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            await new Promise(resolve => reader.onload = () => {
+                profilePicUrl = reader.result;
+                resolve();
+            });
+        }
+
+        const newUser = {
+            name: name,
+            email: email,
+            password: password, // குறிப்பு: உண்மையான செயலியில் Password-ஐ மறைத்து வைக்க வேண்டும்
+            role: 'user',
+            profilePicture: profilePicUrl,
+            joinDate: new Date().toISOString().split('T')[0],
+            status: 'Active',
+            phone: '',
+            address: '',
+            district: '',
+            pradeshiyaSabha: ''
+        };
+
+        // 3. Firebase-ல் சேமித்தல் (users collection)
+        const docRef = await window.addDoc(window.collection(window.db, "users"), newUser);
+        
+        // ID-ஐயும் சேர்த்து LocalStorage-ல் session-க்காக வைப்பது (UI வேலை செய்ய)
+        const userWithId = { ...newUser, id: docRef.id };
+        localStorage.setItem('currentUser', JSON.stringify(userWithId));
+
+        closeAuthModal();
+        updateUserInterface();
+        showDashboard();
+
+        // படிவத்தை அழித்தல்
+        document.getElementById('signupForm').reset();
+        document.getElementById('profilePreview').src = 'https://ui-avatars.com/api/?name=User&background=2e8b57&color=fff';
+
+        alert('Account created successfully via Firebase! Welcome to LifeBridge Rural.');
+
+    } catch (error) {
+        console.error("Error signing up:", error);
+        alert("Error creating account: " + error.message);
+    }
+}
         // Complete the signup process
         function completeSignup(newUser, users) {
             users.push(newUser);
@@ -4890,145 +4960,95 @@ function updateStats() {
         }
         
         // Handle provider registration - UPDATED WITH PRADESHIYA SABHA
-        function handleProviderRegistration(event) {
-            event.preventDefault();
-            
-            try {
-                // Get form values
-                const providerType = document.getElementById('providerType').value;
-                const name = document.getElementById('providerName').value.trim();
-                const email = document.getElementById('providerEmail').value.trim();
-                const password = document.getElementById('providerPassword').value;
-                const confirmPassword = document.getElementById('providerConfirmPassword').value;
-                const phone = document.getElementById('providerPhone').value.trim();
-                const address = document.getElementById('providerAddress').value.trim();
-                const district = document.getElementById('providerDistrict').value;
-                const pradeshiyaSabha = document.getElementById('providerPradeshiyaSabha').value;
-                const bio = document.getElementById('providerBio').value.trim();
-                const termsChecked = document.getElementById('providerTerms').checked;
-                
-                console.log('Provider registration attempt:', { providerType, name, email, pradeshiyaSabha });
-                
-                // Validation
-                if (password !== confirmPassword) {
-                    alert('Passwords do not match. Please try again.');
-                    return false;
-                }
-                
-                if (!name || !email || !password || !phone || !address || !district || !pradeshiyaSabha || !bio) {
-                    alert('Please fill all required fields.');
-                    return false;
-                }
-                
-                if (!termsChecked) {
-                    alert('Please accept the terms and conditions.');
-                    return false;
-                }
-                
-                // Provider-specific validation
-                if (providerType === 'doctor') {
-                    const specialization = document.getElementById('doctorSpecialization').value;
-                    const qualification = document.getElementById('doctorQualification').value.trim();
-                    const registrationNo = document.getElementById('doctorRegistrationNo').value.trim();
-                    const experience = document.getElementById('doctorExperience').value;
-                    const hospital = document.getElementById('doctorHospital').value.trim();
-                    const availability = document.getElementById('doctorAvailability').value.trim();
-                    const consultationFee = document.getElementById('doctorConsultationFee').value;
-                    
-                    if (!specialization || !qualification || !registrationNo || !experience || 
-                        !hospital || !availability || !consultationFee) {
-                        alert('Please fill all doctor-specific fields.');
-                        return false;
-                    }
-                } else if (providerType === 'draftsman') {
-                    const qualification = document.getElementById('draftsmanQualification').value.trim();
-                    const registrationNo = document.getElementById('draftsmanRegistrationNo').value.trim();
-                    const experience = document.getElementById('draftsmanExperience').value;
-                    const services = document.getElementById('draftsmanServices').value.trim();
-                    const rate = document.getElementById('draftsmanRate').value.trim();
-                    const availability = document.getElementById('draftsmanAvailability').value.trim();
-                    
-                    if (!qualification || !registrationNo || !experience || !services || 
-                        !rate || !availability) {
-                        alert('Please fill all draftsman-specific fields.');
-                        return false;
-                    }
-                }
-                
-                console.log('All validations passed');
-                
-                // Check if email already exists
-                const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                
-                if (providers.some(p => p.email === email) || users.some(u => u.email === email)) {
-                    alert('Email already exists. Please use a different email.');
-                    return false;
-                }
-                
-                console.log('Email check passed');
-                
-                // Create provider object
-                const newId = providers.length > 0 ? Math.max(...providers.map(p => p.id)) + 1 : 1;
-                const newProvider = {
-                    id: newId,
-                    type: providerType,
-                    name,
-                    email,
-                    password,
-                    phone,
-                    address,
-                    district,
-                    pradeshiyaSabha,
-                    bio,
-                    profilePicture: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=2e8b57&color=fff',
-                    status: 'pending',
-                    availabilityStatus: 'available',
-                    joinDate: new Date().toISOString().split('T')[0]
-                };
-                
-                // Add provider-specific fields
-                if (providerType === 'doctor') {
-                    newProvider.specialization = document.getElementById('doctorSpecialization').value;
-                    newProvider.qualification = document.getElementById('doctorQualification').value;
-                    newProvider.registrationNo = document.getElementById('doctorRegistrationNo').value;
-                    newProvider.experience = parseInt(document.getElementById('doctorExperience').value);
-                    newProvider.hospital = document.getElementById('doctorHospital').value;
-                    newProvider.availability = document.getElementById('doctorAvailability').value;
-                    newProvider.consultationFee = parseInt(document.getElementById('doctorConsultationFee').value);
-                } else {
-                    newProvider.qualification = document.getElementById('draftsmanQualification').value;
-                    newProvider.registrationNo = document.getElementById('draftsmanRegistrationNo').value;
-                    newProvider.experience = parseInt(document.getElementById('draftsmanExperience').value);
-                    newProvider.services = document.getElementById('draftsmanServices').value;
-                    newProvider.rate = document.getElementById('draftsmanRate').value;
-                    newProvider.availability = document.getElementById('draftsmanAvailability').value;
-                }
-                
-                console.log('Provider object created with pradeshiya sabha:', pradeshiyaSabha);
-                
-                // Handle profile picture
-                const profilePictureInput = document.getElementById('providerProfilePicture');
-                if (profilePictureInput.files.length > 0) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        newProvider.profilePicture = e.target.result;
-                        completeProviderRegistration(newProvider, providers);
-                    };
-                    reader.readAsDataURL(profilePictureInput.files[0]);
-                } else {
-                    completeProviderRegistration(newProvider, providers);
-                }
-                
-                return false;
-                
-            } catch (error) {
-                console.error('Registration error:', error);
-                alert('Error during registration: ' + error.message);
-                return false;
-            }
+async function handleProviderRegistration(event) {
+    event.preventDefault();
+
+    try {
+        const providerType = document.getElementById('providerType').value;
+        const name = document.getElementById('providerName').value.trim();
+        const email = document.getElementById('providerEmail').value.trim();
+        const password = document.getElementById('providerPassword').value;
+        const confirmPassword = document.getElementById('providerConfirmPassword').value;
+        const phone = document.getElementById('providerPhone').value.trim();
+        const address = document.getElementById('providerAddress').value.trim();
+        const district = document.getElementById('providerDistrict').value;
+        const pradeshiyaSabha = document.getElementById('providerPradeshiyaSabha').value;
+        const bio = document.getElementById('providerBio').value.trim();
+        const termsChecked = document.getElementById('providerTerms').checked;
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.'); return false;
         }
+        if (!termsChecked) {
+            alert('Please accept terms.'); return false;
+        }
+
+        // 1. Email ஏற்கனவே உள்ளதா என சோதித்தல் (Providers & Users இரண்டிலும்)
+        const qProvider = window.query(window.collection(window.db, "serviceProviders"), window.where("email", "==", email));
+        const snapProvider = await window.getDocs(qProvider);
         
+        const qUser = window.query(window.collection(window.db, "users"), window.where("email", "==", email));
+        const snapUser = await window.getDocs(qUser);
+
+        if (!snapProvider.empty || !snapUser.empty) {
+            alert('Email already exists.');
+            return false;
+        }
+
+        // 2. Provider Object உருவாக்குதல்
+        let profilePicUrl = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=2e8b57&color=fff';
+        const profilePictureInput = document.getElementById('providerProfilePicture');
+        
+        if (profilePictureInput.files.length > 0) {
+            const file = profilePictureInput.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            await new Promise(resolve => reader.onload = () => {
+                profilePicUrl = reader.result;
+                resolve();
+            });
+        }
+
+        const newProvider = {
+            type: providerType,
+            name, email, password, phone, address, district, pradeshiyaSabha, bio,
+            profilePicture: profilePicUrl,
+            status: 'pending',
+            availabilityStatus: 'available',
+            joinDate: new Date().toISOString().split('T')[0]
+        };
+
+        // சிறப்புத் தகவல்களைச் சேர்த்தல்
+        if (providerType === 'doctor') {
+            newProvider.specialization = document.getElementById('doctorSpecialization').value;
+            newProvider.qualification = document.getElementById('doctorQualification').value;
+            newProvider.registrationNo = document.getElementById('doctorRegistrationNo').value;
+            newProvider.experience = parseInt(document.getElementById('doctorExperience').value);
+            newProvider.hospital = document.getElementById('doctorHospital').value;
+            newProvider.availability = document.getElementById('doctorAvailability').value;
+            newProvider.consultationFee = parseInt(document.getElementById('doctorConsultationFee').value);
+        } else {
+            newProvider.qualification = document.getElementById('draftsmanQualification').value;
+            newProvider.registrationNo = document.getElementById('draftsmanRegistrationNo').value;
+            newProvider.experience = parseInt(document.getElementById('draftsmanExperience').value);
+            newProvider.services = document.getElementById('draftsmanServices').value;
+            newProvider.rate = document.getElementById('draftsmanRate').value;
+            newProvider.availability = document.getElementById('draftsmanAvailability').value;
+        }
+
+        // 3. Firebase-ல் சேமித்தல்
+        await window.addDoc(window.collection(window.db, "serviceProviders"), newProvider);
+
+        document.getElementById('providerRegistrationModal').style.display = 'none';
+        document.getElementById('providerRegistrationForm').reset();
+        
+        alert('Registration submitted successfully via Firebase! Please wait for Admin approval.');
+
+    } catch (error) {
+        console.error("Provider Reg Error:", error);
+        alert('Error: ' + error.message);
+    }
+}  
         // Complete provider registration
         function completeProviderRegistration(newProvider, providers) {
             providers.push(newProvider);
@@ -5084,32 +5104,80 @@ function updateStats() {
         }
         
         // Load available providers
-        function loadAvailableProviders() {
-            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-            const approvedDoctors = providers.filter(p => p.type === 'doctor' && p.status === 'approved');
-            const approvedDraftsmen = providers.filter(p => p.type === 'draftsman' && p.status === 'approved');
-            
-            // Load doctors for booking form
-            const doctorSelect = document.getElementById('bookingDoctor');
-            doctorSelect.innerHTML = '<option value="">Select a doctor</option>';
-            approvedDoctors.forEach(doctor => {
-                const option = document.createElement('option');
-                option.value = doctor.id;
-                option.textContent = `${doctor.name} - ${getSpecializationName(doctor.specialization)} (${doctor.hospital})`;
-                doctorSelect.appendChild(option);
-            });
-            
-            // Load draftsmen for booking form
-            const draftsmanSelect = document.getElementById('bookingDraftsman');
-            draftsmanSelect.innerHTML = '<option value="">Select a draftsman</option>';
-            approvedDraftsmen.forEach(draftsman => {
-                const option = document.createElement('option');
-                option.value = draftsman.id;
-                option.textContent = `${draftsman.name} - ${draftsman.services ? draftsman.services.substring(0, 50) + '...' : 'General Drafting'}`;
-                draftsmanSelect.appendChild(option);
-            });
+// பழைய loadAvailableProviders-ஐ நீக்கிவிட்டு இதைப் போடவும்
+async function loadAvailableProviders() {
+    const doctorSelect = document.getElementById('bookingDoctor');
+    const draftsmanSelect = document.getElementById('bookingDraftsman');
+    const doctorsList = document.getElementById('doctorsList');
+    const draftsmenList = document.getElementById('draftsmenList');
+
+    // Reset Dropdowns & Lists
+    doctorSelect.innerHTML = '<option value="">Select a doctor</option>';
+    draftsmanSelect.innerHTML = '<option value="">Select a draftsman</option>';
+    doctorsList.innerHTML = '';
+    draftsmenList.innerHTML = '';
+
+    try {
+        // Firebase-ல் 'approved' ஆனவர்களை மட்டும் எடுத்தல்
+        const q = window.query(window.collection(window.db, "serviceProviders"), window.where("status", "==", "approved"));
+        const querySnapshot = await window.getDocs(q);
+
+        if (querySnapshot.empty) {
+            doctorsList.innerHTML = '<p>No providers available.</p>';
+            draftsmenList.innerHTML = '<p>No providers available.</p>';
+            return;
         }
-        
+
+        querySnapshot.forEach((doc) => {
+            const provider = { ...doc.data(), id: doc.id }; // ID மிக முக்கியம்
+
+            // 1. Doctor ஆக இருந்தால்
+            if (provider.type === 'doctor') {
+                // Dropdown
+                const option = document.createElement('option');
+                option.value = provider.id; // Firebase ID
+                option.textContent = `${provider.name} - ${provider.hospital}`;
+                doctorSelect.appendChild(option);
+
+                // List Card
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.innerHTML = `
+                    <div class="category-icon"><i class="fas fa-user-md"></i></div>
+                    <div class="category-content">
+                        <h3>${provider.name}</h3>
+                        <p><strong>Specialization:</strong> ${provider.specialization}</p>
+                        <p><strong>Fee:</strong> LKR ${provider.consultationFee}</p>
+                        <button class="read-more-btn" onclick="bookDoctorWithId('${provider.id}')" style="margin-top: 10px;">Book Now</button>
+                    </div>`;
+                doctorsList.appendChild(card);
+            } 
+            // 2. Draftsman ஆக இருந்தால்
+            else if (provider.type === 'draftsman') {
+                // Dropdown
+                const option = document.createElement('option');
+                option.value = provider.id;
+                option.textContent = `${provider.name} - Rate: ${provider.rate}`;
+                draftsmanSelect.appendChild(option);
+
+                // List Card
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.innerHTML = `
+                    <div class="category-icon"><i class="fas fa-ruler-combined"></i></div>
+                    <div class="category-content">
+                        <h3>${provider.name}</h3>
+                        <p><strong>Rate:</strong> ${provider.rate}</p>
+                        <button class="read-more-btn" onclick="bookDraftsmanWithId('${provider.id}')" style="margin-top: 10px;">Book Now</button>
+                    </div>`;
+                draftsmenList.appendChild(card);
+            }
+        });
+
+    } catch (e) {
+        console.error("Error loading providers:", e);
+    }
+}
         // Get specialization name
         function getSpecializationName(code) {
             const specializations = {
@@ -5280,74 +5348,54 @@ function updateStats() {
         }
         
         // Submit doctor booking
-        function submitDoctorBooking(event) {
-            event.preventDefault();
-            
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-            if (!currentUser) {
-                alert('Please login to book a doctor');
-                showLoginModal();
-                return;
-            }
-            
-            const doctorId = parseInt(document.getElementById('bookingDoctor').value);
-            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-            const doctor = providers.find(p => p.id === doctorId && p.type === 'doctor' && p.status === 'approved');
-            
-            if (!doctor) {
-                alert('Please select a valid doctor');
-                return;
-            }
-            
-            const patientName = document.getElementById('patientName').value;
-            const patientAge = document.getElementById('patientAge').value;
-            const patientGender = document.getElementById('patientGender').value;
-            const medicalIssue = document.getElementById('medicalIssue').value;
-            const preferredDate = document.getElementById('preferredDate').value;
-            const preferredTime = document.getElementById('preferredTime').value;
-            const contact = document.getElementById('bookingContact').value;
-            const notes = document.getElementById('bookingNotes').value;
-            
-            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-            const newId = bookings.length > 0 ? Math.max(...bookings.map(b => b.id)) + 1 : 1;
-            
-            bookings.push({
-                id: newId,
-                type: 'doctor',
-                providerId: doctorId,
-                providerName: doctor.name,
-                userId: currentUser.id,
-                userName: currentUser.name,
-                userEmail: currentUser.email,
-                patientName,
-                patientAge: parseInt(patientAge),
-                patientGender,
-                medicalIssue,
-                preferredDate,
-                preferredTime,
-                contact,
-                notes,
-                status: 'pending',
-                providerResponse: '',
-                responseDate: '',
-                bookingDate: new Date().toISOString().split('T')[0]
-            });
-            
-            localStorage.setItem('bookings', JSON.stringify(bookings));
-            
-            // Clear form
-            document.getElementById('doctorBookingFormContent').reset();
-            
-            alert('Doctor appointment booked successfully! The doctor will respond to your booking soon.');
-            
-            // Update stats and bookings
-            updateStats();
-            loadBookingsTable();
-            loadUserBookings();
-            
-            // Hide booking form
-            cancelBooking();
-        }
+async function submitDoctorBooking(event) {
+    event.preventDefault();
+    
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!currentUser) { alert('Please login'); showLoginModal(); return; }
+
+    // Dropdown-ல் ID இருக்கிறதா என உறுதி செய்யவும்
+    const doctorId = document.getElementById('bookingDoctor').value; 
+    // குறிப்பு: Firebase-ல் ID என்பது String ஆக இருக்கும் (எ.கா: "7dJ8s..."), Int அல்ல.
+    
+    // Provider பெயரைத் தேட வேண்டும் (Firebase-ல் இருந்து எடுத்திருக்க வேண்டும்)
+    // எளிமைக்காக Dropdown text-ல் இருந்தே பெயரை எடுக்கலாம்:
+    const selectElement = document.getElementById('bookingDoctor');
+    const providerNameRaw = selectElement.options[selectElement.selectedIndex].text;
+    const providerName = providerNameRaw.split(' - ')[0]; // பெயரையும் Hospital-ஐயும் பிரித்தல்
+
+    const bookingData = {
+        type: 'doctor',
+        providerId: doctorId, 
+        providerName: providerName,
+        userId: currentUser.id,
+        userName: currentUser.name,
+        userEmail: currentUser.email,
+        patientName: document.getElementById('patientName').value,
+        patientAge: document.getElementById('patientAge').value,
+        patientGender: document.getElementById('patientGender').value,
+        medicalIssue: document.getElementById('medicalIssue').value,
+        preferredDate: document.getElementById('preferredDate').value,
+        preferredTime: document.getElementById('preferredTime').value,
+        contact: document.getElementById('bookingContact').value,
+        notes: document.getElementById('bookingNotes').value,
+        status: 'pending',
+        providerResponse: '',
+        responseDate: '',
+        bookingDate: new Date().toISOString().split('T')[0]
+    };
+
+    try {
+        await window.addDoc(window.collection(window.db, "bookings"), bookingData);
+        document.getElementById('doctorBookingFormContent').reset();
+        alert('Doctor appointment booked successfully via Firebase!');
+        cancelBooking();
+        // Load bookings மீண்டும் அழைக்கலாம், ஆனால் அதுவும் async ஆக இருக்க வேண்டும்
+    } catch (e) {
+        console.error("Error booking: ", e);
+        alert("Booking failed: " + e.message);
+    }
+}
         
         // Submit draftsman booking
         function submitDraftsmanBooking(event) {
@@ -5420,35 +5468,37 @@ function updateStats() {
         }
         
         // Load providers table for admin
-        function loadProvidersTable() {
-            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-            const tableBody = document.getElementById('providersTableBody');
-            tableBody.innerHTML = '';
-            
-            providers.forEach(provider => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${provider.name}</td>
-                    <td>${provider.type === 'doctor' ? 'Doctor' : 'Draftsman'}</td>
-                    <td>${provider.email}</td>
-                    <td>
-                        <span class="status-badge ${provider.status === 'approved' ? 'status-approved' : provider.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
-                            ${provider.status.charAt(0).toUpperCase() + provider.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>
-                        ${provider.status === 'pending' ? `
-                            <button class="action-btn approve-btn" onclick="approveProvider(${provider.id})">Approve</button>
-                            <button class="action-btn reject-btn" onclick="rejectProvider(${provider.id})">Reject</button>
-                        ` : ''}
-                        <button class="action-btn view-btn" onclick="viewProvider(${provider.id})">View</button>
-                        <button class="action-btn delete-btn" onclick="deleteProvider(${provider.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
+async function loadUsersTable() {
+    const tableBody = document.getElementById('usersTableBody');
+    tableBody.innerHTML = '<tr><td colspan="5">Loading data from Firebase...</td></tr>'; // Loading text
+
+    try {
+        const querySnapshot = await window.getDocs(window.collection(window.db, "users"));
         
+        tableBody.innerHTML = ''; // Clear loading text
+
+        querySnapshot.forEach((doc) => {
+            const user = doc.data();
+            const userId = doc.id; // Firebase Document ID
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>${user.status}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="editUser('${userId}')">Edit</button>
+                    <button class="action-btn delete-btn" onclick="deleteUser('${userId}')">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error("Error loading users:", error);
+        tableBody.innerHTML = '<tr><td colspan="5">Error loading data.</td></tr>';
+    }
+}
         // Search providers
         function searchProviders() {
             const searchText = document.getElementById('providerSearch').value.toLowerCase();
@@ -5660,58 +5710,82 @@ function updateStats() {
         }
         
         // Load bookings table for admin - INCLUDING BUILDINGS.HTML BOOKINGS
-        function loadBookingsTable() {
-            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-            const tableBody = document.getElementById('bookingsTableBody');
-            tableBody.innerHTML = '';
-            
-            // Sort by date (newest first)
-            bookings.sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
-            
-            bookings.forEach(booking => {
-                const serviceType = booking.type === 'doctor' ? 'Doctor Appointment' : 'Draftsman Service';
-                const statusClass = booking.status === 'confirmed' ? 'status-approved' : 
-                                   booking.status === 'pending' ? 'status-pending' : 
-                                   booking.status === 'completed' ? 'status-completed' : 'status-rejected';
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${booking.userName}</td>
-                    <td>${booking.providerName}</td>
-                    <td>${serviceType}</td>
-                    <td>${booking.preferredDate || booking.bookingDate}</td>
-                    <td><span class="status-badge ${statusClass}">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span></td>
-                    <td>
-                        <button class="action-btn view-btn" onclick="viewAdminBooking(${booking.id})">View</button>
-                        <button class="action-btn delete-btn" onclick="deleteAdminBooking(${booking.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
+async function loadBookingsTable() {
+    const tableBody = document.getElementById('bookingsTableBody');
+    tableBody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+
+    try {
+        const querySnapshot = await window.getDocs(window.collection(window.db, "bookings"));
+        tableBody.innerHTML = '';
+
+        if(querySnapshot.empty) {
+            tableBody.innerHTML = '<tr><td colspan="6">No bookings found.</td></tr>';
+            return;
         }
-        
-        // View booking for admin
-        function viewAdminBooking(id) {
-            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-            const booking = bookings.find(b => b.id === id);
+
+        querySnapshot.forEach((doc) => {
+            const booking = doc.data();
+            const bookingId = doc.id;
             
-            if (booking) {
-                viewUserBooking(id); // Reuse the same function
-            }
-        }
-        
-        // Delete booking for admin
-        function deleteAdminBooking(id) {
-            if (confirm('Are you sure you want to delete this booking?')) {
-                let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-                bookings = bookings.filter(b => b.id !== id);
-                localStorage.setItem('bookings', JSON.stringify(bookings));
-                loadBookingsTable();
-                updateStats();
-                alert('Booking deleted successfully!');
-            }
-        }
-        
+            // Status Color Logic
+            const statusClass = booking.status === 'confirmed' ? 'status-approved' : 
+                              booking.status === 'pending' ? 'status-pending' : 
+                              booking.status === 'completed' ? 'status-completed' : 'status-rejected';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${booking.userName}</td>
+                <td>${booking.providerName}</td>
+                <td>${booking.type}</td>
+                <td>${booking.preferredDate || booking.bookingDate}</td>
+                <td><span class="status-badge ${statusClass}">${booking.status}</span></td>
+                <td>
+                    <button class="action-btn view-btn" onclick="viewUserBooking('${bookingId}')">View</button>
+                    <button class="action-btn delete-btn" onclick="deleteBookingFirebase('${bookingId}')">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (e) {
+        console.error("Error loading bookings:", e);
+    }
+}       
+ 
+
+async function loadProvidersTable() {
+    const tableBody = document.getElementById('providersTableBody');
+    tableBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+
+    try {
+        const querySnapshot = await window.getDocs(window.collection(window.db, "serviceProviders"));
+        tableBody.innerHTML = '';
+
+        querySnapshot.forEach((doc) => {
+            const provider = doc.data();
+            const pid = doc.id;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${provider.name}</td>
+                <td>${provider.type}</td>
+                <td>${provider.email}</td>
+                <td><span class="status-badge status-${provider.status}">${provider.status}</span></td>
+                <td>
+                     ${provider.status === 'pending' ? `
+                        <button class="action-btn approve-btn" onclick="updateProviderStatusFirebase('${pid}', 'approved')">Approve</button>
+                        <button class="action-btn reject-btn" onclick="updateProviderStatusFirebase('${pid}', 'rejected')">Reject</button>
+                    ` : ''}
+                    <button class="action-btn delete-btn" onclick="deleteProviderFirebase('${pid}')">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+
         // Search bookings
         function searchBookings() {
             const searchText = document.getElementById('bookingSearch').value.toLowerCase();
@@ -6011,10 +6085,12 @@ function updateStats() {
             }
         }
         
-        // Initialize the application
-        window.onload = function() {
-            initializeData();
-        };
+window.onload = function() {
+    // initializeData();  <-- இந்த வரியை நீக்கிவிடுங்கள் அல்லது Comment (//) செய்யுங்கள்.
+    // ஏனெனில் இது பழைய localStorage தரவை உருவாக்கும். நமக்கு அது தேவையில்லை.
+    
+    updateUserInterface(); // இதை மட்டும் அழைத்தால் போதும்
+};
     </script>
 </body>
 </html>
